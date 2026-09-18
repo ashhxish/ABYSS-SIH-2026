@@ -1,0 +1,111 @@
+# ============================================================================
+# ABYSS — .gitignore
+# Rule of thumb: the deterministic DEMO dataset is committed (small, needed
+# for offline demos). Raw downloads, credentials and generated outputs are not.
+# ============================================================================
+
+# --------------------------------------------------------------------------
+# Secrets / environment  (NEVER commit)
+# --------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*credentials*.json
+.cdsapirc
+.netrc
+
+# --------------------------------------------------------------------------
+# Java / Maven
+# --------------------------------------------------------------------------
+target/
+*.class
+*.jar
+*.war
+!.mvn/wrapper/maven-wrapper.jar
+hs_err_pid*
+replay_pid*
+.mvn/timing.properties
+
+# --------------------------------------------------------------------------
+# Node / Vite
+# --------------------------------------------------------------------------
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.local
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+
+# --------------------------------------------------------------------------
+# Python
+# --------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --------------------------------------------------------------------------
+# Local database clusters / files
+# --------------------------------------------------------------------------
+.pgdata/
+pgdata/
+*.sqlite
+*.sqlite3
+*.db
+
+# --------------------------------------------------------------------------
+# Data: raw scientific downloads are large -> ignored.
+# Demo assets (prefixed demo_) stay in version control.
+# --------------------------------------------------------------------------
+intelligence/data/satellite/*
+!intelligence/data/satellite/README.md
+!intelligence/data/satellite/demo_*
+intelligence/data/environmental/*
+!intelligence/data/environmental/README.md
+!intelligence/data/environmental/demo_*
+intelligence/data/ais/*
+!intelligence/data/ais/README.md
+!intelligence/data/ais/demo_*
+*.nc
+*.nc4
+*.grib
+*.grib2
+*.h5
+*.he5
+*.zip
+*.tar
+*.tar.gz
+
+# Exception: bundled demo assets are always committed, whatever their extension
+!intelligence/data/**/demo_*
+
+# --------------------------------------------------------------------------
+# Runtime output: logs, generated reports, cached provider responses
+# --------------------------------------------------------------------------
+logs/
+*.log
+reports/generated/
+intelligence/**/generated/
+intelligence/data/**/cache/
+
+# --------------------------------------------------------------------------
+# IDE / OS
+# --------------------------------------------------------------------------
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db

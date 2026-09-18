@@ -1,0 +1,48 @@
+# ============================================================================
+# ABYSS — OPTIONAL local PostgreSQL/PostGIS convenience service
+# ============================================================================
+# This file is a convenience for machines that already have Docker.
+# Docker is NOT required by ABYSS: the database can equally be a native
+# PostgreSQL 16 + PostGIS 3.4 installation (see README section 4).
+#
+# Usage:
+#   cp .env.example .env
+#   docker compose up -d db
+#   docker compose logs -f db
+#
+# The credentials below are LOCAL DEVELOPMENT placeholders sourced from .env,
+# not secrets, and are never used outside a developer machine.
+#
+# The application services (frontend / backend / intelligence) are intentionally
+# NOT containerised in this prototype: they run as local processes during the
+# hackathon demo, which keeps the stack debuggable and startup fast.
+# ============================================================================
+
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    container_name: abyss-postgis
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-abyss}
+      POSTGRES_USER: ${POSTGRES_USER:-abyss}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me_local_dev_only}
+      # Deterministic collation for reproducible text ordering in tests
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - abyss-pgdata:/var/lib/postgresql/data
+      # init.sql runs only on first initialisation of an empty data volume.
+      # To re-run it: docker compose down -v && docker compose up -d db
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-abyss-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-abyss} -d ${POSTGRES_DB:-abyss}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  abyss-pgdata:
+    name: abyss-pgdata
