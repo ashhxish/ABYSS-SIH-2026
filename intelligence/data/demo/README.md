@@ -1,22 +1,34 @@
-# intelligence/data/demo — CASE-001 demonstration bundle
+# intelligence/data/demo — demonstration bundles
 
-Everything in this directory is **committed**, **deterministic** and **synthetic**. It is what makes
-DEMO MODE work with no API keys and no network access.
+**Committed, deterministic, synthetic.** This directory is what makes DEMO MODE work with no API keys
+and no network access.
 
-| File | Phase | Contents |
+## Contents
+
+| Path | Phase | Status |
 |---|---|---|
-| `case_001.json` | 2 | case definition: id, study area, observation time, candidate release window |
-| `demo_slick.json` | 2/12 | observed slick polygon (GeoJSON), centroid, detection confidence, look-alike flag |
-| `demo_origin_expected.json` | 2 | the hindcast ground truth used **only to sanity-check the model in tests**, never shown as an answer to the user |
-| `environmental/` | 2/11 | deterministic current + wind grids for the study area |
-| `expected_ranking.json` | 2 | expected ordering properties (V001/V002 top, V004 not first, …) consumed by Phase 19 tests |
+| `generate_case_001.py` | 2 | ✅ the generator for the CASE-001 dataset (stdlib only, no dependencies) |
+| `case_001/` | 2 | ✅ **the generated dataset** — see `case_001/README.md` for the full description |
+| `case_001/README.md` | 2 | ✅ what each vessel represents, which are candidates, which are distractors, which anomalies are intentional |
 
-Rules:
+Later phases add their own bundles here (for example a satellite scene manifest), always prefixed so
+they are not confused with real data.
 
-1. No `datetime.now()`, no random generation without a fixed seed — regenerating must reproduce the
-   same bytes.
-2. Demo assets are always labelled `DEMO DATA` in the UI; AIS is always labelled
+## Rules
+
+1. The generator must be runnable with **only the Python standard library**, so the demo can be
+   regenerated before a presentation on any machine.
+2. No `datetime.now()`, no unseeded randomness: `case_001/` is byte-reproducible (verified by
+   `intelligence/tests/test_case_001_dataset.py`).
+3. Demo assets are always labelled `DEMO DATA`; AIS is always labelled
    `AIS: Synthetic Demonstration Dataset`.
-3. `demo_origin_expected.json` is a **test fixture**, not evidence: the user-facing origin is always the
-   model's uncertainty region with its confidence.
-4. Vessel identities are invented and must not be traceable to real vessels.
+4. `case_001/demo_origin_expected.json` is a **test fixture (answer key)**. It is never an input to
+   the analysis pipeline and must never be surfaced by the API, the dashboard or a report.
+5. Vessel identities are synthetic and must not be traceable to real vessels.
+
+## Regenerate
+
+```bash
+python3 intelligence/data/demo/generate_case_001.py     # in place
+python3 -m unittest discover -s intelligence/tests      # verify it still matches
+```

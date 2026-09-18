@@ -55,7 +55,7 @@ three-process local stack (frontend, backend, intelligence) plus one database.
 
 | Mode | `ABYSS_DATA_MODE` | Credentials | Dataset | UI label |
 |---|---|---|---|---|
-| **Demo** (default, hackathon-reliable) | `demo` | **none** | bundled deterministic dataset in `intelligence/data/demo/` and `intelligence/data/ais/demo_*.csv` | **DEMO DATA** |
+| **Demo** (default, hackathon-reliable) | `demo` | **none** | bundled deterministic dataset in `intelligence/data/demo/case_001/` (see its `README.md`) | **DEMO DATA** |
 | **Live** | `live` | optional, from `.env` | external scientific providers | provider name + fallback notices |
 
 Rules enforced in code and documentation:
@@ -164,13 +164,27 @@ Health checks once those phases land:
 | Database + PostGIS | `psql -U abyss -h localhost -d abyss -c "SELECT postgis_full_version();"` |
 | Dashboard | <http://localhost:5173> |
 
+### Verify Phase 2 (the demo dataset) — works right now, no services needed
+
+```bash
+# regenerate the deterministic CASE-001 dataset in place
+python3 intelligence/data/demo/generate_case_001.py
+
+# run the Phase 2 validation suite (identity, fields, data quality, scenario design, determinism)
+python3 -m unittest discover -s intelligence/tests -v
+```
+
+Expected: the generator prints a per-vessel table and `40 self-checks passed`; the suite reports
+`Ran 35 tests ... OK`. The dataset itself is described in
+`intelligence/data/demo/case_001/README.md`.
+
 ## 6. Build status (phase plan from the specification)
 
 | Phase | Scope | Status |
 |---|---|---|
 | 1 | Repository + project structure | ✅ complete |
-| 2 | Demo dataset (deterministic) | ⏳ next |
-| 3–10 | AIS cleaning → trajectories → spatial/temporal/trajectory filtering → behaviour → gaps → scoring | ⏳ |
+| 2 | Demo dataset (deterministic) | ✅ complete |
+| 3–10 | AIS cleaning → trajectories → spatial/temporal/trajectory filtering → behaviour → gaps → scoring | ⏳ next |
 | 11–12 | Hindcast engine, satellite / oil-spill module | ⏳ |
 | 13–14 | Spring Boot API, PostgreSQL/PostGIS schema | ⏳ |
 | 15–18 | React dashboard, forensic timeline, evidence graph, report generation | ⏳ |

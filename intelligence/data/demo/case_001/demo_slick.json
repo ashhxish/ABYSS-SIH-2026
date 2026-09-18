@@ -1,0 +1,247 @@
+{
+  "synthetic": true,
+  "datasetLabel": "Synthetic Demonstration Dataset",
+  "uiLabel": "DEMO DATA",
+  "caseId": "CASE-001",
+  "spillId": "SPILL-001",
+  "acquisitionTime": "2026-03-14T06:00:00Z",
+  "sensor": {
+    "name": "synthetic demonstration SAR scene",
+    "band": "C-band SAR-like (demonstration stand-in, not a real acquisition)",
+    "synthetic": true
+  },
+  "detectionConfidence": 0.91,
+  "detectionConfidenceNote": "Prototype confidence for the synthetic scene. It is NOT a scientifically validated detection probability and does not constitute ground truth.",
+  "lookAlikeWarning": false,
+  "lookAlikeAssessment": {
+    "checkedClasses": [
+      "low wind area",
+      "natural or biogenic film",
+      "radar artefact",
+      "sea-state variation"
+    ],
+    "lowWindArea": false,
+    "lowWindNote": "A moderate 8 m/s wind is prescribed by the synthetic scenario, which argues against a low-wind look-alike.",
+    "otherClasses": "not indicated by the synthetic scenario; a real investigation still needs confirmation"
+  },
+  "areaKm2": 41.35,
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          72.207883,
+          18.499508
+        ],
+        [
+          72.209174,
+          18.497192
+        ],
+        [
+          72.209677,
+          18.494347
+        ],
+        [
+          72.209383,
+          18.491023
+        ],
+        [
+          72.208298,
+          18.487276
+        ],
+        [
+          72.206439,
+          18.483171
+        ],
+        [
+          72.203838,
+          18.478777
+        ],
+        [
+          72.200541,
+          18.474171
+        ],
+        [
+          72.196603,
+          18.46943
+        ],
+        [
+          72.192092,
+          18.464636
+        ],
+        [
+          72.187085,
+          18.459871
+        ],
+        [
+          72.181667,
+          18.455216
+        ],
+        [
+          72.175932,
+          18.450752
+        ],
+        [
+          72.169978,
+          18.446554
+        ],
+        [
+          72.163906,
+          18.442694
+        ],
+        [
+          72.15782,
+          18.439238
+        ],
+        [
+          72.151825,
+          18.436246
+        ],
+        [
+          72.146022,
+          18.433769
+        ],
+        [
+          72.140512,
+          18.431849
+        ],
+        [
+          72.135389,
+          18.430519
+        ],
+        [
+          72.130739,
+          18.429801
+        ],
+        [
+          72.126644,
+          18.429708
+        ],
+        [
+          72.123172,
+          18.430242
+        ],
+        [
+          72.120384,
+          18.431393
+        ],
+        [
+          72.118326,
+          18.433142
+        ],
+        [
+          72.117035,
+          18.435458
+        ],
+        [
+          72.116532,
+          18.438303
+        ],
+        [
+          72.116826,
+          18.441627
+        ],
+        [
+          72.117912,
+          18.445374
+        ],
+        [
+          72.119771,
+          18.449479
+        ],
+        [
+          72.122371,
+          18.453873
+        ],
+        [
+          72.125668,
+          18.458479
+        ],
+        [
+          72.129606,
+          18.46322
+        ],
+        [
+          72.134117,
+          18.468014
+        ],
+        [
+          72.139125,
+          18.472779
+        ],
+        [
+          72.144542,
+          18.477434
+        ],
+        [
+          72.150277,
+          18.481898
+        ],
+        [
+          72.156231,
+          18.486096
+        ],
+        [
+          72.162304,
+          18.489956
+        ],
+        [
+          72.168389,
+          18.493412
+        ],
+        [
+          72.174385,
+          18.496404
+        ],
+        [
+          72.180187,
+          18.498881
+        ],
+        [
+          72.185697,
+          18.500801
+        ],
+        [
+          72.190821,
+          18.502132
+        ],
+        [
+          72.19547,
+          18.502849
+        ],
+        [
+          72.199566,
+          18.502942
+        ],
+        [
+          72.203037,
+          18.502408
+        ],
+        [
+          72.205826,
+          18.501257
+        ],
+        [
+          72.207883,
+          18.499508
+        ]
+      ]
+    ]
+  },
+  "centroid": {
+    "lat": 18.466325,
+    "lon": 72.163105
+  },
+  "boundingBox": {
+    "minLat": 18.429708,
+    "maxLat": 18.502942,
+    "minLon": 72.116532,
+    "maxLon": 72.209677
+  },
+  "perimeterKm": 27.114,
+  "approximateLengthKm": 12.0,
+  "approximateWidthKm": 4.4,
+  "orientationDeg": 52.0,
+  "orientationNote": "Major axis of the elliptical synthetic slick, degrees clockwise from north.",
+  "provenance": "model-derived scenario asset (pre-computed for demo mode: no imagery processing at run time)"
+}

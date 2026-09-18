@@ -1,0 +1,113 @@
+{
+  "synthetic": true,
+  "datasetLabel": "Synthetic Demonstration Dataset",
+  "caseId": "CASE-001",
+  "status": "intended properties of the synthetic scenario, to be satisfied by the Phase 10 scoring engine",
+  "expectedOrderingProperties": [
+    {
+      "property": "V001 and V002 form the top two candidates",
+      "reason": "both are inside the origin region during the release window with compatible movement"
+    },
+    {
+      "property": "V003 ranks strictly below V002",
+      "reason": "same location and gap timing, but V003's gap is physically impossible"
+    },
+    {
+      "property": "V004 is not ranked first",
+      "reason": "nearest to the observed slick but 100+ km from the origin during the window"
+    },
+    {
+      "property": "V005 ranks below V001 and V002",
+      "reason": "crosses the origin region only after the release window closes"
+    },
+    {
+      "property": "V006 is not in the top five",
+      "reason": "strong behavioural anomaly but 150+ km from the origin region"
+    },
+    {
+      "property": "every control/distractor vessel ranks below at least one of V001 or V002",
+      "reason": "no distractor should outrank a compatible candidate"
+    },
+    {
+      "property": "V007 (no gap, steady, 90 km away) is not promoted by its missing gap",
+      "reason": "absence of a gap must not be treated as evidence"
+    },
+    {
+      "property": "V004 outranks V006 in any proximity-based comparison involving the slick",
+      "reason": "proximity to the slick is not proximity to the release location"
+    }
+  ],
+  "topCandidates": [
+    "V001",
+    "V002"
+  ],
+  "mustNotRankFirst": [
+    "V004"
+  ],
+  "mustRankBelow": {
+    "V003": [
+      "V002"
+    ],
+    "V004": [
+      "V001",
+      "V002"
+    ],
+    "V005": [
+      "V001",
+      "V002"
+    ],
+    "V006": [
+      "V001",
+      "V002",
+      "V003"
+    ],
+    "V007": [
+      "V001",
+      "V002"
+    ],
+    "V008": [
+      "V001",
+      "V002"
+    ],
+    "V009": [
+      "V001",
+      "V002"
+    ],
+    "V010": [
+      "V001",
+      "V002"
+    ],
+    "V011": [
+      "V001",
+      "V002"
+    ],
+    "V012": [
+      "V001",
+      "V002"
+    ]
+  },
+  "expectedRankBands": {
+    "V001": "top-2",
+    "V002": "top-2",
+    "V003": "top-3 but below V002",
+    "V004": "mid (never first)",
+    "V005": "below V001 and V002",
+    "V006": "outside top-5",
+    "V007": "mid",
+    "V008": "low",
+    "V009": "low",
+    "V010": "low",
+    "V011": "low",
+    "V012": "bottom"
+  },
+  "testCaseMapping": {
+    "A_correct_location_and_time": "V001",
+    "B_correct_location_wrong_time": "V005",
+    "C_wrong_location_correct_time": "V006 (and V004 for the slick-proximity trap)",
+    "D_gap_with_impossible_travel": "V003",
+    "E_gap_physically_compatible": "V002",
+    "F_anomaly_without_location": "V006",
+    "G_nearest_vessel_not_highest_scoring": "V004 vs V001/V002"
+  },
+  "disclaimer": "ABYSS provides analytical evidence for investigation support. Candidate ranking does not establish legal responsibility. This dataset is synthetic: it does not describe any real vessel, voyage, spill or incident, and nothing in it asserts that any vessel caused an oil spill."
+}

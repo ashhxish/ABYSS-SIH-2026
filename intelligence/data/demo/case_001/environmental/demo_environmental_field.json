@@ -1,0 +1,1231 @@
+{
+  "synthetic": true,
+  "datasetLabel": "Synthetic Demonstration Dataset",
+  "provider": "DemoEnvironmentalProvider",
+  "uiLabel": "DEMO DATA",
+  "validFrom": "2026-03-11T06:00:00Z",
+  "validTo": "2026-03-14T06:00:00Z",
+  "timeBehaviour": "steady (prototype simplification: no temporal variation in this demo field)",
+  "units": {
+    "uCurrent": "m/s (eastward)",
+    "vCurrent": "m/s (northward)",
+    "uWind": "m/s (eastward)",
+    "vWind": "m/s (northward)",
+    "windSpeed": "m/s",
+    "windDirection": "degrees, meteorological convention (direction the wind blows FROM)"
+  },
+  "grid": {
+    "latitudes": [
+      17.5,
+      17.75,
+      18.0,
+      18.25,
+      18.5,
+      18.75,
+      19.0,
+      19.25,
+      19.5
+    ],
+    "longitudes": [
+      70.5,
+      70.75,
+      71.0,
+      71.25,
+      71.5,
+      71.75,
+      72.0,
+      72.25,
+      72.5,
+      72.75,
+      73.0,
+      73.25,
+      73.5
+    ],
+    "nodeCount": 117
+  },
+  "nodes": [
+    {
+      "lat": 17.5,
+      "lon": 70.5,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.5,
+      "lon": 70.75,
+      "uCurrent": 0.365,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.5,
+      "lon": 71.0,
+      "uCurrent": 0.371962,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.5,
+      "lon": 71.25,
+      "uCurrent": 0.365,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.5,
+      "lon": 71.5,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.5,
+      "lon": 71.75,
+      "uCurrent": 0.32,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.5,
+      "lon": 72.0,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.5,
+      "lon": 72.25,
+      "uCurrent": 0.275,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.5,
+      "lon": 72.5,
+      "uCurrent": 0.268038,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.5,
+      "lon": 72.75,
+      "uCurrent": 0.275,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.5,
+      "lon": 73.0,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.5,
+      "lon": 73.25,
+      "uCurrent": 0.32,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.5,
+      "lon": 73.5,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 70.5,
+      "uCurrent": 0.35,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 70.75,
+      "uCurrent": 0.371962,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 71.0,
+      "uCurrent": 0.38,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 71.25,
+      "uCurrent": 0.371962,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 71.5,
+      "uCurrent": 0.35,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 71.75,
+      "uCurrent": 0.32,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 72.0,
+      "uCurrent": 0.29,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 72.25,
+      "uCurrent": 0.268038,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 72.5,
+      "uCurrent": 0.26,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 72.75,
+      "uCurrent": 0.268038,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 73.0,
+      "uCurrent": 0.29,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 73.25,
+      "uCurrent": 0.32,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 17.75,
+      "lon": 73.5,
+      "uCurrent": 0.35,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 70.5,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 70.75,
+      "uCurrent": 0.365,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 71.0,
+      "uCurrent": 0.371962,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 71.25,
+      "uCurrent": 0.365,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 71.5,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 71.75,
+      "uCurrent": 0.32,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 72.0,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 72.25,
+      "uCurrent": 0.275,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 72.5,
+      "uCurrent": 0.268038,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 72.75,
+      "uCurrent": 0.275,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 73.0,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 73.25,
+      "uCurrent": 0.32,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.0,
+      "lon": 73.5,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 70.5,
+      "uCurrent": 0.335,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 70.75,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 71.0,
+      "uCurrent": 0.35,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 71.25,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 71.5,
+      "uCurrent": 0.335,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 71.75,
+      "uCurrent": 0.32,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 72.0,
+      "uCurrent": 0.305,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 72.25,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 72.5,
+      "uCurrent": 0.29,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 72.75,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 73.0,
+      "uCurrent": 0.305,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 73.25,
+      "uCurrent": 0.32,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.25,
+      "lon": 73.5,
+      "uCurrent": 0.335,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 70.5,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 70.75,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 71.0,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 71.25,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 71.5,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 71.75,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 72.0,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 72.25,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 72.5,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 72.75,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 73.0,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 73.25,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.5,
+      "lon": 73.5,
+      "uCurrent": 0.32,
+      "vCurrent": 0.15,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 70.5,
+      "uCurrent": 0.305,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 70.75,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 71.0,
+      "uCurrent": 0.29,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 71.25,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 71.5,
+      "uCurrent": 0.305,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 71.75,
+      "uCurrent": 0.32,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 72.0,
+      "uCurrent": 0.335,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 72.25,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 72.5,
+      "uCurrent": 0.35,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 72.75,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 73.0,
+      "uCurrent": 0.335,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 73.25,
+      "uCurrent": 0.32,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 18.75,
+      "lon": 73.5,
+      "uCurrent": 0.305,
+      "vCurrent": 0.156699,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 70.5,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 70.75,
+      "uCurrent": 0.275,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 71.0,
+      "uCurrent": 0.268038,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 71.25,
+      "uCurrent": 0.275,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 71.5,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 71.75,
+      "uCurrent": 0.32,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 72.0,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 72.25,
+      "uCurrent": 0.365,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 72.5,
+      "uCurrent": 0.371962,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 72.75,
+      "uCurrent": 0.365,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 73.0,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 73.25,
+      "uCurrent": 0.32,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.0,
+      "lon": 73.5,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.175,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 70.5,
+      "uCurrent": 0.29,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 70.75,
+      "uCurrent": 0.268038,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 71.0,
+      "uCurrent": 0.26,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 71.25,
+      "uCurrent": 0.268038,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 71.5,
+      "uCurrent": 0.29,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 71.75,
+      "uCurrent": 0.32,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 72.0,
+      "uCurrent": 0.35,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 72.25,
+      "uCurrent": 0.371962,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 72.5,
+      "uCurrent": 0.38,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 72.75,
+      "uCurrent": 0.371962,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 73.0,
+      "uCurrent": 0.35,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 73.25,
+      "uCurrent": 0.32,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.25,
+      "lon": 73.5,
+      "uCurrent": 0.29,
+      "vCurrent": 0.2,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 70.5,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 70.75,
+      "uCurrent": 0.275,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 71.0,
+      "uCurrent": 0.268038,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 71.25,
+      "uCurrent": 0.275,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 71.5,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 71.75,
+      "uCurrent": 0.32,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 72.0,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 72.25,
+      "uCurrent": 0.365,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 72.5,
+      "uCurrent": 0.371962,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 72.75,
+      "uCurrent": 0.365,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 73.0,
+      "uCurrent": 0.345981,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 73.25,
+      "uCurrent": 0.32,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    },
+    {
+      "lat": 19.5,
+      "lon": 73.5,
+      "uCurrent": 0.294019,
+      "vCurrent": 0.225,
+      "uWind": 5.656854,
+      "vWind": 5.656854,
+      "windSpeed": 8.0,
+      "windDirection": 225.0
+    }
+  ],
+  "analyticDefinition": {
+    "note": "Coefficients of the synthetic demonstration field. They are prototype values chosen to make the scenario internally consistent; they are NOT calibrated scientific constants and must not be cited as such.",
+    "windSpeed": 8.0,
+    "windFromDirection": 225.0,
+    "currentBaseU": 0.32,
+    "currentBaseV": 0.2,
+    "currentAmplitudeU": 0.06,
+    "currentAmplitudeV": 0.05,
+    "currentWavelengthDeg": 3.0
+  },
+  "windageCoefficient": 0.03,
+  "windageNote": "PROTOTYPE value, configurable, not scientifically validated.",
+  "fallback": "This provider always succeeds: it is the demo fallback itself."
+}

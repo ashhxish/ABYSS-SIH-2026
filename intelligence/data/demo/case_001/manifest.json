@@ -1,0 +1,55 @@
+{
+  "synthetic": true,
+  "datasetLabel": "Synthetic Demonstration Dataset",
+  "caseId": "CASE-001",
+  "generatorVersion": "1.0.0",
+  "generatorScript": "intelligence/data/demo/generate_case_001.py",
+  "randomnessUsed": false,
+  "reproducible": "Re-running the generator with the same source reproduces these hashes byte for byte; intelligence/tests/test_case_001_dataset.py asserts this.",
+  "timezone": "all timestamps are UTC (ISO-8601 with trailing Z)",
+  "files": [
+    {
+      "path": "case_001.json",
+      "bytes": 19046,
+      "sha256": "ca16079e27bffa05226be2b0461132d63912a19a543334d9ebd2cd79eb68671a"
+    },
+    {
+      "path": "demo_slick.json",
+      "bytes": 4689,
+      "sha256": "9a102a9840a0690f7404cb15885f116e1c86d3d5c49505808fe779dbae521887"
+    },
+    {
+      "path": "demo_origin_expected.json",
+      "bytes": 67708,
+      "sha256": "a143483446a84db72e903fd0b06b70a0557f2e9771921bcb553038cfd95a1ebb"
+    },
+    {
+      "path": "expected_ranking.json",
+      "bytes": 3161,
+      "sha256": "2d3937a698ecd0e65a0c8648c72d40bb2fdd502335c7be0efdfb0c868ba8c68a"
+    },
+    {
+      "path": "environmental/demo_environmental_field.json",
+      "bytes": 25676,
+      "sha256": "751f0f85eff794d1b1e08089853e4c154b098fe809367b7ed34a3b174484fcab"
+    },
+    {
+      "path": "ais/demo_ais_positions.csv",
+      "bytes": 468724,
+      "sha256": "9d24f3b813611cfe3f390b3a7ed9f9a904654cca11bd8617db7de04f2432ceeb"
+    }
+  ],
+  "counts": {
+    "vessels": 12,
+    "aisRecords": 3710,
+    "defectRows": 13,
+    "defectsByCategory": {
+      "duplicate_record": 4,
+      "impossible_speed_jump": 1,
+      "invalid_coordinate": 2,
+      "malformed_timestamp": 2,
+      "missing_optional_field": 3,
+      "negative_speed": 1
+    }
+  }
+}

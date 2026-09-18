@@ -1,0 +1,495 @@
+{
+  "caseId": "CASE-001",
+  "title": "Synthetic oil-spill attribution demonstration case",
+  "dataMode": "demo",
+  "synthetic": true,
+  "datasetLabel": "Synthetic Demonstration Dataset",
+  "disclaimer": "ABYSS provides analytical evidence for investigation support. Candidate ranking does not establish legal responsibility. This dataset is synthetic: it does not describe any real vessel, voyage, spill or incident, and nothing in it asserts that any vessel caused an oil spill.",
+  "generatedBy": {
+    "script": "intelligence/data/demo/generate_case_001.py",
+    "version": "1.0.0",
+    "deterministic": true,
+    "randomnessUsed": false
+  },
+  "studyArea": {
+    "label": "Synthetic offshore study area (approximate geography used as a container for the demonstration; no real incident is referenced or implied)",
+    "boundingBox": {
+      "minLat": 16.5,
+      "maxLat": 20.0,
+      "minLon": 69.5,
+      "maxLon": 74.5
+    },
+    "centerPoint": {
+      "lat": 18.25,
+      "lon": 72.0
+    },
+    "syntheticCoastline": [
+      [
+        72.35,
+        20.0
+      ],
+      [
+        72.62,
+        19.3
+      ],
+      [
+        72.85,
+        18.6
+      ],
+      [
+        73.22,
+        17.9
+      ],
+      [
+        73.55,
+        17.2
+      ],
+      [
+        73.8,
+        16.5
+      ]
+    ],
+    "coastlineNote": "Coarse synthetic polyline used only for land/sea plausibility context. It is not survey data and must not be used for navigation."
+  },
+  "aisExtract": {
+    "mode": "area-scoped extract",
+    "boundingBox": {
+      "minLat": 16.5,
+      "maxLat": 20.0,
+      "minLon": 69.5,
+      "maxLon": 74.5
+    },
+    "windowStart": "2026-03-11T06:00:00Z",
+    "windowEnd": "2026-03-14T06:00:00Z",
+    "windowHours": 72.0,
+    "vesselCount": 12,
+    "mmsiList": [
+      "900000001",
+      "900000002",
+      "900000003",
+      "900000004",
+      "900000005",
+      "900000006",
+      "900000007",
+      "900000008",
+      "900000009",
+      "900000010",
+      "900000011",
+      "900000012"
+    ],
+    "reportingIntervalSecondsRange": [
+      300,
+      600
+    ],
+    "file": "ais/demo_ais_positions.csv",
+    "recordCount": 3710,
+    "label": "AIS: Synthetic Demonstration Dataset",
+    "notes": [
+      "Positions outside the bounding box are intentionally absent, so some vessels begin or end mid-track; that is ordinary behaviour for an area-scoped extract",
+      "Records are ordered by timestamp; malformed-timestamp fixture rows keep their intended position in that ordering",
+      "Every row carries datasetLabel='Synthetic Demonstration Dataset'",
+      "No cleaning, filtering or scoring has been applied to these records"
+    ]
+  },
+  "observation": {
+    "observedAt": "2026-03-14T06:00:00Z",
+    "sensor": {
+      "name": "synthetic demonstration SAR scene",
+      "band": "C-band SAR-like (demonstration stand-in, not a real acquisition)",
+      "synthetic": true
+    },
+    "sceneDescription": "Bundled demonstration scene: detection is modelled on the pre-computed slick polygon delivered with the case, so the demo runs with no imagery download.",
+    "footprint": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            69.0,
+            16.0
+          ],
+          [
+            75.0,
+            16.0
+          ],
+          [
+            75.0,
+            20.5
+          ],
+          [
+            69.0,
+            20.5
+          ],
+          [
+            69.0,
+            16.0
+          ]
+        ]
+      ],
+      "bounds": {
+        "minLat": 16.0,
+        "maxLat": 20.5,
+        "minLon": 69.0,
+        "maxLon": 75.0
+      }
+    },
+    "environmentalConditionsSummary": {
+      "windSpeedMs": 8.0,
+      "windFromDirectionDeg": 225.0,
+      "surfaceCurrentBaseMs": [
+        0.32,
+        0.2
+      ],
+      "note": "synthetic, steady field (see environmental/demo_environmental_field.json)"
+    },
+    "slickFile": "demo_slick.json",
+    "detectionConfidence": 0.91,
+    "lookAlikeWarning": false
+  },
+  "origin": {
+    "releaseWindow": {
+      "start": "2026-03-13T10:00:00Z",
+      "end": "2026-03-13T18:00:00Z"
+    },
+    "uncertaintyRadiusKm": 10.0,
+    "uncertaintyShape": "ellipse (prototype representation of an uncertainty region)",
+    "notes": [
+      "The release window and origin region are INPUTS of this case used to build the scenario; the product must reconstruct them from the slick and environmental data, and must report them as estimates with uncertainty",
+      "No single-point origin is published anywhere in the case configuration"
+    ]
+  },
+  "reservedOriginFixtureFile": "demo_origin_expected.json",
+  "reservedOriginFixtureNote": "Answer key for automated tests only. It is NOT an input to the analysis pipeline and must never be surfaced by the API, the dashboard or a report.",
+  "environment": {
+    "file": "environmental/demo_environmental_field.json",
+    "provider": "DemoEnvironmentalProvider",
+    "deterministic": true,
+    "windageCoefficient": 0.03
+  },
+  "vessels": [
+    {
+      "vesselId": "V001",
+      "mmsi": "900000001",
+      "imo": "9990014",
+      "name": "DEMO MERIDIAN STAR",
+      "typeCode": 80,
+      "typeLabel": "Tanker (synthetic demonstration vessel)",
+      "role": "Primary plausible candidate",
+      "roleKey": "plausible_primary",
+      "roleDescription": "Inside the probable-origin uncertainty region during the release window with a compatible trajectory and a marked slowdown nearby. Expected highest compatibility.",
+      "reportingIntervalSeconds": 300,
+      "synthetic": true,
+      "syntheticIdentityNote": "Synthetic identity for the demonstration dataset. It is not asserted to correspond to any real vessel or voyage."
+    },
+    {
+      "vesselId": "V002",
+      "mmsi": "900000002",
+      "imo": "9990026",
+      "name": "DEMO CORAL VOYAGER",
+      "typeCode": 80,
+      "typeLabel": "Tanker (synthetic demonstration vessel)",
+      "role": "Gap-compatible candidate",
+      "roleKey": "plausible_gap_compatible",
+      "roleDescription": "Inside the origin region when a 4 h AIS gap starts; the gap crosses the region and its endpoints are reachable at a plausible 10.5 kn. Expected high compatibility.",
+      "reportingIntervalSeconds": 300,
+      "synthetic": true,
+      "syntheticIdentityNote": "Synthetic identity for the demonstration dataset. It is not asserted to correspond to any real vessel or voyage."
+    },
+    {
+      "vesselId": "V003",
+      "mmsi": "900000003",
+      "imo": "9990038",
+      "name": "DEMO IRON HORIZON",
+      "typeCode": 80,
+      "typeLabel": "Tanker (synthetic demonstration vessel)",
+      "role": "Gap-impossible candidate",
+      "roleKey": "distractor_gap_impossible",
+      "roleDescription": "Inside the origin region when a 4 h AIS gap starts, but reappears ~260 km away - an implied ~35 kn. The gap is physically impossible and must not raise suspicion.",
+      "reportingIntervalSeconds": 300,
+      "synthetic": true,
+      "syntheticIdentityNote": "Synthetic identity for the demonstration dataset. It is not asserted to correspond to any real vessel or voyage."
+    },
+    {
+      "vesselId": "V004",
+      "mmsi": "900000004",
+      "imo": "9990040",
+      "name": "DEMO HARBOUR LIGHT",
+      "typeCode": 70,
+      "typeLabel": "Cargo (synthetic demonstration vessel)",
+      "role": "Misleading nearby vessel",
+      "roleKey": "distractor_nearest_to_slick",
+      "roleDescription": "Closest vessel to the OBSERVED slick at observation time, but far from the probable ORIGIN during the release window. Distractor for proximity-based reasoning.",
+      "reportingIntervalSeconds": 300,
+      "synthetic": true,
+      "syntheticIdentityNote": "Synthetic identity for the demonstration dataset. It is not asserted to correspond to any real vessel or voyage."
+    },
+    {
+      "vesselId": "V005",
+      "mmsi": "900000005",
+      "imo": "9990052",
+      "name": "DEMO SILVER TIDE",
+      "typeCode": 70,
+      "typeLabel": "Cargo (synthetic demonstration vessel)",
+      "role": "Wrong-time vessel",
+      "roleKey": "distractor_wrong_time",
+      "roleDescription": "Crosses the probable-origin region hours AFTER the release window closes. Correct place, wrong time: expected low temporal compatibility.",
+      "reportingIntervalSeconds": 300,
+      "synthetic": true,
+      "syntheticIdentityNote": "Synthetic identity for the demonstration dataset. It is not asserted to correspond to any real vessel or voyage."
+    },
+    {
+      "vesselId": "V006",
+      "mmsi": "900000006",
+      "imo": "9990064",
+      "name": "DEMO FROST PELICAN",
+      "typeCode": 70,
+      "typeLabel": "Cargo (synthetic demonstration vessel)",
+      "role": "Anomalous but remote",
+      "roleKey": "distractor_anomaly_without_location",
+      "roleDescription": "Strong behavioural anomaly (speed swings and 90 degree course changes) ~200 km from the origin region. Anomaly alone must not produce a high rank.",
+      "reportingIntervalSeconds": 600,
+      "synthetic": true,
+      "syntheticIdentityNote": "Synthetic identity for the demonstration dataset. It is not asserted to correspond to any real vessel or voyage."
+    },
+    {
+      "vesselId": "V007",
+      "mmsi": "900000007",
+      "imo": "9990076",
+      "name": "DEMO NORTHERN GATE",
+      "typeCode": 80,
+      "typeLabel": "Tanker (synthetic demonstration vessel)",
+      "role": "Control vessel (steady transit)",
+      "roleKey": "control_steady_transit",
+      "roleDescription": "Legitimate steady transit ~90 km from the origin region: no anomaly, no gap. Shows that a normal vessel in the same area and time window is not promoted.",
+      "reportingIntervalSeconds": 300,
+      "synthetic": true,
+      "syntheticIdentityNote": "Synthetic identity for the demonstration dataset. It is not asserted to correspond to any real vessel or voyage."
+    },
+    {
+      "vesselId": "V008",
+      "mmsi": "900000008",
+      "imo": "9990088",
+      "name": "DEMO SEA LARK",
+      "typeCode": 30,
+      "typeLabel": "Fishing (synthetic demonstration vessel)",
+      "role": "Fishing-like distractor",
+      "roleKey": "distractor_fishing_pattern",
+      "roleDescription": "Many slow and stationary periods and an irregular track, but ~170 km from the origin region. Legitimate working pattern that must not be flagged as suspicious.",
+      "reportingIntervalSeconds": 600,
+      "synthetic": true,
+      "syntheticIdentityNote": "Synthetic identity for the demonstration dataset. It is not asserted to correspond to any real vessel or voyage."
+    },
+    {
+      "vesselId": "V009",
+      "mmsi": "900000009",
+      "imo": "9990090",
+      "name": "DEMO SKY BRIDGE",
+      "typeCode": 60,
+      "typeLabel": "Passenger (synthetic demonstration vessel)",
+      "role": "High-speed control",
+      "roleKey": "control_high_speed",
+      "roleDescription": "Fast, steady, predictable shuttle service well north of the origin region. High speed and the 180 degree turnarounds must not be read as suspicious behaviour.",
+      "reportingIntervalSeconds": 600,
+      "synthetic": true,
+      "syntheticIdentityNote": "Synthetic identity for the demonstration dataset. It is not asserted to correspond to any real vessel or voyage."
+    },
+    {
+      "vesselId": "V010",
+      "mmsi": "900000010",
+      "imo": "9990105",
+      "name": "DEMO COASTAL WREN",
+      "typeCode": 70,
+      "typeLabel": "Cargo (synthetic demonstration vessel)",
+      "role": "Coastal-transit control",
+      "roleKey": "control_coastal_transit",
+      "roleDescription": "Slow coastal transit whose track stays offshore and roughly parallel to the coastline - used to test land/sea plausibility rather than suspicion.",
+      "reportingIntervalSeconds": 600,
+      "synthetic": true,
+      "syntheticIdentityNote": "Synthetic identity for the demonstration dataset. It is not asserted to correspond to any real vessel or voyage."
+    },
+    {
+      "vesselId": "V011",
+      "mmsi": "900000011",
+      "imo": "9990117",
+      "name": "DEMO ANCHOR TUG",
+      "typeCode": 52,
+      "typeLabel": "Tug (synthetic demonstration vessel)",
+      "role": "Harbour tug control",
+      "roleKey": "control_harbour_tug",
+      "roleDescription": "Local harbour movements with long mooring periods ~115 km from the origin region. Stationary periods must not be weighted as suspicious.",
+      "reportingIntervalSeconds": 600,
+      "synthetic": true,
+      "syntheticIdentityNote": "Synthetic identity for the demonstration dataset. It is not asserted to correspond to any real vessel or voyage."
+    },
+    {
+      "vesselId": "V012",
+      "mmsi": "900000012",
+      "imo": "9990129",
+      "name": "DEMO FAR CURRENT",
+      "typeCode": 70,
+      "typeLabel": "Cargo (synthetic demonstration vessel)",
+      "role": "Distant transit",
+      "roleKey": "distractor_distant_transit",
+      "roleDescription": "Distant steady transit that should be filtered out early. Included so the ranking is not distorted by irrelevant traffic.",
+      "reportingIntervalSeconds": 600,
+      "synthetic": true,
+      "syntheticIdentityNote": "Synthetic identity for the demonstration dataset. It is not asserted to correspond to any real vessel or voyage."
+    }
+  ],
+  "expectedOutcome": {
+    "file": "expected_ranking.json",
+    "summary": "intended ordering properties of the scenario (targets for Phase 10)"
+  },
+  "injectedDefects": [
+    {
+      "defectId": "D01",
+      "vesselId": "V007",
+      "category": "duplicate_record",
+      "description": "Exact duplicate of an existing record (same MMSI, timestamp and position).",
+      "mmsi": "900000007",
+      "timestampWritten": "2026-03-13T09:40:00Z",
+      "latitude": 17.49152,
+      "longitude": 70.998844,
+      "expectedPhase3Action": "reject as duplicate (counted and logged, never silently dropped)"
+    },
+    {
+      "defectId": "D02",
+      "vesselId": "V007",
+      "category": "duplicate_record",
+      "description": "Exact duplicate of an existing record (same MMSI, timestamp and position).",
+      "mmsi": "900000007",
+      "timestampWritten": "2026-03-13T13:20:00Z",
+      "latitude": 17.49152,
+      "longitude": 71.761361,
+      "expectedPhase3Action": "reject as duplicate (counted and logged, never silently dropped)"
+    },
+    {
+      "defectId": "D03",
+      "vesselId": "V007",
+      "category": "duplicate_record",
+      "description": "Exact duplicate of an existing record (same MMSI, timestamp and position).",
+      "mmsi": "900000007",
+      "timestampWritten": "2026-03-13T17:00:00Z",
+      "latitude": 17.49152,
+      "longitude": 72.523877,
+      "expectedPhase3Action": "reject as duplicate (counted and logged, never silently dropped)"
+    },
+    {
+      "defectId": "D04",
+      "vesselId": "V007",
+      "category": "duplicate_record",
+      "description": "Exact duplicate of an existing record (same MMSI, timestamp and position).",
+      "mmsi": "900000007",
+      "timestampWritten": "2026-03-13T20:40:00Z",
+      "latitude": 17.49152,
+      "longitude": 73.286394,
+      "expectedPhase3Action": "reject as duplicate (counted and logged, never silently dropped)"
+    },
+    {
+      "defectId": "D05",
+      "vesselId": "V008",
+      "category": "malformed_timestamp",
+      "description": "Timestamp is not a valid ISO-8601 UTC instant (invalid hour and minute fields).",
+      "mmsi": "900000008",
+      "timestampWritten": "2026-03-12T25:61:00Z",
+      "intendedTimestamp": "2026-03-12T07:10:00Z",
+      "expectedPhase3Action": "reject row as unparseable timestamp (counted and logged)"
+    },
+    {
+      "defectId": "D06",
+      "vesselId": "V008",
+      "category": "malformed_timestamp",
+      "description": "Timestamp is not a valid ISO-8601 UTC instant (non-ISO date format).",
+      "mmsi": "900000008",
+      "timestampWritten": "12/03/2026 08:00",
+      "intendedTimestamp": "2026-03-12T21:30:00Z",
+      "expectedPhase3Action": "reject row as unparseable timestamp (counted and logged)"
+    },
+    {
+      "defectId": "D07",
+      "vesselId": "V012",
+      "category": "invalid_coordinate",
+      "description": "Latitude outside the valid range [-90, 90].",
+      "mmsi": "900000012",
+      "timestampWritten": "2026-03-13T19:30:00Z",
+      "latitude": 95.2,
+      "expectedPhase3Action": "reject row (counted and logged)"
+    },
+    {
+      "defectId": "D08",
+      "vesselId": "V010",
+      "category": "invalid_coordinate",
+      "description": "Null-island position (0, 0), a classic receiver/parsing artefact.",
+      "mmsi": "900000010",
+      "timestampWritten": "2026-03-13T09:10:00Z",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "expectedPhase3Action": "reject row (counted and logged)"
+    },
+    {
+      "defectId": "D09",
+      "vesselId": "V006",
+      "category": "negative_speed",
+      "description": "Negative speed over ground is not physically meaningful.",
+      "mmsi": "900000006",
+      "timestampWritten": "2026-03-12T03:30:00Z",
+      "sog": -3.0,
+      "expectedPhase3Action": "reject value (counted and logged)"
+    },
+    {
+      "defectId": "D10",
+      "vesselId": "V006",
+      "category": "impossible_speed_jump",
+      "description": "Added record 60 km from the vessel's next position only 5 minutes earlier, implying ~720 km/h. Because it teleports out and back it produces exactly TWO impossible consecutive steps, both attributable to this single injected row.",
+      "mmsi": "900000006",
+      "timestampWritten": "2026-03-12T17:55:00Z",
+      "latitude": 18.194393,
+      "longitude": 73.511339,
+      "impliedSpeedKmh": 720.0,
+      "expectedPhase3Action": "reject as impossible speed for the elapsed time (counted and logged)"
+    },
+    {
+      "defectId": "D11",
+      "vesselId": "V011",
+      "category": "missing_optional_field",
+      "description": "Heading and navigation status absent (optional fields keep the row valid).",
+      "mmsi": "900000011",
+      "timestampWritten": "2026-03-12T00:00:00Z",
+      "expectedPhase3Action": "keep row, flag missing optional fields"
+    },
+    {
+      "defectId": "D12",
+      "vesselId": "V011",
+      "category": "missing_optional_field",
+      "description": "Heading and navigation status absent (optional fields keep the row valid).",
+      "mmsi": "900000011",
+      "timestampWritten": "2026-03-12T18:00:00Z",
+      "expectedPhase3Action": "keep row, flag missing optional fields"
+    },
+    {
+      "defectId": "D13",
+      "vesselId": "V011",
+      "category": "missing_optional_field",
+      "description": "Heading and navigation status absent (optional fields keep the row valid).",
+      "mmsi": "900000011",
+      "timestampWritten": "2026-03-13T11:50:00Z",
+      "expectedPhase3Action": "keep row, flag missing optional fields"
+    }
+  ],
+  "counts": {
+    "vessels": 12,
+    "records": 3710,
+    "vesselsWithIntentionalGap": [
+      "V002",
+      "V003"
+    ],
+    "defectRows": 13,
+    "defectsByCategory": {
+      "duplicate_record": 4,
+      "impossible_speed_jump": 1,
+      "invalid_coordinate": 2,
+      "malformed_timestamp": 2,
+      "missing_optional_field": 3,
+      "negative_speed": 1
+    }
+  }
+}

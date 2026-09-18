@@ -1,0 +1,2359 @@
+{
+  "synthetic": true,
+  "datasetLabel": "Synthetic Demonstration Dataset",
+  "fixturePurpose": "Phase 19 test fixture and generator self-check input ONLY",
+  "warning": "This file contains the scenario answer key. It must never be shown to an investigator as a result and must never be used by the analysis pipeline as an input. The product reports a probable origin region with uncertainty.",
+  "caseId": "CASE-001",
+  "trueReleasePoint": {
+    "lat": 18.3,
+    "lon": 71.9
+  },
+  "nominalReleaseTime": "2026-03-13T14:00:00Z",
+  "releaseWindow": {
+    "start": "2026-03-13T10:00:00Z",
+    "end": "2026-03-13T18:00:00Z"
+  },
+  "expectedOriginRegion": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [
+          71.97248,
+          18.357742
+        ],
+        [
+          71.976623,
+          18.351859
+        ],
+        [
+          71.979455,
+          18.345088
+        ],
+        [
+          71.980928,
+          18.337546
+        ],
+        [
+          71.981015,
+          18.329362
+        ],
+        [
+          71.979717,
+          18.320675
+        ],
+        [
+          71.977054,
+          18.311634
+        ],
+        [
+          71.973073,
+          18.302395
+        ],
+        [
+          71.967842,
+          18.293114
+        ],
+        [
+          71.96145,
+          18.283951
+        ],
+        [
+          71.954007,
+          18.275063
+        ],
+        [
+          71.945639,
+          18.266601
+        ],
+        [
+          71.936491,
+          18.258711
+        ],
+        [
+          71.926718,
+          18.251528
+        ],
+        [
+          71.916488,
+          18.245173
+        ],
+        [
+          71.905976,
+          18.239757
+        ],
+        [
+          71.895362,
+          18.235372
+        ],
+        [
+          71.884827,
+          18.232092
+        ],
+        [
+          71.874552,
+          18.229974
+        ],
+        [
+          71.864712,
+          18.229055
+        ],
+        [
+          71.855476,
+          18.229349
+        ],
+        [
+          71.847001,
+          18.230853
+        ],
+        [
+          71.839434,
+          18.233539
+        ],
+        [
+          71.832903,
+          18.237362
+        ],
+        [
+          71.82752,
+          18.242258
+        ],
+        [
+          71.823377,
+          18.248141
+        ],
+        [
+          71.820545,
+          18.254912
+        ],
+        [
+          71.819072,
+          18.262454
+        ],
+        [
+          71.818985,
+          18.270638
+        ],
+        [
+          71.820283,
+          18.279325
+        ],
+        [
+          71.822946,
+          18.288366
+        ],
+        [
+          71.826927,
+          18.297605
+        ],
+        [
+          71.832158,
+          18.306886
+        ],
+        [
+          71.83855,
+          18.316049
+        ],
+        [
+          71.845993,
+          18.324937
+        ],
+        [
+          71.854361,
+          18.333399
+        ],
+        [
+          71.863509,
+          18.341289
+        ],
+        [
+          71.873282,
+          18.348472
+        ],
+        [
+          71.883512,
+          18.354827
+        ],
+        [
+          71.894024,
+          18.360243
+        ],
+        [
+          71.904638,
+          18.364628
+        ],
+        [
+          71.915173,
+          18.367908
+        ],
+        [
+          71.925448,
+          18.370026
+        ],
+        [
+          71.935288,
+          18.370945
+        ],
+        [
+          71.944524,
+          18.370651
+        ],
+        [
+          71.952999,
+          18.369147
+        ],
+        [
+          71.960566,
+          18.366461
+        ],
+        [
+          71.967097,
+          18.362638
+        ],
+        [
+          71.97248,
+          18.357742
+        ]
+      ]
+    ],
+    "centroid": {
+      "lat": 18.3,
+      "lon": 71.9
+    },
+    "uncertaintyRadiusKm": 10.0,
+    "semiMajorKm": 10.0,
+    "semiMinorKm": 6.0,
+    "orientationDeg": 50.0,
+    "areaKm2": 187.956,
+    "note": "The ellipse is the scenario's uncertainty region, not a point estimate."
+  },
+  "driftModelUsed": {
+    "description": "forward integration of the demo drift field from the release point to the observation",
+    "windageCoefficient": 0.03,
+    "integrationStepSeconds": 300.0,
+    "driftHours": 16.0,
+    "driftDistanceKm": 33.359,
+    "driftBearingDeg": 56.33,
+    "computedSlickCentroid": {
+      "lat": 18.466325,
+      "lon": 72.163105
+    },
+    "driftPath": [
+      [
+        71.9,
+        18.3
+      ],
+      [
+        71.90821,
+        18.305238
+      ],
+      [
+        71.916418,
+        18.310472
+      ],
+      [
+        71.924622,
+        18.315703
+      ],
+      [
+        71.932825,
+        18.320931
+      ],
+      [
+        71.941026,
+        18.326155
+      ],
+      [
+        71.949225,
+        18.331376
+      ],
+      [
+        71.957423,
+        18.336595
+      ],
+      [
+        71.96562,
+        18.34181
+      ],
+      [
+        71.973817,
+        18.347022
+      ],
+      [
+        71.982014,
+        18.352232
+      ],
+      [
+        71.990212,
+        18.357438
+      ],
+      [
+        71.99841,
+        18.362643
+      ],
+      [
+        72.00661,
+        18.367844
+      ],
+      [
+        72.014811,
+        18.373044
+      ],
+      [
+        72.023014,
+        18.378241
+      ],
+      [
+        72.031219,
+        18.383435
+      ],
+      [
+        72.039428,
+        18.388628
+      ],
+      [
+        72.047639,
+        18.393819
+      ],
+      [
+        72.055853,
+        18.399007
+      ],
+      [
+        72.064072,
+        18.404194
+      ],
+      [
+        72.072294,
+        18.409379
+      ],
+      [
+        72.080521,
+        18.414562
+      ],
+      [
+        72.088752,
+        18.419744
+      ],
+      [
+        72.096989,
+        18.424924
+      ],
+      [
+        72.105231,
+        18.430103
+      ],
+      [
+        72.113479,
+        18.435281
+      ],
+      [
+        72.121733,
+        18.440457
+      ],
+      [
+        72.129993,
+        18.445633
+      ],
+      [
+        72.138261,
+        18.450807
+      ],
+      [
+        72.146535,
+        18.455981
+      ],
+      [
+        72.154816,
+        18.461153
+      ],
+      [
+        72.163105,
+        18.466325
+      ]
+    ],
+    "parametersArePrototypeValues": true
+  },
+  "expectedGapFixtures": [
+    {
+      "vesselId": "V002",
+      "start": "2026-03-13T12:00:00Z",
+      "end": "2026-03-13T16:00:00Z",
+      "durationHours": 4.0,
+      "label": "ais_gap_physically_compatible",
+      "intentionalJumpKm": 0.0,
+      "reason": "synthetic AIS transmission gap inserted by the scenario design",
+      "lastPositionBefore": {
+        "lat": 18.279094,
+        "lon": 71.874285,
+        "timestamp": "2026-03-13T11:55:00Z"
+      },
+      "firstPositionAfter": {
+        "lat": 18.746952,
+        "lon": 72.435227,
+        "timestamp": "2026-03-13T16:05:00Z"
+      },
+      "bridgeDistanceKm": 78.77,
+      "elapsedHours": 4.1667,
+      "impliedSpeedKmh": 18.905,
+      "impliedSpeedKn": 10.208
+    },
+    {
+      "vesselId": "V003",
+      "start": "2026-03-13T12:00:00Z",
+      "end": "2026-03-13T16:00:00Z",
+      "durationHours": 4.0,
+      "label": "ais_gap_physically_impossible",
+      "intentionalJumpKm": 175.0,
+      "reason": "synthetic AIS transmission gap inserted by the scenario design",
+      "lastPositionBefore": {
+        "lat": 18.246206,
+        "lon": 71.835889,
+        "timestamp": "2026-03-13T11:55:00Z"
+      },
+      "firstPositionAfter": {
+        "lat": 19.448147,
+        "lon": 73.928151,
+        "timestamp": "2026-03-13T16:05:00Z"
+      },
+      "bridgeDistanceKm": 257.559,
+      "elapsedHours": 4.1667,
+      "impliedSpeedKmh": 61.814,
+      "impliedSpeedKn": 33.377
+    }
+  ],
+  "expectedAnomalyFixtures": [
+    {
+      "vesselId": "V001",
+      "type": "slowdown_and_loitering",
+      "timing": "slow segment covers the release window inside the origin region",
+      "minSogKnObserved": 1.47,
+      "baselineSogKn": 11.5
+    },
+    {
+      "vesselId": "V004",
+      "type": "slow_loiter_near_observed_slick_after_release_window",
+      "minSogKnObserved": 1.96,
+      "distanceToSlickKmAtObservation": 6.692
+    },
+    {
+      "vesselId": "V006",
+      "type": "erratic_speed_and_course_changes",
+      "sogSpreadKnObserved": 15.0,
+      "minDistanceToOriginKmDuringWindow": 184.884
+    },
+    {
+      "vesselId": "V008",
+      "type": "legitimate_stationary_working_periods",
+      "stationaryRecords": 126,
+      "note": "included so that a slow vessel far from the origin is NOT promoted"
+    }
+  ],
+  "expectedDistances": [
+    {
+      "vesselId": "V001",
+      "minDistanceToOriginKmDuringWindow": 0.0,
+      "distanceToSlickKmAtObservation": 252.471,
+      "hourOfClosestApproachToOrigin": 53.0,
+      "insideOriginRegionDuringWindow": true
+    },
+    {
+      "vesselId": "V002",
+      "minDistanceToOriginKmDuringWindow": 3.574,
+      "distanceToSlickKmAtObservation": 251.336,
+      "hourOfClosestApproachToOrigin": 53.9167,
+      "insideOriginRegionDuringWindow": true
+    },
+    {
+      "vesselId": "V003",
+      "minDistanceToOriginKmDuringWindow": 9.033,
+      "distanceToSlickKmAtObservation": 284.711,
+      "hourOfClosestApproachToOrigin": 53.9167,
+      "insideOriginRegionDuringWindow": true
+    },
+    {
+      "vesselId": "V004",
+      "minDistanceToOriginKmDuringWindow": 124.731,
+      "distanceToSlickKmAtObservation": 6.692,
+      "hourOfClosestApproachToOrigin": 67.3333,
+      "insideOriginRegionDuringWindow": false
+    },
+    {
+      "vesselId": "V005",
+      "minDistanceToOriginKmDuringWindow": 119.751,
+      "distanceToSlickKmAtObservation": 85.707,
+      "hourOfClosestApproachToOrigin": 66.0,
+      "insideOriginRegionDuringWindow": false
+    },
+    {
+      "vesselId": "V006",
+      "minDistanceToOriginKmDuringWindow": 184.884,
+      "distanceToSlickKmAtObservation": 145.487,
+      "hourOfClosestApproachToOrigin": 36.0,
+      "insideOriginRegionDuringWindow": false
+    },
+    {
+      "vesselId": "V007",
+      "minDistanceToOriginKmDuringWindow": 89.899,
+      "distanceToSlickKmAtObservation": 160.821,
+      "hourOfClosestApproachToOrigin": 56.0,
+      "insideOriginRegionDuringWindow": false
+    },
+    {
+      "vesselId": "V008",
+      "minDistanceToOriginKmDuringWindow": 170.0,
+      "distanceToSlickKmAtObservation": 221.574,
+      "hourOfClosestApproachToOrigin": 54.0,
+      "insideOriginRegionDuringWindow": false
+    },
+    {
+      "vesselId": "V009",
+      "minDistanceToOriginKmDuringWindow": 110.875,
+      "distanceToSlickKmAtObservation": 128.037,
+      "hourOfClosestApproachToOrigin": 2.0,
+      "insideOriginRegionDuringWindow": false
+    },
+    {
+      "vesselId": "V010",
+      "minDistanceToOriginKmDuringWindow": 62.528,
+      "distanceToSlickKmAtObservation": 237.676,
+      "hourOfClosestApproachToOrigin": 49.3333,
+      "insideOriginRegionDuringWindow": false
+    },
+    {
+      "vesselId": "V011",
+      "minDistanceToOriginKmDuringWindow": 113.901,
+      "distanceToSlickKmAtObservation": 102.109,
+      "hourOfClosestApproachToOrigin": 61.5,
+      "insideOriginRegionDuringWindow": false
+    },
+    {
+      "vesselId": "V012",
+      "minDistanceToOriginKmDuringWindow": 155.668,
+      "distanceToSlickKmAtObservation": 95.23,
+      "hourOfClosestApproachToOrigin": 66.5,
+      "insideOriginRegionDuringWindow": false
+    }
+  ],
+  "observedVsRelease": {
+    "observedSlickCentroid": {
+      "lat": 18.466325,
+      "lon": 72.163105
+    },
+    "releasePoint": {
+      "lat": 18.3,
+      "lon": 71.9
+    },
+    "separationKm": 33.359,
+    "teachingPoint": "The observed slick is tens of kilometres downstream of the release point, so proximity to the slick is not proximity to the release location."
+  },
+  "vesselSummaries": [
+    {
+      "vesselId": "V001",
+      "mmsi": "900000001",
+      "imo": "9990014",
+      "name": "DEMO MERIDIAN STAR",
+      "typeCode": 80,
+      "typeLabel": "Tanker (synthetic demonstration vessel)",
+      "role": "Primary plausible candidate",
+      "roleKey": "plausible_primary",
+      "roleDescription": "Inside the probable-origin uncertainty region during the release window with a compatible trajectory and a marked slowdown nearby. Expected highest compatibility.",
+      "reportingIntervalSeconds": 300,
+      "recordCount": 425,
+      "validRecordCount": 425,
+      "firstRecordTimestamp": "2026-03-12T16:05:00Z",
+      "lastRecordTimestamp": "2026-03-14T03:25:00Z",
+      "inStudyAreaHours": 35.3333,
+      "recordsInReleaseWindow": 97,
+      "recordsInsideOriginRegionDuringWindow": 50,
+      "insideOriginRegionDuringWindow": true,
+      "minDistanceToOriginKmDuringWindow": 0.0,
+      "minDistanceToOriginKmWholeTrack": 0.0,
+      "hourOfClosestApproachToOrigin": 53.0,
+      "distanceToSlickKmAtObservation": 252.471,
+      "minSogKn": 1.47,
+      "maxSogKn": 11.73,
+      "meanSogKn": 9.235,
+      "sogSpreadKn": 10.26,
+      "stationaryRecords": 0,
+      "anchorPosition": {
+        "lat": 18.3,
+        "lon": 71.9
+      },
+      "anchorHour": 53.0,
+      "intentionalGaps": [],
+      "segmentTimeline": [
+        {
+          "kind": "move",
+          "label": "transit_run_in",
+          "start": "2026-03-11T06:00:00Z",
+          "end": "2026-03-13T06:00:00Z",
+          "hours": 48.0,
+          "courseDeg": 50.0,
+          "speedKn": 11.5,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "slowdown_inside_origin_region",
+          "start": "2026-03-13T06:00:00Z",
+          "end": "2026-03-13T14:00:00Z",
+          "hours": 8.0,
+          "courseDeg": 50.0,
+          "speedKn": 1.5,
+          "navStatus": 1,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "transit_run_out",
+          "start": "2026-03-13T14:00:00Z",
+          "end": "2026-03-14T06:00:00Z",
+          "hours": 16.0,
+          "courseDeg": 50.0,
+          "speedKn": 11.5,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        }
+      ],
+      "injectedDefects": [],
+      "expected": {
+        "hypothesis": "spatially, temporally and trajectory compatible",
+        "mapsToSpecCase": "A",
+        "inOriginRegionDuringWindow": true,
+        "hasAisGap": false,
+        "expectedRankBand": "top-2",
+        "notes": "Slowdown and loitering also have innocent explanations (see methodology)."
+      }
+    },
+    {
+      "vesselId": "V002",
+      "mmsi": "900000002",
+      "imo": "9990026",
+      "name": "DEMO CORAL VOYAGER",
+      "typeCode": 80,
+      "typeLabel": "Tanker (synthetic demonstration vessel)",
+      "role": "Gap-compatible candidate",
+      "roleKey": "plausible_gap_compatible",
+      "roleDescription": "Inside the origin region when a 4 h AIS gap starts; the gap crosses the region and its endpoints are reachable at a plausible 10.5 kn. Expected high compatibility.",
+      "reportingIntervalSeconds": 300,
+      "recordCount": 326,
+      "validRecordCount": 326,
+      "firstRecordTimestamp": "2026-03-12T20:05:00Z",
+      "lastRecordTimestamp": "2026-03-14T03:10:00Z",
+      "inStudyAreaHours": 31.0833,
+      "recordsInReleaseWindow": 49,
+      "recordsInsideOriginRegionDuringWindow": 5,
+      "insideOriginRegionDuringWindow": true,
+      "minDistanceToOriginKmDuringWindow": 3.574,
+      "minDistanceToOriginKmWholeTrack": 3.574,
+      "hourOfClosestApproachToOrigin": 53.9167,
+      "distanceToSlickKmAtObservation": 251.336,
+      "minSogKn": 10.29,
+      "maxSogKn": 10.71,
+      "meanSogKn": 10.495,
+      "sogSpreadKn": 0.42,
+      "stationaryRecords": 0,
+      "anchorPosition": {
+        "lat": 18.288452,
+        "lon": 71.885504
+      },
+      "anchorHour": 54.0,
+      "intentionalGaps": [
+        {
+          "start": "2026-03-13T12:00:00Z",
+          "end": "2026-03-13T16:00:00Z",
+          "durationHours": 4.0,
+          "label": "ais_gap_physically_compatible",
+          "intentionalJumpKm": 0.0,
+          "reason": "synthetic AIS transmission gap inserted by the scenario design",
+          "lastPositionBefore": {
+            "lat": 18.279094,
+            "lon": 71.874285,
+            "timestamp": "2026-03-13T11:55:00Z"
+          },
+          "firstPositionAfter": {
+            "lat": 18.746952,
+            "lon": 72.435227,
+            "timestamp": "2026-03-13T16:05:00Z"
+          },
+          "bridgeDistanceKm": 78.77,
+          "elapsedHours": 4.1667,
+          "impliedSpeedKmh": 18.905,
+          "impliedSpeedKn": 10.208
+        }
+      ],
+      "segmentTimeline": [
+        {
+          "kind": "move",
+          "label": "approach",
+          "start": "2026-03-11T06:00:00Z",
+          "end": "2026-03-13T12:00:00Z",
+          "hours": 54.0,
+          "courseDeg": 50.0,
+          "speedKn": 10.5,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "gap",
+          "label": "ais_gap_physically_compatible",
+          "start": "2026-03-13T12:00:00Z",
+          "end": "2026-03-13T16:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 50.0,
+          "speedKn": 10.5,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "departure",
+          "start": "2026-03-13T16:00:00Z",
+          "end": "2026-03-14T06:00:00Z",
+          "hours": 14.0,
+          "courseDeg": 50.0,
+          "speedKn": 10.5,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        }
+      ],
+      "injectedDefects": [],
+      "expected": {
+        "hypothesis": "AIS gap that is physically consistent with the origin region",
+        "mapsToSpecCase": "E",
+        "inOriginRegionDuringWindow": true,
+        "hasAisGap": true,
+        "gapDurationHours": 4.0,
+        "gapStart": "2026-03-13T12:00:00Z",
+        "gapEnd": "2026-03-13T16:00:00Z",
+        "gapBridgesOriginRegion": true,
+        "gapFeasible": true,
+        "expectedImpliedSpeedKn": "~10.5 (feasible)",
+        "expectedRankBand": "top-2",
+        "notes": "Same anchor geometry as V003: the only difference is whether the gap is traversable."
+      }
+    },
+    {
+      "vesselId": "V003",
+      "mmsi": "900000003",
+      "imo": "9990038",
+      "name": "DEMO IRON HORIZON",
+      "typeCode": 80,
+      "typeLabel": "Tanker (synthetic demonstration vessel)",
+      "role": "Gap-impossible candidate",
+      "roleKey": "distractor_gap_impossible",
+      "roleDescription": "Inside the origin region when a 4 h AIS gap starts, but reappears ~260 km away - an implied ~35 kn. The gap is physically impossible and must not raise suspicion.",
+      "reportingIntervalSeconds": 300,
+      "recordCount": 203,
+      "validRecordCount": 203,
+      "firstRecordTimestamp": "2026-03-12T22:30:00Z",
+      "lastRecordTimestamp": "2026-03-13T19:20:00Z",
+      "inStudyAreaHours": 20.8333,
+      "recordsInReleaseWindow": 49,
+      "recordsInsideOriginRegionDuringWindow": 1,
+      "insideOriginRegionDuringWindow": true,
+      "minDistanceToOriginKmDuringWindow": 9.033,
+      "minDistanceToOriginKmWholeTrack": 9.033,
+      "hourOfClosestApproachToOrigin": 53.9167,
+      "distanceToSlickKmAtObservation": 284.711,
+      "minSogKn": 11.76,
+      "maxSogKn": 12.24,
+      "meanSogKn": 12.044,
+      "sogSpreadKn": 0.48,
+      "stationaryRecords": 0,
+      "anchorPosition": {
+        "lat": 18.270566,
+        "lon": 71.878292
+      },
+      "anchorHour": 54.0,
+      "intentionalGaps": [
+        {
+          "start": "2026-03-13T12:00:00Z",
+          "end": "2026-03-13T16:00:00Z",
+          "durationHours": 4.0,
+          "label": "ais_gap_physically_impossible",
+          "intentionalJumpKm": 175.0,
+          "reason": "synthetic AIS transmission gap inserted by the scenario design",
+          "lastPositionBefore": {
+            "lat": 18.246206,
+            "lon": 71.835889,
+            "timestamp": "2026-03-13T11:55:00Z"
+          },
+          "firstPositionAfter": {
+            "lat": 19.448147,
+            "lon": 73.928151,
+            "timestamp": "2026-03-13T16:05:00Z"
+          },
+          "bridgeDistanceKm": 257.559,
+          "elapsedHours": 4.1667,
+          "impliedSpeedKmh": 61.814,
+          "impliedSpeedKn": 33.377
+        }
+      ],
+      "segmentTimeline": [
+        {
+          "kind": "move",
+          "label": "approach",
+          "start": "2026-03-11T06:00:00Z",
+          "end": "2026-03-13T12:00:00Z",
+          "hours": 54.0,
+          "courseDeg": 60.0,
+          "speedKn": 12.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "gap",
+          "label": "ais_gap_physically_impossible",
+          "start": "2026-03-13T12:00:00Z",
+          "end": "2026-03-13T16:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 60.0,
+          "speedKn": 12.0,
+          "navStatus": 0,
+          "jumpKm": 175.0
+        },
+        {
+          "kind": "move",
+          "label": "departure",
+          "start": "2026-03-13T16:00:00Z",
+          "end": "2026-03-14T06:00:00Z",
+          "hours": 14.0,
+          "courseDeg": 60.0,
+          "speedKn": 12.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        }
+      ],
+      "injectedDefects": [],
+      "expected": {
+        "hypothesis": "AIS gap that is NOT physically compatible with the origin region",
+        "mapsToSpecCase": "D",
+        "inOriginRegionDuringWindow": true,
+        "hasAisGap": true,
+        "gapDurationHours": 4.0,
+        "gapStart": "2026-03-13T12:00:00Z",
+        "gapEnd": "2026-03-13T16:00:00Z",
+        "gapBridgesOriginRegion": true,
+        "gapFeasible": false,
+        "minImpliedSpeedKn": 30.0,
+        "expectedRankBand": "top-3 but strictly below V002",
+        "notes": "Paired with V002 to prove that gap detection alone cannot drive the ranking: the difference is physical feasibility only."
+      }
+    },
+    {
+      "vesselId": "V004",
+      "mmsi": "900000004",
+      "imo": "9990040",
+      "name": "DEMO HARBOUR LIGHT",
+      "typeCode": 70,
+      "typeLabel": "Cargo (synthetic demonstration vessel)",
+      "role": "Misleading nearby vessel",
+      "roleKey": "distractor_nearest_to_slick",
+      "roleDescription": "Closest vessel to the OBSERVED slick at observation time, but far from the probable ORIGIN during the release window. Distractor for proximity-based reasoning.",
+      "reportingIntervalSeconds": 300,
+      "recordCount": 200,
+      "validRecordCount": 200,
+      "firstRecordTimestamp": "2026-03-13T13:20:00Z",
+      "lastRecordTimestamp": "2026-03-14T05:55:00Z",
+      "inStudyAreaHours": 16.5833,
+      "recordsInReleaseWindow": 57,
+      "recordsInsideOriginRegionDuringWindow": 0,
+      "insideOriginRegionDuringWindow": false,
+      "minDistanceToOriginKmDuringWindow": 124.731,
+      "minDistanceToOriginKmWholeTrack": 25.116,
+      "hourOfClosestApproachToOrigin": 67.3333,
+      "distanceToSlickKmAtObservation": 6.692,
+      "minSogKn": 1.96,
+      "maxSogKn": 9.18,
+      "meanSogKn": 7.32,
+      "sogSpreadKn": 7.22,
+      "stationaryRecords": 0,
+      "anchorPosition": {
+        "lat": 18.514495,
+        "lon": 72.205719
+      },
+      "anchorHour": 72.0,
+      "intentionalGaps": [],
+      "segmentTimeline": [
+        {
+          "kind": "move",
+          "label": "northbound_transit",
+          "start": "2026-03-11T06:00:00Z",
+          "end": "2026-03-13T10:00:00Z",
+          "hours": 52.0,
+          "courseDeg": 0.0,
+          "speedKn": 10.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "northbound_transit",
+          "start": "2026-03-13T10:00:00Z",
+          "end": "2026-03-14T02:00:00Z",
+          "hours": 16.0,
+          "courseDeg": 0.0,
+          "speedKn": 9.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "slow_loiter_near_slick",
+          "start": "2026-03-14T02:00:00Z",
+          "end": "2026-03-14T06:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 30.0,
+          "speedKn": 2.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        }
+      ],
+      "injectedDefects": [],
+      "expected": {
+        "hypothesis": "nearest to the observed slick but spatially incompatible with the origin",
+        "mapsToSpecCase": "C and G",
+        "inOriginRegionDuringWindow": false,
+        "hasAisGap": false,
+        "closestToSlickAtObservation": true,
+        "minDistanceToOriginKmDuringWindow": 100.0,
+        "expectedRankBand": "not first, not top-2",
+        "notes": "A 2 kn loiter near the slick is a behavioural anomaly that must not outweigh location and time."
+      }
+    },
+    {
+      "vesselId": "V005",
+      "mmsi": "900000005",
+      "imo": "9990052",
+      "name": "DEMO SILVER TIDE",
+      "typeCode": 70,
+      "typeLabel": "Cargo (synthetic demonstration vessel)",
+      "role": "Wrong-time vessel",
+      "roleKey": "distractor_wrong_time",
+      "roleDescription": "Crosses the probable-origin region hours AFTER the release window closes. Correct place, wrong time: expected low temporal compatibility.",
+      "reportingIntervalSeconds": 300,
+      "recordCount": 238,
+      "validRecordCount": 238,
+      "firstRecordTimestamp": "2026-03-13T10:10:00Z",
+      "lastRecordTimestamp": "2026-03-14T05:55:00Z",
+      "inStudyAreaHours": 19.75,
+      "recordsInReleaseWindow": 95,
+      "recordsInsideOriginRegionDuringWindow": 0,
+      "insideOriginRegionDuringWindow": false,
+      "minDistanceToOriginKmDuringWindow": 119.751,
+      "minDistanceToOriginKmWholeTrack": 0.0,
+      "hourOfClosestApproachToOrigin": 66.0,
+      "distanceToSlickKmAtObservation": 85.707,
+      "minSogKn": 10.78,
+      "maxSogKn": 11.22,
+      "meanSogKn": 11.011,
+      "sogSpreadKn": 0.44,
+      "stationaryRecords": 0,
+      "anchorPosition": {
+        "lat": 18.3,
+        "lon": 71.9
+      },
+      "anchorHour": 66.0,
+      "intentionalGaps": [],
+      "segmentTimeline": [
+        {
+          "kind": "move",
+          "label": "steady_transit",
+          "start": "2026-03-11T06:00:00Z",
+          "end": "2026-03-14T06:00:00Z",
+          "hours": 72.0,
+          "courseDeg": 45.0,
+          "speedKn": 11.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        }
+      ],
+      "injectedDefects": [],
+      "expected": {
+        "hypothesis": "spatially plausible but temporally incompatible",
+        "mapsToSpecCase": "B",
+        "inOriginRegionDuringWindow": false,
+        "hasAisGap": false,
+        "minDistanceToOriginKmDuringWindow": 100.0,
+        "passesOriginAfterWindowHours": 6.0,
+        "expectedRankBand": "below V001 and V002",
+        "notes": "Tests that a model collapsing time would wrongly promote this vessel."
+      }
+    },
+    {
+      "vesselId": "V006",
+      "mmsi": "900000006",
+      "imo": "9990064",
+      "name": "DEMO FROST PELICAN",
+      "typeCode": 70,
+      "typeLabel": "Cargo (synthetic demonstration vessel)",
+      "role": "Anomalous but remote",
+      "roleKey": "distractor_anomaly_without_location",
+      "roleDescription": "Strong behavioural anomaly (speed swings and 90 degree course changes) ~200 km from the origin region. Anomaly alone must not produce a high rank.",
+      "reportingIntervalSeconds": 600,
+      "recordCount": 433,
+      "validRecordCount": 433,
+      "firstRecordTimestamp": "2026-03-11T06:00:00Z",
+      "lastRecordTimestamp": "2026-03-12T17:55:00Z",
+      "inStudyAreaHours": 36.0,
+      "recordsInReleaseWindow": 49,
+      "recordsInsideOriginRegionDuringWindow": 0,
+      "insideOriginRegionDuringWindow": false,
+      "minDistanceToOriginKmDuringWindow": 184.884,
+      "minDistanceToOriginKmWholeTrack": 170.567,
+      "hourOfClosestApproachToOrigin": 36.0,
+      "distanceToSlickKmAtObservation": 145.487,
+      "minSogKn": -3.0,
+      "maxSogKn": 12.0,
+      "meanSogKn": 5.501,
+      "sogSpreadKn": 15.0,
+      "stationaryRecords": 1,
+      "anchorPosition": {
+        "lat": 17.7885,
+        "lon": 73.910631
+      },
+      "anchorHour": 56.0,
+      "intentionalGaps": [],
+      "segmentTimeline": [
+        {
+          "kind": "move",
+          "label": "manoeuvre_east_course_000",
+          "start": "2026-03-11T06:00:00Z",
+          "end": "2026-03-11T09:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 0.0,
+          "speedKn": 8.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_east_course_090",
+          "start": "2026-03-11T09:00:00Z",
+          "end": "2026-03-11T12:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 90.0,
+          "speedKn": 8.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_east_course_180",
+          "start": "2026-03-11T12:00:00Z",
+          "end": "2026-03-11T15:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 180.0,
+          "speedKn": 8.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_east_course_270",
+          "start": "2026-03-11T15:00:00Z",
+          "end": "2026-03-11T18:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 270.0,
+          "speedKn": 8.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_slow_course_000",
+          "start": "2026-03-11T18:00:00Z",
+          "end": "2026-03-11T21:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 0.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_slow_course_090",
+          "start": "2026-03-11T21:00:00Z",
+          "end": "2026-03-12T00:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 90.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_slow_course_180",
+          "start": "2026-03-12T00:00:00Z",
+          "end": "2026-03-12T03:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 180.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_slow_course_270",
+          "start": "2026-03-12T03:00:00Z",
+          "end": "2026-03-12T06:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 270.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_east_course_000",
+          "start": "2026-03-12T06:00:00Z",
+          "end": "2026-03-12T09:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 0.0,
+          "speedKn": 8.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_east_course_090",
+          "start": "2026-03-12T09:00:00Z",
+          "end": "2026-03-12T12:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 90.0,
+          "speedKn": 8.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_east_course_180",
+          "start": "2026-03-12T12:00:00Z",
+          "end": "2026-03-12T15:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 180.0,
+          "speedKn": 8.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_east_course_270",
+          "start": "2026-03-12T15:00:00Z",
+          "end": "2026-03-12T18:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 270.0,
+          "speedKn": 8.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_slow_course_000",
+          "start": "2026-03-12T18:00:00Z",
+          "end": "2026-03-12T21:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 0.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_slow_course_090",
+          "start": "2026-03-12T21:00:00Z",
+          "end": "2026-03-13T00:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 90.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_slow_course_180",
+          "start": "2026-03-13T00:00:00Z",
+          "end": "2026-03-13T03:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 180.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_slow_course_270",
+          "start": "2026-03-13T03:00:00Z",
+          "end": "2026-03-13T06:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 270.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_east_course_000",
+          "start": "2026-03-13T06:00:00Z",
+          "end": "2026-03-13T09:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 0.0,
+          "speedKn": 8.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_east_course_090",
+          "start": "2026-03-13T09:00:00Z",
+          "end": "2026-03-13T12:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 90.0,
+          "speedKn": 8.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_east_course_180",
+          "start": "2026-03-13T12:00:00Z",
+          "end": "2026-03-13T15:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 180.0,
+          "speedKn": 8.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_east_course_270",
+          "start": "2026-03-13T15:00:00Z",
+          "end": "2026-03-13T18:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 270.0,
+          "speedKn": 8.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_slow_course_000",
+          "start": "2026-03-13T18:00:00Z",
+          "end": "2026-03-13T21:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 0.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_slow_course_090",
+          "start": "2026-03-13T21:00:00Z",
+          "end": "2026-03-14T00:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 90.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_slow_course_180",
+          "start": "2026-03-14T00:00:00Z",
+          "end": "2026-03-14T03:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 180.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "manoeuvre_slow_course_270",
+          "start": "2026-03-14T03:00:00Z",
+          "end": "2026-03-14T06:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 270.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        }
+      ],
+      "injectedDefects": [
+        "impossible_speed_jump",
+        "negative_speed"
+      ],
+      "expected": {
+        "hypothesis": "behavioural anomaly without spatial or temporal compatibility",
+        "mapsToSpecCase": "F",
+        "inOriginRegionDuringWindow": false,
+        "hasAisGap": false,
+        "minDistanceToOriginKmDuringWindow": 150.0,
+        "speedVariabilityKn": "~5 (8 vs 3), plus injected defects",
+        "expectedRankBand": "outside the top-5",
+        "notes": "Also carries the negative-SOG and impossible-speed defect rows."
+      }
+    },
+    {
+      "vesselId": "V007",
+      "mmsi": "900000007",
+      "imo": "9990076",
+      "name": "DEMO NORTHERN GATE",
+      "typeCode": 80,
+      "typeLabel": "Tanker (synthetic demonstration vessel)",
+      "role": "Control vessel (steady transit)",
+      "roleKey": "control_steady_transit",
+      "roleDescription": "Legitimate steady transit ~90 km from the origin region: no anomaly, no gap. Shows that a normal vessel in the same area and time window is not promoted.",
+      "reportingIntervalSeconds": 300,
+      "recordCount": 293,
+      "validRecordCount": 293,
+      "firstRecordTimestamp": "2026-03-13T02:30:00Z",
+      "lastRecordTimestamp": "2026-03-13T20:40:00Z",
+      "inStudyAreaHours": 18.1667,
+      "recordsInReleaseWindow": 99,
+      "recordsInsideOriginRegionDuringWindow": 0,
+      "insideOriginRegionDuringWindow": false,
+      "minDistanceToOriginKmDuringWindow": 89.899,
+      "minDistanceToOriginKmWholeTrack": 89.899,
+      "hourOfClosestApproachToOrigin": 56.0,
+      "distanceToSlickKmAtObservation": 160.821,
+      "minSogKn": 12.25,
+      "maxSogKn": 12.75,
+      "meanSogKn": 12.499,
+      "sogSpreadKn": 0.5,
+      "stationaryRecords": 0,
+      "anchorPosition": {
+        "lat": 17.49152,
+        "lon": 71.9
+      },
+      "anchorHour": 56.0,
+      "intentionalGaps": [],
+      "segmentTimeline": [
+        {
+          "kind": "move",
+          "label": "steady_corridor_transit",
+          "start": "2026-03-11T06:00:00Z",
+          "end": "2026-03-14T06:00:00Z",
+          "hours": 72.0,
+          "courseDeg": 90.0,
+          "speedKn": 12.5,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        }
+      ],
+      "injectedDefects": [
+        "duplicate_record"
+      ],
+      "expected": {
+        "hypothesis": "control: normal behaviour, insufficient spatial compatibility",
+        "mapsToSpecCase": null,
+        "inOriginRegionDuringWindow": false,
+        "hasAisGap": false,
+        "minDistanceToOriginKmDuringWindow": 50.0,
+        "maxSpeedSpreadKn": 0.5,
+        "expectedRankBand": "mid",
+        "notes": "Carries the duplicate-record defect fixture."
+      }
+    },
+    {
+      "vesselId": "V008",
+      "mmsi": "900000008",
+      "imo": "9990088",
+      "name": "DEMO SEA LARK",
+      "typeCode": 30,
+      "typeLabel": "Fishing (synthetic demonstration vessel)",
+      "role": "Fishing-like distractor",
+      "roleKey": "distractor_fishing_pattern",
+      "roleDescription": "Many slow and stationary periods and an irregular track, but ~170 km from the origin region. Legitimate working pattern that must not be flagged as suspicious.",
+      "reportingIntervalSeconds": 600,
+      "recordCount": 432,
+      "validRecordCount": 432,
+      "firstRecordTimestamp": "2026-03-11T06:00:00Z",
+      "lastRecordTimestamp": "2026-03-14T05:50:00Z",
+      "inStudyAreaHours": 71.8333,
+      "recordsInReleaseWindow": 49,
+      "recordsInsideOriginRegionDuringWindow": 0,
+      "insideOriginRegionDuringWindow": false,
+      "minDistanceToOriginKmDuringWindow": 170.0,
+      "minDistanceToOriginKmWholeTrack": 170.0,
+      "hourOfClosestApproachToOrigin": 54.0,
+      "distanceToSlickKmAtObservation": 221.574,
+      "minSogKn": 0.196,
+      "maxSogKn": 4.59,
+      "meanSogKn": 2.692,
+      "sogSpreadKn": 4.394,
+      "stationaryRecords": 126,
+      "anchorPosition": {
+        "lat": 18.3,
+        "lon": 70.2726
+      },
+      "anchorHour": 56.0,
+      "intentionalGaps": [],
+      "segmentTimeline": [
+        {
+          "kind": "move",
+          "label": "working_run_northeast",
+          "start": "2026-03-11T06:00:00Z",
+          "end": "2026-03-11T12:00:00Z",
+          "hours": 6.0,
+          "courseDeg": 40.0,
+          "speedKn": 4.5,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "working_haul_back",
+          "start": "2026-03-11T12:00:00Z",
+          "end": "2026-03-11T15:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 340.0,
+          "speedKn": 1.6,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "stationary_working_period",
+          "start": "2026-03-11T15:00:00Z",
+          "end": "2026-03-11T19:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 0.0,
+          "speedKn": 0.2,
+          "navStatus": 1,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "working_run_southwest",
+          "start": "2026-03-11T19:00:00Z",
+          "end": "2026-03-12T00:00:00Z",
+          "hours": 5.0,
+          "courseDeg": 220.0,
+          "speedKn": 4.5,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "stationary_working_period",
+          "start": "2026-03-12T00:00:00Z",
+          "end": "2026-03-12T03:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 0.0,
+          "speedKn": 0.2,
+          "navStatus": 1,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "working_run_southeast",
+          "start": "2026-03-12T03:00:00Z",
+          "end": "2026-03-12T06:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 130.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "working_run_northeast",
+          "start": "2026-03-12T06:00:00Z",
+          "end": "2026-03-12T12:00:00Z",
+          "hours": 6.0,
+          "courseDeg": 40.0,
+          "speedKn": 4.5,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "working_haul_back",
+          "start": "2026-03-12T12:00:00Z",
+          "end": "2026-03-12T15:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 340.0,
+          "speedKn": 1.6,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "stationary_working_period",
+          "start": "2026-03-12T15:00:00Z",
+          "end": "2026-03-12T19:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 0.0,
+          "speedKn": 0.2,
+          "navStatus": 1,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "working_run_southwest",
+          "start": "2026-03-12T19:00:00Z",
+          "end": "2026-03-13T00:00:00Z",
+          "hours": 5.0,
+          "courseDeg": 220.0,
+          "speedKn": 4.5,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "stationary_working_period",
+          "start": "2026-03-13T00:00:00Z",
+          "end": "2026-03-13T03:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 0.0,
+          "speedKn": 0.2,
+          "navStatus": 1,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "working_run_southeast",
+          "start": "2026-03-13T03:00:00Z",
+          "end": "2026-03-13T06:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 130.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "working_run_northeast",
+          "start": "2026-03-13T06:00:00Z",
+          "end": "2026-03-13T12:00:00Z",
+          "hours": 6.0,
+          "courseDeg": 40.0,
+          "speedKn": 4.5,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "working_haul_back",
+          "start": "2026-03-13T12:00:00Z",
+          "end": "2026-03-13T15:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 340.0,
+          "speedKn": 1.6,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "stationary_working_period",
+          "start": "2026-03-13T15:00:00Z",
+          "end": "2026-03-13T19:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 0.0,
+          "speedKn": 0.2,
+          "navStatus": 1,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "working_run_southwest",
+          "start": "2026-03-13T19:00:00Z",
+          "end": "2026-03-14T00:00:00Z",
+          "hours": 5.0,
+          "courseDeg": 220.0,
+          "speedKn": 4.5,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "stationary_working_period",
+          "start": "2026-03-14T00:00:00Z",
+          "end": "2026-03-14T03:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 0.0,
+          "speedKn": 0.2,
+          "navStatus": 1,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "working_run_southeast",
+          "start": "2026-03-14T03:00:00Z",
+          "end": "2026-03-14T06:00:00Z",
+          "hours": 3.0,
+          "courseDeg": 130.0,
+          "speedKn": 3.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        }
+      ],
+      "injectedDefects": [
+        "malformed_timestamp"
+      ],
+      "expected": {
+        "hypothesis": "legitimate slow/looping pattern, spatially incompatible",
+        "mapsToSpecCase": null,
+        "inOriginRegionDuringWindow": false,
+        "hasAisGap": false,
+        "minDistanceToOriginKmDuringWindow": 100.0,
+        "hasStationaryPeriods": true,
+        "expectedRankBand": "low",
+        "notes": "Carries the two malformed-timestamp defect fixtures."
+      }
+    },
+    {
+      "vesselId": "V009",
+      "mmsi": "900000009",
+      "imo": "9990090",
+      "name": "DEMO SKY BRIDGE",
+      "typeCode": 60,
+      "typeLabel": "Passenger (synthetic demonstration vessel)",
+      "role": "High-speed control",
+      "roleKey": "control_high_speed",
+      "roleDescription": "Fast, steady, predictable shuttle service well north of the origin region. High speed and the 180 degree turnarounds must not be read as suspicious behaviour.",
+      "reportingIntervalSeconds": 600,
+      "recordCount": 432,
+      "validRecordCount": 432,
+      "firstRecordTimestamp": "2026-03-11T06:00:00Z",
+      "lastRecordTimestamp": "2026-03-14T05:50:00Z",
+      "inStudyAreaHours": 71.8333,
+      "recordsInReleaseWindow": 49,
+      "recordsInsideOriginRegionDuringWindow": 0,
+      "insideOriginRegionDuringWindow": false,
+      "minDistanceToOriginKmDuringWindow": 110.875,
+      "minDistanceToOriginKmWholeTrack": 110.875,
+      "hourOfClosestApproachToOrigin": 2.0,
+      "distanceToSlickKmAtObservation": 128.037,
+      "minSogKn": 18.62,
+      "maxSogKn": 19.38,
+      "meanSogKn": 19.0,
+      "sogSpreadKn": 0.76,
+      "stationaryRecords": 0,
+      "anchorPosition": {
+        "lat": 19.297125,
+        "lon": 71.9
+      },
+      "anchorHour": 58.0,
+      "intentionalGaps": [],
+      "segmentTimeline": [
+        {
+          "kind": "move",
+          "label": "shuttle_leg_eastbound",
+          "start": "2026-03-11T06:00:00Z",
+          "end": "2026-03-11T10:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 90.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_westbound",
+          "start": "2026-03-11T10:00:00Z",
+          "end": "2026-03-11T14:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 270.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_eastbound",
+          "start": "2026-03-11T14:00:00Z",
+          "end": "2026-03-11T18:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 90.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_westbound",
+          "start": "2026-03-11T18:00:00Z",
+          "end": "2026-03-11T22:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 270.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_eastbound",
+          "start": "2026-03-11T22:00:00Z",
+          "end": "2026-03-12T02:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 90.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_westbound",
+          "start": "2026-03-12T02:00:00Z",
+          "end": "2026-03-12T06:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 270.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_eastbound",
+          "start": "2026-03-12T06:00:00Z",
+          "end": "2026-03-12T10:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 90.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_westbound",
+          "start": "2026-03-12T10:00:00Z",
+          "end": "2026-03-12T14:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 270.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_eastbound",
+          "start": "2026-03-12T14:00:00Z",
+          "end": "2026-03-12T18:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 90.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_westbound",
+          "start": "2026-03-12T18:00:00Z",
+          "end": "2026-03-12T22:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 270.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_eastbound",
+          "start": "2026-03-12T22:00:00Z",
+          "end": "2026-03-13T02:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 90.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_westbound",
+          "start": "2026-03-13T02:00:00Z",
+          "end": "2026-03-13T06:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 270.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_eastbound",
+          "start": "2026-03-13T06:00:00Z",
+          "end": "2026-03-13T10:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 90.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_westbound",
+          "start": "2026-03-13T10:00:00Z",
+          "end": "2026-03-13T14:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 270.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_eastbound",
+          "start": "2026-03-13T14:00:00Z",
+          "end": "2026-03-13T18:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 90.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_westbound",
+          "start": "2026-03-13T18:00:00Z",
+          "end": "2026-03-13T22:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 270.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_eastbound",
+          "start": "2026-03-13T22:00:00Z",
+          "end": "2026-03-14T02:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 90.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "shuttle_leg_westbound",
+          "start": "2026-03-14T02:00:00Z",
+          "end": "2026-03-14T06:00:00Z",
+          "hours": 4.0,
+          "courseDeg": 270.0,
+          "speedKn": 19.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        }
+      ],
+      "injectedDefects": [],
+      "expected": {
+        "hypothesis": "control: high speed and turnarounds are not suspicious by themselves",
+        "mapsToSpecCase": null,
+        "inOriginRegionDuringWindow": false,
+        "hasAisGap": false,
+        "minDistanceToOriginKmDuringWindow": 50.0,
+        "expectedRankBand": "low",
+        "notes": "Instant 180 degree turnarounds are a documented synthetic simplification."
+      }
+    },
+    {
+      "vesselId": "V010",
+      "mmsi": "900000010",
+      "imo": "9990105",
+      "name": "DEMO COASTAL WREN",
+      "typeCode": 70,
+      "typeLabel": "Cargo (synthetic demonstration vessel)",
+      "role": "Coastal-transit control",
+      "roleKey": "control_coastal_transit",
+      "roleDescription": "Slow coastal transit whose track stays offshore and roughly parallel to the coastline - used to test land/sea plausibility rather than suspicion.",
+      "reportingIntervalSeconds": 600,
+      "recordCount": 192,
+      "validRecordCount": 191,
+      "firstRecordTimestamp": "2026-03-12T17:10:00Z",
+      "lastRecordTimestamp": "2026-03-14T01:00:00Z",
+      "inStudyAreaHours": 31.8333,
+      "recordsInReleaseWindow": 49,
+      "recordsInsideOriginRegionDuringWindow": 0,
+      "insideOriginRegionDuringWindow": false,
+      "minDistanceToOriginKmDuringWindow": 62.528,
+      "minDistanceToOriginKmWholeTrack": 51.715,
+      "hourOfClosestApproachToOrigin": 49.3333,
+      "distanceToSlickKmAtObservation": 237.676,
+      "minSogKn": 6.86,
+      "maxSogKn": 7.14,
+      "meanSogKn": 7.006,
+      "sogSpreadKn": 0.279,
+      "stationaryRecords": 0,
+      "anchorPosition": {
+        "lat": 17.716802,
+        "lon": 72.632051
+      },
+      "anchorHour": 56.0,
+      "intentionalGaps": [],
+      "segmentTimeline": [
+        {
+          "kind": "move",
+          "label": "coastal_transit_southbound",
+          "start": "2026-03-11T06:00:00Z",
+          "end": "2026-03-14T06:00:00Z",
+          "hours": 72.0,
+          "courseDeg": 160.0,
+          "speedKn": 7.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        }
+      ],
+      "injectedDefects": [
+        "invalid_coordinate"
+      ],
+      "expected": {
+        "hypothesis": "control: coastline-consistent track, no anomaly",
+        "mapsToSpecCase": null,
+        "inOriginRegionDuringWindow": false,
+        "hasAisGap": false,
+        "minDistanceToOriginKmDuringWindow": 50.0,
+        "staysOffshore": true,
+        "expectedRankBand": "low",
+        "notes": "In-extract interval is bounded by the study-area box, not by loss of signal."
+      },
+      "recordsOffshoreOfSyntheticCoastline": 191,
+      "allRecordsOffshore": true
+    },
+    {
+      "vesselId": "V011",
+      "mmsi": "900000011",
+      "imo": "9990117",
+      "name": "DEMO ANCHOR TUG",
+      "typeCode": 52,
+      "typeLabel": "Tug (synthetic demonstration vessel)",
+      "role": "Harbour tug control",
+      "roleKey": "control_harbour_tug",
+      "roleDescription": "Local harbour movements with long mooring periods ~115 km from the origin region. Stationary periods must not be weighted as suspicious.",
+      "reportingIntervalSeconds": 600,
+      "recordCount": 432,
+      "validRecordCount": 432,
+      "firstRecordTimestamp": "2026-03-11T06:00:00Z",
+      "lastRecordTimestamp": "2026-03-14T05:50:00Z",
+      "inStudyAreaHours": 71.8333,
+      "recordsInReleaseWindow": 49,
+      "recordsInsideOriginRegionDuringWindow": 0,
+      "insideOriginRegionDuringWindow": false,
+      "minDistanceToOriginKmDuringWindow": 113.901,
+      "minDistanceToOriginKmWholeTrack": 106.787,
+      "hourOfClosestApproachToOrigin": 61.5,
+      "distanceToSlickKmAtObservation": 102.109,
+      "minSogKn": 0.098,
+      "maxSogKn": 6.12,
+      "meanSogKn": 3.05,
+      "sogSpreadKn": 6.022,
+      "stationaryRecords": 216,
+      "anchorPosition": {
+        "lat": 17.783471,
+        "lon": 72.842311
+      },
+      "anchorHour": 36.0,
+      "intentionalGaps": [],
+      "segmentTimeline": [
+        {
+          "kind": "move",
+          "label": "harbour_movement_north",
+          "start": "2026-03-11T06:00:00Z",
+          "end": "2026-03-11T07:30:00Z",
+          "hours": 1.5,
+          "courseDeg": 0.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_east",
+          "start": "2026-03-11T07:30:00Z",
+          "end": "2026-03-11T09:00:00Z",
+          "hours": 1.5,
+          "courseDeg": 90.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_south",
+          "start": "2026-03-11T09:00:00Z",
+          "end": "2026-03-11T10:30:00Z",
+          "hours": 1.5,
+          "courseDeg": 180.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_west",
+          "start": "2026-03-11T10:30:00Z",
+          "end": "2026-03-11T12:00:00Z",
+          "hours": 1.5,
+          "courseDeg": 270.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "moored",
+          "start": "2026-03-11T12:00:00Z",
+          "end": "2026-03-11T18:00:00Z",
+          "hours": 6.0,
+          "courseDeg": 0.0,
+          "speedKn": 0.1,
+          "navStatus": 5,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_north",
+          "start": "2026-03-11T18:00:00Z",
+          "end": "2026-03-11T19:30:00Z",
+          "hours": 1.5,
+          "courseDeg": 0.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_east",
+          "start": "2026-03-11T19:30:00Z",
+          "end": "2026-03-11T21:00:00Z",
+          "hours": 1.5,
+          "courseDeg": 90.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_south",
+          "start": "2026-03-11T21:00:00Z",
+          "end": "2026-03-11T22:30:00Z",
+          "hours": 1.5,
+          "courseDeg": 180.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_west",
+          "start": "2026-03-11T22:30:00Z",
+          "end": "2026-03-12T00:00:00Z",
+          "hours": 1.5,
+          "courseDeg": 270.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "moored",
+          "start": "2026-03-12T00:00:00Z",
+          "end": "2026-03-12T06:00:00Z",
+          "hours": 6.0,
+          "courseDeg": 0.0,
+          "speedKn": 0.1,
+          "navStatus": 5,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_north",
+          "start": "2026-03-12T06:00:00Z",
+          "end": "2026-03-12T07:30:00Z",
+          "hours": 1.5,
+          "courseDeg": 0.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_east",
+          "start": "2026-03-12T07:30:00Z",
+          "end": "2026-03-12T09:00:00Z",
+          "hours": 1.5,
+          "courseDeg": 90.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_south",
+          "start": "2026-03-12T09:00:00Z",
+          "end": "2026-03-12T10:30:00Z",
+          "hours": 1.5,
+          "courseDeg": 180.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_west",
+          "start": "2026-03-12T10:30:00Z",
+          "end": "2026-03-12T12:00:00Z",
+          "hours": 1.5,
+          "courseDeg": 270.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "moored",
+          "start": "2026-03-12T12:00:00Z",
+          "end": "2026-03-12T18:00:00Z",
+          "hours": 6.0,
+          "courseDeg": 0.0,
+          "speedKn": 0.1,
+          "navStatus": 5,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_north",
+          "start": "2026-03-12T18:00:00Z",
+          "end": "2026-03-12T19:30:00Z",
+          "hours": 1.5,
+          "courseDeg": 0.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_east",
+          "start": "2026-03-12T19:30:00Z",
+          "end": "2026-03-12T21:00:00Z",
+          "hours": 1.5,
+          "courseDeg": 90.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_south",
+          "start": "2026-03-12T21:00:00Z",
+          "end": "2026-03-12T22:30:00Z",
+          "hours": 1.5,
+          "courseDeg": 180.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_west",
+          "start": "2026-03-12T22:30:00Z",
+          "end": "2026-03-13T00:00:00Z",
+          "hours": 1.5,
+          "courseDeg": 270.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "moored",
+          "start": "2026-03-13T00:00:00Z",
+          "end": "2026-03-13T06:00:00Z",
+          "hours": 6.0,
+          "courseDeg": 0.0,
+          "speedKn": 0.1,
+          "navStatus": 5,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_north",
+          "start": "2026-03-13T06:00:00Z",
+          "end": "2026-03-13T07:30:00Z",
+          "hours": 1.5,
+          "courseDeg": 0.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_east",
+          "start": "2026-03-13T07:30:00Z",
+          "end": "2026-03-13T09:00:00Z",
+          "hours": 1.5,
+          "courseDeg": 90.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_south",
+          "start": "2026-03-13T09:00:00Z",
+          "end": "2026-03-13T10:30:00Z",
+          "hours": 1.5,
+          "courseDeg": 180.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_west",
+          "start": "2026-03-13T10:30:00Z",
+          "end": "2026-03-13T12:00:00Z",
+          "hours": 1.5,
+          "courseDeg": 270.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "moored",
+          "start": "2026-03-13T12:00:00Z",
+          "end": "2026-03-13T18:00:00Z",
+          "hours": 6.0,
+          "courseDeg": 0.0,
+          "speedKn": 0.1,
+          "navStatus": 5,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_north",
+          "start": "2026-03-13T18:00:00Z",
+          "end": "2026-03-13T19:30:00Z",
+          "hours": 1.5,
+          "courseDeg": 0.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_east",
+          "start": "2026-03-13T19:30:00Z",
+          "end": "2026-03-13T21:00:00Z",
+          "hours": 1.5,
+          "courseDeg": 90.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_south",
+          "start": "2026-03-13T21:00:00Z",
+          "end": "2026-03-13T22:30:00Z",
+          "hours": 1.5,
+          "courseDeg": 180.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "harbour_movement_west",
+          "start": "2026-03-13T22:30:00Z",
+          "end": "2026-03-14T00:00:00Z",
+          "hours": 1.5,
+          "courseDeg": 270.0,
+          "speedKn": 6.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        },
+        {
+          "kind": "move",
+          "label": "moored",
+          "start": "2026-03-14T00:00:00Z",
+          "end": "2026-03-14T06:00:00Z",
+          "hours": 6.0,
+          "courseDeg": 0.0,
+          "speedKn": 0.1,
+          "navStatus": 5,
+          "jumpKm": 0.0
+        }
+      ],
+      "injectedDefects": [
+        "missing_optional_field"
+      ],
+      "expected": {
+        "hypothesis": "control: legitimate stationary periods",
+        "mapsToSpecCase": null,
+        "inOriginRegionDuringWindow": false,
+        "hasAisGap": false,
+        "minDistanceToOriginKmDuringWindow": 50.0,
+        "hasMooringPeriods": true,
+        "expectedRankBand": "low",
+        "notes": "Carries the missing-optional-field defect fixtures."
+      },
+      "maxDistanceFromAnchorKm": 24.641
+    },
+    {
+      "vesselId": "V012",
+      "mmsi": "900000012",
+      "imo": "9990129",
+      "name": "DEMO FAR CURRENT",
+      "typeCode": 70,
+      "typeLabel": "Cargo (synthetic demonstration vessel)",
+      "role": "Distant transit",
+      "roleKey": "distractor_distant_transit",
+      "roleDescription": "Distant steady transit that should be filtered out early. Included so the ranking is not distorted by irrelevant traffic.",
+      "reportingIntervalSeconds": 600,
+      "recordCount": 104,
+      "validRecordCount": 103,
+      "firstRecordTimestamp": "2026-03-13T12:40:00Z",
+      "lastRecordTimestamp": "2026-03-14T05:50:00Z",
+      "inStudyAreaHours": 17.1667,
+      "recordsInReleaseWindow": 33,
+      "recordsInsideOriginRegionDuringWindow": 0,
+      "insideOriginRegionDuringWindow": false,
+      "minDistanceToOriginKmDuringWindow": 155.668,
+      "minDistanceToOriginKmWholeTrack": 13.424,
+      "hourOfClosestApproachToOrigin": 66.5,
+      "distanceToSlickKmAtObservation": 95.23,
+      "minSogKn": 12.74,
+      "maxSogKn": 13.26,
+      "meanSogKn": 12.993,
+      "sogSpreadKn": 0.52,
+      "stationaryRecords": 0,
+      "anchorPosition": {
+        "lat": 16.711995,
+        "lon": 70.227404
+      },
+      "anchorHour": 56.0,
+      "intentionalGaps": [],
+      "segmentTimeline": [
+        {
+          "kind": "move",
+          "label": "ocean_transit_northeast",
+          "start": "2026-03-11T06:00:00Z",
+          "end": "2026-03-14T06:00:00Z",
+          "hours": 72.0,
+          "courseDeg": 43.0,
+          "speedKn": 13.0,
+          "navStatus": 0,
+          "jumpKm": 0.0
+        }
+      ],
+      "injectedDefects": [
+        "invalid_coordinate"
+      ],
+      "expected": {
+        "hypothesis": "irrelevant distant traffic",
+        "mapsToSpecCase": null,
+        "inOriginRegionDuringWindow": false,
+        "hasAisGap": false,
+        "minDistanceToOriginKmDuringWindow": 100.0,
+        "expectedRankBand": "bottom",
+        "notes": "Carries the invalid-latitude defect fixture."
+      }
+    }
+  ]
+}
