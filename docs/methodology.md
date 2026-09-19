@@ -63,7 +63,21 @@ or evaporation, no shoreline interaction, no turbulence closure. The output is a
 1. **Ingest/normalise** CSV: identifiers, coordinates, timestamps (UTC), SOG/COG/heading.
 2. **Validate**: reject invalid coordinates (out of range, exact `0,0`), impossible speed for the time
    step, malformed timestamps and duplicate records. Every rejection is **logged with a reason and
-   counted** (`cleaningStatistics`); nothing is dropped silently.
+   counted**; nothing is dropped silently.
+
+   *Implemented (Phase 3, `app/ais/cleaning.py`).* Rejection categories: `missing_required_field`,
+   `malformed_timestamp`, `invalid_coordinate`, `missing_vessel_identifier`,
+   `invalid_vessel_identifier`, `duplicate_record`, `impossible_speed`. A row that is valid but
+   contains one impossible value is **kept** at its original position with that value set to null and
+   listed under `removedValues[]` (categories `invalid_speed_value`, `invalid_course_value`,
+   `invalid_heading_value`, `invalid_navigation_status_value`, `not_available_sentinel`); a record that
+   lost a value also says so in its own `warnings[]`. Row-level quality warnings (row kept):
+   `missing_optional_field`, `conflicting_position_same_timestamp`, `invalid_imo`,
+   `unknown_vessel_type`, `missing_vessel_name`, `timestamp_assumed_utc`. Every audit entry carries the
+   1-based source line and the raw values, so any later conclusion is traceable to the raw file.
+   The impossible-speed threshold (default 60 kn) is a **configurable prototype value**, and the
+   AIS "not available" sentinels (SOG 102.3, COG 360.0, heading 511) are normalised to null by default
+   and can be switched off for datasets that do not use that convention.
 3. **Construct trajectories**: group by vessel identifier, sort chronologically, compute geodesic
    segment distances (great-circle, not planar Euclidean), durations, average and maximum speed,
    course changes, stop/slow periods, and the gap list.

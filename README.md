@@ -88,7 +88,7 @@ ABYSS/
 | JDK | 21+ | backend | ✅ 21.0.12 |
 | Maven | 3.8+ | backend | ✅ 3.8.7 |
 | Python | 3.11+ | intelligence | ✅ 3.12.3 |
-| pip / venv | — | intelligence dependencies | ⚠️ not yet bootstrapped |
+| pip / venv | — | intelligence dependencies | ✅ bootstrapped into `.venv` (pandas 3.0.6, numpy 2.5.3) |
 | Node + npm | 18+ | frontend | ❌ not installed |
 | PostgreSQL + PostGIS | 16 / 3.4 | database persistence | ❌ not installed |
 | Docker | any | *optional* database convenience | ❌ not installed |
@@ -102,23 +102,24 @@ bash scripts/check-env.sh
 
 ### Installing the missing pieces (the reference machine has no passwordless sudo)
 
-**pip — needed by `intelligence/`**
+**Python dependencies — needed by `intelligence/` (verified working on this machine)**
+
+The system Python here is **PEP 668 "externally managed"**: `pip` is absent, `ensurepip` is absent
+(so `python3 -m venv` fails too), and `get-pip.py --user` is refused. The approach that works without
+`sudo` — and that touches nothing outside the project — is to create the virtual environment first
+with `--without-pip`, then install `pip` *inside* it:
 
 ```bash
+cd ABYSS
+python3 -m venv --without-pip .venv                       # venv without the missing ensurepip step
 curl -fsSL https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
-python3 /tmp/get-pip.py --user
-python3 -m pip --version
+.venv/bin/python /tmp/get-pip.py                          # pip inside the venv (not the system)
+.venv/bin/python -m pip install -r intelligence/requirements.txt
+.venv/bin/python -c "import pandas, numpy; print(pandas.__version__, numpy.__version__)"
 ```
 
-The system Python here ships **without `ensurepip`**, so `python3 -m venv` fails. Use `virtualenv`
-or a `--user` install instead:
-
-```bash
-python3 -m pip install --user virtualenv
-python3 -m virtualenv .venv
-source .venv/bin/activate
-python3 -m pip install -r intelligence/requirements.txt   # added in Phase 2
-```
+`.venv/` is git-ignored. Use `.venv/bin/python` (or `source .venv/bin/activate`) for every Python
+command in this repository — the system interpreter cannot import pandas.
 
 **Node.js + npm** — download the Linux x64 LTS tarball from the official download page
 (<https://nodejs.org/en/download>), then extract it into your home directory:
@@ -178,13 +179,32 @@ Expected: the generator prints a per-vessel table and `40 self-checks passed`; t
 `Ran 35 tests ... OK`. The dataset itself is described in
 `intelligence/data/demo/case_001/README.md`.
 
+### Verify Phase 3 (AIS cleaning) — needs the project virtual environment
+
+```bash
+# clean the synthetic CASE-001 extract and print the audit report
+.venv/bin/python intelligence/app/ais/cleaning.py
+
+# write the full audit trail (records + rejected rows + removed values) and the cleaned CSV
+.venv/bin/python intelligence/app/ais/cleaning.py --json /tmp/cleaning.json --out-cleaned /tmp/clean.csv
+
+# full test suite (Phase 2 + Phase 3 = 77 tests)
+.venv/bin/python -m unittest discover -s intelligence/tests -v
+```
+
+Expected: `3710 rows -> 3701 records, 9 rejected, 1 value(s) removed (12 vessels)`, with the 9
+rejections split `duplicate_record 4 / malformed_timestamp 2 / invalid_coordinate 2 /
+impossible_speed 1`, and `Ran 77 tests ... OK`. The prediction comes from the Phase 2 defect
+inventory, so cleaning is checked against the dataset's declared intent rather than against itself.
+
 ## 6. Build status (phase plan from the specification)
 
 | Phase | Scope | Status |
 |---|---|---|
 | 1 | Repository + project structure | ✅ complete |
 | 2 | Demo dataset (deterministic) | ✅ complete |
-| 3–10 | AIS cleaning → trajectories → spatial/temporal/trajectory filtering → behaviour → gaps → scoring | ⏳ next |
+| 3 | AIS cleaning | ✅ complete |
+| 4–10 | Trajectories → spatial/temporal/trajectory filtering → behaviour → gaps → scoring | ⏳ next |
 | 11–12 | Hindcast engine, satellite / oil-spill module | ⏳ |
 | 13–14 | Spring Boot API, PostgreSQL/PostGIS schema | ⏳ |
 | 15–18 | React dashboard, forensic timeline, evidence graph, report generation | ⏳ |

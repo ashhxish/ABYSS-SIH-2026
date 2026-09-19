@@ -73,10 +73,13 @@ calls to the intelligence service · `repository/` Spring Data JPA · `entity/` 
 `exception/` typed errors mapped by `@RestControllerAdvice` to meaningful JSON errors.
 
 ### intelligence/ (*Phases 3–12*)
+`config.py` validated environment settings and `geo.py` shared geodesy helpers (both Phase 3) ·
 `detection/` slick detection + characterisation · `hindcast/` backward particle drift ·
-`ais/` cleaning, trajectory construction, spatial/temporal/trajectory filtering, gap analysis ·
+`ais/cleaning.py` **implemented in Phase 3** (ingestion, validation, audit trail); `ais/` still gains
+trajectory construction, spatial/temporal/trajectory filtering and gap analysis in Phases 4–9 ·
 `behaviour/` baseline comparison and anomaly scoring · `scoring/` configurable evidence weighting +
-counterfactual reasons · `schemas/` Pydantic models = API contract · `tests/` forensic test cases A–G.
+counterfactual reasons · `schemas/` Pydantic models = API contract · `tests/` dataset tests (Phase 2)
+and cleaning tests (Phase 3), plus the forensic test cases A–G in Phase 19.
 Data: `data/satellite|environmental|ais|demo` (demo assets committed, raw downloads ignored).
 
 ## 4. Data modes and fallback policy

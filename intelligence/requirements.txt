@@ -1,0 +1,12 @@
+# ABYSS intelligence service - Python dependencies
+#
+# Install (from the repository root, inside the project virtual environment):
+#   .venv/bin/python -m pip install -r intelligence/requirements.txt
+#
+# Every pin below corresponds to a version that was actually installed and
+# executed in this repository (Python 3.12.3, Linux x86_64). Packages are added
+# in the phase that first imports them, so that nothing is pinned blindly:
+#   Phase 3  : pandas, numpy          (AIS ingestion, cleaning, trajectories)
+#   Phase 11+: shapely / fastapi / uvicorn are added by their own phases
+pandas==3.0.6
+numpy==2.5.3
