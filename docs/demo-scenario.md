@@ -27,7 +27,7 @@ Demonstrate the full forensic story end to end, offline, deterministically:
 | Release window | `2026-03-13T10:00:00Z` → `18:00:00Z` (before the observation, because drift takes time) |
 | Origin region | ellipse 10 km × 6 km at bearing 50° centred on the fixture release point 18.3000 N / 71.9000 E; the release point lies inside but is **never** published as a point |
 | Observed ≠ released | slick centroid is **33.4 km** downstream of the release point (bearing ~56°) |
-| Vessels | 12 synthetic vessels, 72 h of records, 3,669 rows, reporting interval 5 min (candidates) / 10 min (controls) |
+| Vessels | 12 synthetic vessels, 72 h of records, 3,675 rows, reporting interval 5 min (candidates) / 10 min (controls) |
 | Environmental field | analytic deterministic current + wind field: wind 8 m/s from 225°, current 0.32/0.20 m/s, windage 0.03 |
 
 The oil is deliberately **not** at the release position: the same coordinates are never shared, so any
@@ -77,8 +77,8 @@ position in the file's timestamp ordering. Cleaning must **report** counts and r
 
 | Vessel | Gap | Bridge | Implied speed | Expected treatment |
 |---|---|---|---|---|
-| V002 | 12:00Z → 16:00Z (4 h), starting inside the origin region, spanning it | 78.8 km | **10.2 kn** | feasible → the gap is *relevant*, but remains weak evidence |
-| V003 | identical timing and starting point | 257.6 km | **33.4 kn** | impossible → the gap must contribute almost nothing |
+| V002 | 11:55Z → 16:00Z (4.08 h between the records either side of the outage), starting inside the origin region, spanning it | 79.4 km | **10.5 kn** | feasible → the gap is *relevant*, but remains weak evidence |
+| V003 | identical timing and starting point | 265.8 km | **35.1 kn** | impossible → the gap must contribute almost nothing |
 
 V002 and V003 exist as a matched pair: same place, same window, same gap length. Only physical
 feasibility differs, which isolates the constraint that *an AIS gap alone must never strongly increase

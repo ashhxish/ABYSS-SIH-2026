@@ -102,6 +102,9 @@ SYNTHETIC_COASTLINE: List[List[float]] = [
 
 M_PER_DEG_LAT = 111320.0
 KNOT_TO_KMH = 1.852
+# Sphere used by BOTH haversine_km and offset_position. They must share it, otherwise
+# a distance and the position it produced would disagree.
+EARTH_RADIUS_KM = 6371.0088
 
 # Windage coefficient: PROTOTYPE value, configurable, NOT scientifically
 # validated (see docs/methodology.md section 4).
@@ -145,21 +148,37 @@ def metres_per_deg_lon(lat: float) -> float:
 
 
 def offset_position(lat: float, lon: float, bearing_deg: float, distance_km: float) -> Tuple[float, float]:
-    """Equirectangular offset. Deliberately simple and exactly reproducible.
+    """Destination point on a sphere: the position reached by travelling
+    `distance_km` from (lat, lon) along the great-circle bearing `bearing_deg`.
 
-    Production code (Phase 5+) uses geodesic calculations with explicit
-    approximations documented; this generator only needs determinism at demo scale.
+    This is the exact inverse of the great-circle distance computed by
+    `haversine_km`, so `haversine_km(A, offset_position(A, b, d)) == d` holds to
+    floating-point precision. That property is what keeps the demo dataset honest:
+    every reported speed over ground can be checked against the actual distance
+    between consecutive positions.
+
+    An equirectangular ("flat earth") offset was used earlier and had to be
+    abandoned: it converts distance to degrees using a metres-per-degree-of-longitude
+    factor evaluated at ONE latitude, so a track later translated onto another
+    latitude covered a different distance than its reported speed implied (up to 4%
+    for a 9-degree meridional transit).
     """
+    radius_km = EARTH_RADIUS_KM
+    delta = distance_km / radius_km
+    p1 = math.radians(lat)
+    l1 = math.radians(lon)
     br = math.radians(bearing_deg)
-    d_m = distance_km * 1000.0
-    return (
-        lat + (d_m * math.cos(br)) / M_PER_DEG_LAT,
-        lon + (d_m * math.sin(br)) / metres_per_deg_lon(lat),
+    sin_p2 = math.sin(p1) * math.cos(delta) + math.cos(p1) * math.sin(delta) * math.cos(br)
+    p2 = math.asin(max(-1.0, min(1.0, sin_p2)))
+    l2 = l1 + math.atan2(
+        math.sin(br) * math.sin(delta) * math.cos(p1),
+        math.cos(delta) - math.sin(p1) * sin_p2,
     )
+    return (math.degrees(p2), ((math.degrees(l2) + 540.0) % 360.0) - 180.0)
 
 
 def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
-    r = 6371.0088
+    r = EARTH_RADIUS_KM
     p1, p2 = math.radians(lat1), math.radians(lat2)
     dp = p2 - p1
     dl = math.radians(lon2 - lon1)
@@ -478,22 +497,36 @@ def resolve_anchor(ref: Tuple[Any, ...], ctx: Dict[str, Tuple[float, float]]) ->
     raise ValueError(f"unknown anchor reference: {ref!r}")
 
 
-def build_samples(spec: VesselSpec, reference_latitude: float) -> List[Tuple[Any, ...]]:
+def build_samples(spec: VesselSpec, anchor_hour: float, anchor_lat: float, anchor_lon: float) -> List[Tuple[Any, ...]]:
     """Emit raw samples for one vessel over the full 72 h track.
 
-    The track is built AT THE ANCHOR LATITUDE (and translated onto the anchor
-    afterwards) so that east-west offsets use the correct metres-per-degree-of-longitude
-    scale. Building at latitude 0 and translating later would inflate every east-west
-    step by 1/cos(latitude) - about 5% at these latitudes - and a vessel declared at
-    12.5 kn would then actually cover only ~11.9 kn of ground, which would corrupt every
-    implied-speed comparison in later phases.
+    Two design rules keep this dataset physically self-consistent:
 
-    Building at the anchor latitude also means later changes to the anchor cannot alter
-    the shape of the trajectory.
+    1. TRACK SHAPE IS BUILT IN A METRIC FRAME (east/north kilometres), never in
+       degrees. Degree arithmetic on longitude is only valid at one latitude, so a
+       track built in degrees and then moved across latitudes silently changes its
+       own length.
+    2. THE STEP LENGTH COMES FROM THE EMITTED SPEED AND COURSE. The sample is written
+       first, then the vessel advances by the distance that the written speed implies,
+       along the written course. Distances travelled therefore always agree with the
+       speeds that were reported, which is what makes the implied-speed questions in
+       later phases (trajectory compatibility, AIS gap analysis) answerable.
+
+    The frame is then placed so that the sample at `anchor_hour` sits exactly on the
+    anchor position, and every frame point is converted with the same exact geodesic
+    offset routine. Because the offset is exact, the placement cannot distort the
+    track: the anchor sample lands exactly on the anchor and everything else follows.
     """
-    lat, lon = reference_latitude, 0.0
     t = TRACK_START
-    rows: List[Tuple[Any, ...]] = []
+    east_km, north_km = 0.0, 0.0
+    frame: List[Tuple[Any, ...]] = []  # (t, hour, sog, cog, nav, label, east_km, north_km)
+
+    def advance(bearing_deg: float, distance_km: float) -> None:
+        nonlocal east_km, north_km
+        rad = math.radians(bearing_deg)
+        east_km += distance_km * math.sin(rad)
+        north_km += distance_km * math.cos(rad)
+
     for seg in spec.segments:
         steps = int(round(seg.hours * 3600.0 / spec.interval_s))
         for step_index in range(steps):
@@ -506,42 +539,50 @@ def build_samples(spec: VesselSpec, reference_latitude: float) -> List[Tuple[Any
                     seg.course_deg
                     + COURSE_MOD_AMPLITUDE * math.sin(2.0 * math.pi * hour / COURSE_MOD_PERIOD_H + spec.phase)
                 ) % 360.0
-                rows.append((t, hour, lat, lon, sog, cog, seg.nav_status, seg.label))
-                km = seg.speed_kn * KNOT_TO_KMH * (spec.interval_s / 3600.0)
-                lat, lon = offset_position(lat, lon, seg.course_deg, km)
+                frame.append((t, hour, sog, cog, seg.nav_status, seg.label, east_km, north_km))
+                advance(cog, sog * KNOT_TO_KMH * (spec.interval_s / 3600.0))
             else:
                 # Gap: no records are emitted. The vessel keeps moving; for the
                 # 'physically impossible' scenario variant an additional unphysical
                 # jump is applied ONCE, on the final step of the gap, so the vessel
                 # reappears far beyond what the elapsed time can explain.
-                km = seg.speed_kn * KNOT_TO_KMH * (spec.interval_s / 3600.0)
-                lat, lon = offset_position(lat, lon, seg.course_deg, km)
+                advance(
+                    seg.course_deg,
+                    seg.speed_kn * KNOT_TO_KMH * (spec.interval_s / 3600.0),
+                )
                 if seg.jump_km and step_index == steps - 1:
-                    lat, lon = offset_position(lat, lon, seg.jump_bearing_deg, seg.jump_km)
+                    advance(seg.jump_bearing_deg, seg.jump_km)
             t = t + timedelta(seconds=spec.interval_s)
+
+    # Locate the anchor inside the frame. The lookup must also handle an anchor hour
+    # beyond the final sample (some specs anchor at the end of the extract): the offset
+    # is then extrapolated along the last step, so the track still lands on its anchor.
+    def frame_at(hour: float) -> Tuple[float, float]:
+        def lerp(before: Tuple[Any, ...], after: Tuple[Any, ...]) -> Tuple[float, float]:
+            span = after[1] - before[1]
+            w = 0.0 if span == 0 else (hour - before[1]) / span
+            return (
+                before[6] + (after[6] - before[6]) * w,
+                before[7] + (after[7] - before[7]) * w,
+            )
+
+        if len(frame) == 1 or hour <= frame[0][1]:
+            return frame[0][6], frame[0][7]
+        for i in range(1, len(frame)):
+            if hour <= frame[i][1]:
+                return lerp(frame[i - 1], frame[i])
+        return lerp(frame[-2], frame[-1])
+
+    ref_east, ref_north = frame_at(anchor_hour)
+
+    rows: List[Tuple[Any, ...]] = []
+    for (sample_t, hour, sog, cog, nav, label, s_east, s_north) in frame:
+        rel_east, rel_north = s_east - ref_east, s_north - ref_north
+        distance_km = math.hypot(rel_east, rel_north)
+        bearing = (math.degrees(math.atan2(rel_east, rel_north)) + 360.0) % 360.0
+        lat, lon = offset_position(anchor_lat, anchor_lon, bearing, distance_km)
+        rows.append((sample_t, hour, lat, lon, sog, cog, nav, label))
     return rows
-
-
-def translate_to_anchor(
-    rows: List[Tuple[Any, ...]], anchor_hour: float, anchor_lat: float, anchor_lon: float,
-) -> List[Tuple[Any, ...]]:
-    """Shift the whole track so it passes exactly through the anchor position."""
-    ref_index = len(rows) - 1
-    for i, r in enumerate(rows):
-        if r[1] >= anchor_hour:
-            ref_index = i
-            break
-    if ref_index == 0:
-        base_lat, base_lon = rows[0][2], rows[0][3]
-    else:
-        before, after = rows[ref_index - 1], rows[ref_index]
-        span = after[1] - before[1]
-        w = 0.0 if span == 0 else (anchor_hour - before[1]) / span
-        base_lat = before[2] + (after[2] - before[2]) * w
-        base_lon = before[3] + (after[3] - before[3]) * w
-    dlat = anchor_lat - base_lat
-    dlon = anchor_lon - base_lon
-    return [(r[0], r[1], r[2] + dlat, r[3] + dlon, r[4], r[5], r[6], r[7]) for r in rows]
 
 
 def in_study_bbox(lat: float, lon: float) -> bool:
@@ -559,7 +600,7 @@ def build_vessel_rows(spec: VesselSpec, ctx: Dict[str, Tuple[float, float]]) -> 
     'start of extract' and 'end of extract' boundaries.
     """
     anchor_lat, anchor_lon = resolve_anchor(spec.anchor_ref, ctx)
-    raw = translate_to_anchor(build_samples(spec, anchor_lat), spec.anchor_hour, anchor_lat, anchor_lon)
+    raw = build_samples(spec, spec.anchor_hour, anchor_lat, anchor_lon)
     out: List[AisRow] = []
     seq = 0
     for (t, hour, lat, lon, sog, cog, nav, label) in raw:
@@ -1267,8 +1308,24 @@ def gap_feasibility(spec: VesselSpec, rows: List[AisRow]) -> List[Dict[str, Any]
         start_s = datetime.strptime(gap["start"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC).timestamp()
         end_s = datetime.strptime(gap["end"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC).timestamp()
         before = [r for r in valid if r.sort_seconds < start_s]
-        after = [r for r in valid if r.sort_seconds > end_s]
+        # `>=` and not `>`: the departure segment emits its first record AT the declared
+        # gap end (a record exists at 16:00 in this fixture). Skipping records at exactly
+        # the gap end would extend the interval by one extra reporting step and report a
+        # bridge of 81.0 km / 4.17 h instead of the 79.4 km / 4.08 h that is really
+        # present in the data. Phase 4's gap detection uses the true record boundaries,
+        # and the two must agree or later phases will fail for no visible reason.
+        after = [r for r in valid if r.sort_seconds >= end_s]
         entry: Dict[str, Any] = dict(gap)
+        entry["vesselId"] = spec.vessel_id
+        entry["mmsi"] = spec.mmsi
+        entry["recordBoundaryStart"] = (
+            iso_z(datetime.fromtimestamp(
+                max((r.sort_seconds for r in before), default=0.0), tz=UTC)) if before else None
+        )
+        entry["recordBoundaryEnd"] = (
+            iso_z(datetime.fromtimestamp(min(r.sort_seconds for r in after), tz=UTC))
+            if after else None
+        )
         if before and after:
             last_before = max(before, key=lambda r: r.sort_seconds)
             first_after = min(after, key=lambda r: r.sort_seconds)
@@ -1429,6 +1486,28 @@ def self_check(
     check(v003_gap["impliedSpeedKn"] >= 30.0,
           f"V003's gap is NOT physically feasible ({v003_gap['impliedSpeedKn']:.1f} kn >= 30 kn)")
 
+    # --- AIS gap fixtures must describe the data that is actually written ---------
+    # Regression guard for a real defect: the answer key originally bridged each gap to
+    # the first record strictly AFTER the declared end, which skipped the record that
+    # exists exactly AT the end and reported a 4.17 h / 81.0 km bridge instead of the
+    # 4.08 h / 79.4 km interval present in the file. Phase 4 (and Phase 9) read the
+    # record boundaries, so the two must agree exactly.
+    for gap in (v002_gap, v003_gap):
+        vessel = next(s for s in summaries if s["vesselId"] == gap["vesselId"])
+        check(gap["recordBoundaryStart"] == gap["lastPositionBefore"]["timestamp"],
+              f"{gap['vesselId']}: the gap's bridging start is the last record before it "
+              f"({gap['recordBoundaryStart']})")
+        check(gap["recordBoundaryEnd"] == gap["firstPositionAfter"]["timestamp"],
+              f"{gap['vesselId']}: the gap's bridging end is the first record at or after the "
+              f"declared end ({gap['recordBoundaryEnd']})")
+        expected_kn = gap["bridgeDistanceKm"] / gap["elapsedHours"] / KNOT_TO_KMH
+        check(abs(expected_kn - gap["impliedSpeedKn"]) < 0.01,
+              f"{gap['vesselId']}: the documented implied speed matches the documented "
+              f"distance and elapsed time ({gap['impliedSpeedKn']:.2f} kn)")
+        check(vessel["reportingIntervalSeconds"] == 300
+              or abs(gap["elapsedHours"] - gap["durationHours"]) < 0.5,
+              f"{gap['vesselId']}: the bridging interval follows the vessel's own reporting rate")
+
     check(by_id["V004"]["distanceToSlickKmAtObservation"] is not None
           and by_id["V004"]["distanceToSlickKmAtObservation"] <= 15.0,
           "V004 is the vessel nearest the observed slick at observation time")
@@ -1494,6 +1573,66 @@ def self_check(
 
     check(all(r.vessel_type > 0 for r in rows), "all records carry an AIS ship-type code")
     check(all(r.mmsi == r.mmsi.strip() for r in rows), "MMSI values are clean strings")
+
+    # --- physical self-consistency of the tracks (regression guard) ------------
+    # The dataset previously violated this: tracks were built in DEGREES and then moved
+    # across latitudes, so the distance a vessel actually covered disagreed with the
+    # speed it reported (by 3-4%). That is fatal for a forensic dataset, because
+    # trajectory compatibility and AIS gap feasibility both reason about implied speed.
+    # Two properties are asserted for every single-interval step:
+    #   (1) ground distance covered == distance implied by the reported SOG of the
+    #       step's starting sample, within the 0.1 kn quantisation of the SOG column;
+    #   (2) no step is covered faster than the vessel's maximum reported SOG.
+    # Steps whose endpoints are not consecutive in the raw track are skipped: a sample
+    # clipped by the study-area bounding box leaves a longer interval behind it. Steps
+    # whose destination carries an injected data-quality defect are skipped too, because
+    # those rows were deliberately tampered with (V006's impossible teleport is the one
+    # that would otherwise trip this check - and that is the point of that fixture).
+    by_vessel: Dict[str, List[AisRow]] = {}
+    for r in rows:
+        by_vessel.setdefault(r.vessel_id, []).append(r)
+    defect_stamps = {
+        (d.get("mmsi"), d.get("timestampWritten"))
+        for d in defects
+        if d.get("mmsi") and d.get("timestampWritten")
+    }
+
+    worst_speed_error = 0.0
+    worst_excess_kn = 0.0
+    compared_steps = 0
+    for spec in specs:
+        anchor_lat, anchor_lon = resolve_anchor(spec.anchor_ref, ctx)
+        raw = build_samples(spec, spec.anchor_hour, anchor_lat, anchor_lon)
+        kept = {
+            (r.timestamp, round(r.lat, 6), round(r.lon, 6)) for r in by_vessel[spec.vessel_id]
+        }
+        interval_h = spec.interval_s / 3600.0
+        max_reported = max((r.sog for r in by_vessel[spec.vessel_id]), default=0.0)
+        for i in range(1, len(raw)):
+            a, b = raw[i - 1], raw[i]
+            if (b[0] - a[0]).total_seconds() != spec.interval_s:
+                continue
+            stamps = (iso_z(a[0]), iso_z(b[0]))
+            if (spec.mmsi, stamps[1]) in defect_stamps:
+                continue
+            if (iso_z(a[0]), round(a[2], 6), round(a[3], 6)) not in kept:
+                continue
+            if (iso_z(b[0]), round(b[2], 6), round(b[3], 6)) not in kept:
+                continue
+            measured_kn = haversine_km(a[2], a[3], b[2], b[3]) / interval_h / KNOT_TO_KMH
+            compared_steps += 1
+            if a[4] >= 1.0:
+                worst_speed_error = max(worst_speed_error, abs(measured_kn - a[4]) / a[4])
+            worst_excess_kn = max(worst_excess_kn, measured_kn - max_reported)
+
+    check(compared_steps > 3000,
+          f"speed consistency was checked on {compared_steps} single-interval steps")
+    check(worst_speed_error <= 0.01,
+          f"reported SOG matches the distance actually covered on every checked step "
+          f"(worst deviation {worst_speed_error * 100:.3f}% <= 1%)")
+    check(worst_excess_kn <= 0.2,
+          f"no step is covered faster than the vessel's maximum reported SOG "
+          f"(worst excess {max(0.0, worst_excess_kn):.3f} kn <= 0.2 kn)")
     return checks
 
 

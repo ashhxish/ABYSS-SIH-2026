@@ -54,7 +54,7 @@ timestamped and located near the slick.
 | Item | Value |
 |---|---|
 | Demo implementation | bundled synthetic CSV: `intelligence/data/demo/case_001/ais/demo_ais_positions.csv` (*Phase 2, committed*) |
-| Demo contents | 12 synthetic vessels, 3,669 records, 72 h, 11 required AIS fields + `datasetLabel`; see `intelligence/data/demo/case_001/README.md` |
+| Demo contents | 12 synthetic vessels, 3,675 records, 72 h, 11 required AIS fields + `datasetLabel`; see `intelligence/data/demo/case_001/README.md` |
 | Real implementation | `LicensedAISProvider` (*out of prototype scope*) |
 | Authentication | **Authentication method needs verification from the official provider documentation.** Historical AIS is generally commercial and licensed; ABYSS ships no credentials, endpoints or scrapers. |
 | Env vars | none defined until a provider is actually chosen (no fake variables are created) |

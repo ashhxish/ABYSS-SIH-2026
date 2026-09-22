@@ -82,7 +82,7 @@
       600
     ],
     "file": "ais/demo_ais_positions.csv",
-    "recordCount": 3669,
+    "recordCount": 3675,
     "label": "AIS: Synthetic Demonstration Dataset",
     "notes": [
       "Positions outside the bounding box are intentionally absent, so some vessels begin or end mid-track; that is ordinary behaviour for an area-scoped extract",
@@ -346,9 +346,9 @@
       "category": "duplicate_record",
       "description": "Exact duplicate of an existing record (same MMSI, timestamp and position).",
       "mmsi": "900000007",
-      "timestampWritten": "2026-03-13T09:50:00Z",
-      "latitude": 17.49152,
-      "longitude": 70.991496,
+      "timestampWritten": "2026-03-13T09:55:00Z",
+      "latitude": 17.488595,
+      "longitude": 71.00588,
       "expectedPhase3Action": "reject as duplicate (counted and logged, never silently dropped)"
     },
     {
@@ -358,8 +358,8 @@
       "description": "Exact duplicate of an existing record (same MMSI, timestamp and position).",
       "mmsi": "900000007",
       "timestampWritten": "2026-03-13T13:20:00Z",
-      "latitude": 17.49152,
-      "longitude": 71.754639,
+      "latitude": 17.490431,
+      "longitude": 71.752174,
       "expectedPhase3Action": "reject as duplicate (counted and logged, never silently dropped)"
     },
     {
@@ -369,8 +369,8 @@
       "description": "Exact duplicate of an existing record (same MMSI, timestamp and position).",
       "mmsi": "900000007",
       "timestampWritten": "2026-03-13T16:50:00Z",
-      "latitude": 17.49152,
-      "longitude": 72.517783,
+      "latitude": 17.488635,
+      "longitude": 72.511978,
       "expectedPhase3Action": "reject as duplicate (counted and logged, never silently dropped)"
     },
     {
@@ -380,8 +380,8 @@
       "description": "Exact duplicate of an existing record (same MMSI, timestamp and position).",
       "mmsi": "900000007",
       "timestampWritten": "2026-03-13T20:20:00Z",
-      "latitude": 17.49152,
-      "longitude": 73.280926,
+      "latitude": 17.483699,
+      "longitude": 73.282978,
       "expectedPhase3Action": "reject as duplicate (counted and logged, never silently dropped)"
     },
     {
@@ -410,7 +410,7 @@
       "category": "invalid_coordinate",
       "description": "Latitude outside the valid range [-90, 90].",
       "mmsi": "900000012",
-      "timestampWritten": "2026-03-13T19:30:00Z",
+      "timestampWritten": "2026-03-13T19:40:00Z",
       "latitude": 95.2,
       "expectedPhase3Action": "reject row (counted and logged)"
     },
@@ -442,8 +442,8 @@
       "description": "Added record 60 km from the vessel's next position only 5 minutes earlier, implying ~720 km/h. Because it teleports out and back it produces exactly TWO impossible consecutive steps, both attributable to this single injected row.",
       "mmsi": "900000006",
       "timestampWritten": "2026-03-12T17:55:00Z",
-      "latitude": 18.194393,
-      "longitude": 73.490219,
+      "latitude": 18.185443,
+      "longitude": 73.486854,
       "impliedSpeedKmh": 720.0,
       "expectedPhase3Action": "reject as impossible speed for the elapsed time (counted and logged)"
     },
@@ -477,7 +477,7 @@
   ],
   "counts": {
     "vessels": 12,
-    "records": 3669,
+    "records": 3675,
     "vesselsWithIntentionalGap": [
       "V002",
       "V003"

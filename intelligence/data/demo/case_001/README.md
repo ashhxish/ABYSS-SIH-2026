@@ -23,7 +23,7 @@ proximity to the slick is *not* proximity to the release location.
 |---|---|
 | `case_001.json` | investigation configuration: study area, AIS extract description, observation, release window, vessel registry, injected-defect inventory. **Inputs only — no answer key.** |
 | `demo_slick.json` | observed slick polygon (GeoJSON), centroid, area/length/width/orientation, detection confidence, look-alike assessment |
-| `ais/demo_ais_positions.csv` | **3,669 synthetic AIS records**, 12 vessels, 72 h, 11 required AIS fields + `datasetLabel` |
+| `ais/demo_ais_positions.csv` | **3,675 synthetic AIS records**, 12 vessels, 72 h, 11 required AIS fields + `datasetLabel` (3,666 usable after the 9 deliberately defective rows are rejected) |
 | `environmental/demo_environmental_field.json` | deterministic current + wind field on a coarse grid (17×13 nodes) |
 | `demo_origin_expected.json` | **answer key / test fixture.** True release point, expected origin region, drift path, gap and anomaly fixtures, per-vessel computed summaries |
 | `expected_ranking.json` | intended **ordering properties** of the scenario (targets for Phase 10), mapped to the specification's test cases A–G |
@@ -56,18 +56,18 @@ an accident of coordinates. The drift model is a simplified prototype (see
 
 | ID | Vessel (synthetic) | Role | Kind | RECS | MIN→ORIGIN | →SLICK | MIN/MAX SOG | STOPS | Expected band |
 |---|---|---|---|---|---|---|---|---|---|
-| V001 | DEMO MERIDIAN STAR (tanker) | Primary plausible candidate — inside the origin region during the window, pronounced slowdown | **plausible** | 425 | 0.0 km | 268.1 | 1.5 / 11.7 kn | 0 | top-2 |
-| V002 | DEMO CORAL VOYAGER (tanker) | Gap-compatible candidate — 4 h AIS gap that is physically traversable (~10.8 kn) | **plausible** | 326 | 3.7 km | 267.1 | 10.3 / 10.7 | 0 | top-2 |
-| V003 | DEMO IRON HORIZON (tanker) | Gap-impossible candidate — same gap story, but reappears ~275 km away (~35.6 kn implied) | distractor | 175 | 9.3 km | 277.8 | 11.8 / 12.2 | 0 | top-3 but **below V002** |
-| V004 | DEMO HARBOUR LIGHT (cargo) | Misleading nearby vessel — closest to the **slick** (6.7 km), 125 km from the **origin** | distractor | 200 | 124.5 km | **6.7** | 2.0 / 9.2 | 0 | mid, **never first** |
-| V005 | DEMO SILVER TIDE (cargo) | Wrong-time vessel — crosses the origin region ~6 h **after** the window closes | distractor | 238 | 126.0 km | 91.7 | 10.8 / 11.2 | 0 | below V001/V002 |
-| V006 | DEMO FROST PELICAN (cargo) | Anomalous but remote — speeds alternate 3 kn / 8 kn with 90° course changes every 3 h, 183 km away | distractor | 433 | 182.9 km | 143.3 | −3.0 / 12.0 † | 1 | outside top-5 |
-| V007 | DEMO NORTHERN GATE (tanker) | Control — steady 12.5 kn transit, 90 km from origin, **no** anomaly and no gap | control | 280 | 89.9 km | 160.4 | 12.2 / 12.8 | 0 | mid |
-| V008 | DEMO SEA LARK (fishing) | Legitimate slow/variable working pattern, 170 km away | control | 432 | 169.9 km | 222.4 | 0.2 / 4.6 | 126 | low |
-| V009 | DEMO SKY BRIDGE (passenger) | Control — high steady 19 kn shuttle with 180° turnarounds, 111 km away | control | 432 | 110.9 km | 130.6 | 18.6 / 19.4 | 0 | low |
-| V010 | DEMO COASTAL WREN (cargo) | Control — 7 kn coastal transit, offshore of the synthetic coastline throughout | control | 192 | 62.3 km | 237.9 | 6.9 / 7.1 | 0 | low |
-| V011 | DEMO ANCHOR TUG (tug) | Control — harbour box pattern with long mooring periods, 114 km away | control | 432 | 113.9 km | 102.1 | 0.1 / 6.1 | 216 | low |
-| V012 | DEMO FAR CURRENT (cargo) | Distant steady transit that filtering should remove | distractor | 104 | 151.2 km | 110.0 | 12.7 / 13.3 | 0 | bottom |
+| V001 | DEMO MERIDIAN STAR (tanker) | Primary plausible candidate — inside the origin region during the window, pronounced slowdown | **plausible** | 425 | 0.0 km | 262.8 | 1.5 / 11.7 kn | 0 | top-2 |
+| V002 | DEMO CORAL VOYAGER (tanker) | Gap-compatible candidate — 4 h AIS gap that is physically traversable (10.5 kn implied) | **plausible** | 325 | 3.6 km | 261.7 | 10.3 / 10.7 | 0 | top-2 |
+| V003 | DEMO IRON HORIZON (tanker) | Gap-impossible candidate — same gap story, but reappears 266 km away (35.1 kn implied) | distractor | 186 | 9.2 km | 279.8 | 11.8 / 12.2 | 0 | top-3 but **below V002** |
+| V004 | DEMO HARBOUR LIGHT (cargo) | Misleading nearby vessel — closest to the **slick** (6.7 km), 125 km from the **origin** | distractor | 200 | 125.3 km | **6.7** | 2.0 / 9.2 | 0 | mid, **never first** |
+| V005 | DEMO SILVER TIDE (cargo) | Wrong-time vessel — crosses the origin region ~6 h **after** the window closes | distractor | 237 | 122.2 km | 88.0 | 10.8 / 11.2 | 0 | below V001/V002 |
+| V006 | DEMO FROST PELICAN (cargo) | Anomalous but remote — speeds alternate 3 kn / 8 kn with 90° course changes every 3 h, 183 km away | distractor | 433 | 182.6 km | 143.2 | −3.0 / 12.0 † | 1 | outside top-5 |
+| V007 | DEMO NORTHERN GATE (tanker) | Control — steady 12.5 kn transit, 90 km from origin, **no** anomaly and no gap | control | 278 | 90.0 km | 161.1 | 12.2 / 12.8 | 0 | mid |
+| V008 | DEMO SEA LARK (fishing) | Legitimate slow/variable working pattern, 170 km away | control | 432 | 170.1 km | 222.5 | 0.2 / 4.6 | 126 | low |
+| V009 | DEMO SKY BRIDGE (passenger) | Control — high steady 19 kn shuttle with 180° turnarounds, 111 km away | control | 432 | 111.0 km | 131.6 | 18.6 / 19.4 | 0 | low |
+| V010 | DEMO COASTAL WREN (cargo) | Control — 7 kn coastal transit, offshore of the synthetic coastline throughout | control | 192 | 61.4 km | 238.8 | 6.9 / 7.1 | 0 | low |
+| V011 | DEMO ANCHOR TUG (tug) | Control — harbour box pattern with long mooring periods, 113 km away | control | 432 | 113.2 km | 100.6 | 0.1 / 6.1 | 216 | low |
+| V012 | DEMO FAR CURRENT (cargo) | Distant steady transit that filtering should remove | distractor | 103 | 154.0 km | 99.4 | 12.7 / 13.3 | 0 | bottom |
 
 **Plausible candidates:** V001, V002.
 **Distractors (each defeats one tempting shortcut):** V003 (big gap, impossible travel), V004
@@ -94,8 +94,12 @@ V012 (irrelevant traffic).
 
 | Vessel | Gap | Bridge distance | Implied speed | Verdict |
 |---|---|---|---|---|
-| V002 | `2026-03-13T12:00Z` → `16:00Z` (4 h), beginning inside the origin region | 83.0 km | **10.8 kn** | physically feasible → the gap is relevant, and still weak evidence |
-| V003 | identical timing and starting point | 274.5 km | **35.6 kn** | physically impossible → the gap must contribute almost nothing |
+| V002 | `2026-03-13T11:55Z` → `16:00Z` (4.08 h of missing time), beginning inside the origin region | 79.4 km | **10.5 kn** | physically feasible → the gap is relevant, and still weak evidence |
+| V003 | identical timing and starting point | 265.8 km | **35.1 kn** | physically impossible → the gap must contribute almost nothing |
+
+The gap interval is measured between the **records that actually exist either side** (11:55 → 16:00),
+which is what a reader of the CSV sees. It is deliberately a little longer than the 4 h transmission
+outage itself, because the record at 16:00 is the vessel's first report after the outage.
 
 Both gaps overlap the release window and span the origin region. The only difference is whether the
 bridge can be explained by vessel movement — which is precisely the constraint the specification
