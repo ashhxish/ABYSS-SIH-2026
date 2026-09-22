@@ -82,7 +82,7 @@
       600
     ],
     "file": "ais/demo_ais_positions.csv",
-    "recordCount": 3710,
+    "recordCount": 3669,
     "label": "AIS: Synthetic Demonstration Dataset",
     "notes": [
       "Positions outside the bounding box are intentionally absent, so some vessels begin or end mid-track; that is ordinary behaviour for an area-scoped extract",
@@ -346,9 +346,9 @@
       "category": "duplicate_record",
       "description": "Exact duplicate of an existing record (same MMSI, timestamp and position).",
       "mmsi": "900000007",
-      "timestampWritten": "2026-03-13T09:40:00Z",
+      "timestampWritten": "2026-03-13T09:50:00Z",
       "latitude": 17.49152,
-      "longitude": 70.998844,
+      "longitude": 70.991496,
       "expectedPhase3Action": "reject as duplicate (counted and logged, never silently dropped)"
     },
     {
@@ -359,7 +359,7 @@
       "mmsi": "900000007",
       "timestampWritten": "2026-03-13T13:20:00Z",
       "latitude": 17.49152,
-      "longitude": 71.761361,
+      "longitude": 71.754639,
       "expectedPhase3Action": "reject as duplicate (counted and logged, never silently dropped)"
     },
     {
@@ -368,9 +368,9 @@
       "category": "duplicate_record",
       "description": "Exact duplicate of an existing record (same MMSI, timestamp and position).",
       "mmsi": "900000007",
-      "timestampWritten": "2026-03-13T17:00:00Z",
+      "timestampWritten": "2026-03-13T16:50:00Z",
       "latitude": 17.49152,
-      "longitude": 72.523877,
+      "longitude": 72.517783,
       "expectedPhase3Action": "reject as duplicate (counted and logged, never silently dropped)"
     },
     {
@@ -379,9 +379,9 @@
       "category": "duplicate_record",
       "description": "Exact duplicate of an existing record (same MMSI, timestamp and position).",
       "mmsi": "900000007",
-      "timestampWritten": "2026-03-13T20:40:00Z",
+      "timestampWritten": "2026-03-13T20:20:00Z",
       "latitude": 17.49152,
-      "longitude": 73.286394,
+      "longitude": 73.280926,
       "expectedPhase3Action": "reject as duplicate (counted and logged, never silently dropped)"
     },
     {
@@ -443,7 +443,7 @@
       "mmsi": "900000006",
       "timestampWritten": "2026-03-12T17:55:00Z",
       "latitude": 18.194393,
-      "longitude": 73.511339,
+      "longitude": 73.490219,
       "impliedSpeedKmh": 720.0,
       "expectedPhase3Action": "reject as impossible speed for the elapsed time (counted and logged)"
     },
@@ -477,7 +477,7 @@
   ],
   "counts": {
     "vessels": 12,
-    "records": 3710,
+    "records": 3669,
     "vesselsWithIntentionalGap": [
       "V002",
       "V003"

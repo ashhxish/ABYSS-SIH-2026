@@ -3,7 +3,7 @@
 
 WHAT THESE TESTS PROVE
     1. the bundled synthetic CASE-001 extract cleans to exactly the numbers the
-       Phase 2 defect inventory promises (3,710 rows in, 3,701 records out,
+       Phase 2 defect inventory promises (3,669 rows in, 3,660 records out,
        9 rejections split 4 duplicates / 2 malformed timestamps / 2 invalid
        coordinates / 1 impossible speed, plus 1 removed value and 3 warnings)
     2. nothing is dropped silently: accepted + rejected == input, and every rejected
@@ -63,8 +63,8 @@ EXPECTED_MMSI = {f"V{i:03d}": f"9000000{i:02d}" for i in range(1, 13)}
 
 # Numbers fixed by the Phase 2 defect inventory (intelligence/data/demo/case_001/README.md),
 # repeated here on purpose so a change in the generator cannot quietly change cleaning.
-DEMO_ROWS_IN = 3710
-DEMO_RECORDS = 3701
+DEMO_ROWS_IN = 3669
+DEMO_RECORDS = 3660
 DEMO_REJECTED = 9
 DEMO_REJECTIONS = {
     REJECT_DUPLICATE: 4,
@@ -153,7 +153,7 @@ class TestDemoDatasetCleaning(unittest.TestCase):
         self.assertIn("12/03/2026 08:00", reasons[REJECT_MALFORMED_TIMESTAMP])
         self.assertIn("null-island", reasons[REJECT_INVALID_COORDINATE])
         self.assertIn("95.2", reasons[REJECT_INVALID_COORDINATE])
-        self.assertIn("388.6", reasons[REJECT_IMPOSSIBLE_SPEED])
+        self.assertIn("388.7", reasons[REJECT_IMPOSSIBLE_SPEED])
         self.assertIn("max_plausible_speed_kn=60.0", reasons[REJECT_IMPOSSIBLE_SPEED])
 
     def test_only_one_row_is_rejected_for_the_single_injected_teleport(self):

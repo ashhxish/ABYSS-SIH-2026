@@ -68,7 +68,7 @@ complete audit trail**. It is documentation-complete in its module docstring; th
 | Output | `records[]`, `vessels[]`, `rejected[]`, `removedValues[]`, `statistics`, `warnings[]`, `notes[]`, `config`, `source` |
 
 Nothing in this module concludes anything about a vessel: it records only what the data does and does
-not contain. Results on the synthetic CASE-001 extract: **3,710 rows in → 3,701 records, 9 rejected
+not contain. Results on the synthetic CASE-001 extract: **3,669 rows in → 3,660 records, 9 rejected
 (4 duplicate / 2 malformed timestamp / 2 invalid coordinate / 1 impossible speed), 1 value removed,
 4 rows flagged**, all predicted by the Phase 2 defect inventory before the code was written.
 

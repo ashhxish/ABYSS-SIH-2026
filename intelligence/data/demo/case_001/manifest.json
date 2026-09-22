@@ -11,7 +11,7 @@
     {
       "path": "case_001.json",
       "bytes": 19046,
-      "sha256": "ca16079e27bffa05226be2b0461132d63912a19a543334d9ebd2cd79eb68671a"
+      "sha256": "8c9fae7af29c1171d561c03be416411fa1777c284cc37af70a26a1ace3f5deec"
     },
     {
       "path": "demo_slick.json",
@@ -20,8 +20,8 @@
     },
     {
       "path": "demo_origin_expected.json",
-      "bytes": 67708,
-      "sha256": "a143483446a84db72e903fd0b06b70a0557f2e9771921bcb553038cfd95a1ebb"
+      "bytes": 71100,
+      "sha256": "8e2503ec04f325164c6f682decef33165bdfdee29ee47c14b549d9b894059441"
     },
     {
       "path": "expected_ranking.json",
@@ -35,13 +35,13 @@
     },
     {
       "path": "ais/demo_ais_positions.csv",
-      "bytes": 468724,
-      "sha256": "9d24f3b813611cfe3f390b3a7ed9f9a904654cca11bd8617db7de04f2432ceeb"
+      "bytes": 463504,
+      "sha256": "5b604d16caed86f402e929646fef0024f4dcab5291099ac657a399a9b4094cbc"
     }
   ],
   "counts": {
     "vessels": 12,
-    "aisRecords": 3710,
+    "aisRecords": 3669,
     "defectRows": 13,
     "defectsByCategory": {
       "duplicate_record": 4,

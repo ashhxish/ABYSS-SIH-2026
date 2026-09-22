@@ -192,7 +192,7 @@ Expected: the generator prints a per-vessel table and `40 self-checks passed`; t
 .venv/bin/python -m unittest discover -s intelligence/tests -v
 ```
 
-Expected: `3710 rows -> 3701 records, 9 rejected, 1 value(s) removed (12 vessels)`, with the 9
+Expected: `3669 rows -> 3660 records, 9 rejected, 1 value(s) removed (12 vessels)`, with the 9
 rejections split `duplicate_record 4 / malformed_timestamp 2 / invalid_coordinate 2 /
 impossible_speed 1`, and `Ran 77 tests ... OK`. The prediction comes from the Phase 2 defect
 inventory, so cleaning is checked against the dataset's declared intent rather than against itself.

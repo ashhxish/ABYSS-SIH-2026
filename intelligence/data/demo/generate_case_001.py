@@ -478,14 +478,20 @@ def resolve_anchor(ref: Tuple[Any, ...], ctx: Dict[str, Tuple[float, float]]) ->
     raise ValueError(f"unknown anchor reference: {ref!r}")
 
 
-def build_samples(spec: VesselSpec) -> List[Tuple[Any, ...]]:
+def build_samples(spec: VesselSpec, reference_latitude: float) -> List[Tuple[Any, ...]]:
     """Emit raw samples for one vessel over the full 72 h track.
 
-    The track is built around an arbitrary working origin and translated onto the
-    vessel's anchor afterwards, so later changes to the anchor cannot alter the
-    shape of the trajectory.
+    The track is built AT THE ANCHOR LATITUDE (and translated onto the anchor
+    afterwards) so that east-west offsets use the correct metres-per-degree-of-longitude
+    scale. Building at latitude 0 and translating later would inflate every east-west
+    step by 1/cos(latitude) - about 5% at these latitudes - and a vessel declared at
+    12.5 kn would then actually cover only ~11.9 kn of ground, which would corrupt every
+    implied-speed comparison in later phases.
+
+    Building at the anchor latitude also means later changes to the anchor cannot alter
+    the shape of the trajectory.
     """
-    lat, lon = 0.0, 0.0
+    lat, lon = reference_latitude, 0.0
     t = TRACK_START
     rows: List[Tuple[Any, ...]] = []
     for seg in spec.segments:
@@ -553,7 +559,7 @@ def build_vessel_rows(spec: VesselSpec, ctx: Dict[str, Tuple[float, float]]) -> 
     'start of extract' and 'end of extract' boundaries.
     """
     anchor_lat, anchor_lon = resolve_anchor(spec.anchor_ref, ctx)
-    raw = translate_to_anchor(build_samples(spec), spec.anchor_hour, anchor_lat, anchor_lon)
+    raw = translate_to_anchor(build_samples(spec, anchor_lat), spec.anchor_hour, anchor_lat, anchor_lon)
     out: List[AisRow] = []
     seq = 0
     for (t, hour, lat, lon, sog, cog, nav, label) in raw:
@@ -1302,6 +1308,10 @@ def closest_coastline_lon(lat: float) -> float:
 
 def summarise_vessel(spec: VesselSpec, rows: List[AisRow], ctx: Dict[str, Any]) -> Dict[str, Any]:
     w0, w1 = window_hours()
+    # NOTE: "valid" here means ONLY "coordinates lie inside valid lat/lon ranges".
+    # It is deliberately not exported as validRecordCount, because that name could be
+    # confused with Phase 3 cleaning, which also rejects malformed timestamps,
+    # duplicates and impossible-speed rows.
     valid = [r for r in rows if "invalid_coordinate" not in r.defects]
     in_window = [r for r in valid if w0 <= r.hour <= w1]
     olat, olon = ctx["origin"]
@@ -1333,7 +1343,12 @@ def summarise_vessel(spec: VesselSpec, rows: List[AisRow], ctx: Dict[str, Any]) 
         "roleDescription": spec.role_description,
         "reportingIntervalSeconds": spec.interval_s,
         "recordCount": len(rows),
-        "validRecordCount": len(valid),
+        "recordsWithInRangeCoordinates": len(valid),
+        "cleanRecordCountNote": (
+            "recordsWithInRangeCoordinates counts only out-of-range coordinate defects. "
+            "Phase 3 AIS cleaning additionally rejects malformed timestamps, exact duplicates "
+            "and impossible-speed rows; use the cleaning report for the authoritative count."
+        ),
         "firstRecordTimestamp": first_row.timestamp if first_row else None,
         "lastRecordTimestamp": last_row.timestamp if last_row else None,
         "inStudyAreaHours": round((last_row.hour - first_row.hour), 4) if (first_row and last_row) else 0.0,
