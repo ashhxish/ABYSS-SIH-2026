@@ -3,9 +3,10 @@
 
 WHAT THESE TESTS PROVE
     1. the bundled synthetic CASE-001 extract cleans to exactly the numbers the
-       Phase 2 defect inventory promises (3,669 rows in, 3,660 records out,
+       Phase 2 defect inventory promises: 3,675 rows in, 3,666 records out, and
        9 rejections split 4 duplicates / 2 malformed timestamps / 2 invalid
-       coordinates / 1 impossible speed, plus 1 removed value and 3 warnings)
+       coordinates / 1 impossible speed. 4 rows carry a warning (3 rows missing an
+       optional field, 1 row whose impossible SOG value was removed and recorded)
     2. nothing is dropped silently: accepted + rejected == input, and every rejected
        row and removed value carries a source line, a category, a reason and its raw
        values
