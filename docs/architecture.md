@@ -75,11 +75,13 @@ calls to the intelligence service · `repository/` Spring Data JPA · `entity/` 
 ### intelligence/ (*Phases 3–12*)
 `config.py` validated environment settings and `geo.py` shared geodesy helpers (both Phase 3) ·
 `detection/` slick detection + characterisation · `hindcast/` backward particle drift ·
-`ais/cleaning.py` **implemented in Phase 3** (ingestion, validation, audit trail); `ais/` still gains
-trajectory construction, spatial/temporal/trajectory filtering and gap analysis in Phases 4–9 ·
+`ais/cleaning.py` **implemented in Phase 3** (ingestion, validation, audit trail) and
+`ais/trajectory.py` **implemented in Phase 4** (per-vessel grouping, geodesic segments, gaps,
+stop/slow periods, course changes, gap-split geometry); `ais/` still gains spatial/temporal/trajectory
+filtering and gap analysis in Phases 5–9 ·
 `behaviour/` baseline comparison and anomaly scoring · `scoring/` configurable evidence weighting +
-counterfactual reasons · `schemas/` Pydantic models = API contract · `tests/` dataset tests (Phase 2)
-and cleaning tests (Phase 3), plus the forensic test cases A–G in Phase 19.
+counterfactual reasons · `schemas/` Pydantic models = API contract · `tests/` dataset tests (Phase 2),
+cleaning tests (Phase 3), trajectory tests (Phase 4), plus the forensic test cases A–G in Phase 19.
 Data: `data/satellite|environmental|ais|demo` (demo assets committed, raw downloads ignored).
 
 ## 4. Data modes and fallback policy

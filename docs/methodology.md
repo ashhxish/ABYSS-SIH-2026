@@ -81,6 +81,18 @@ or evaporation, no shoreline interaction, no turbulence closure. The output is a
 3. **Construct trajectories**: group by vessel identifier, sort chronologically, compute geodesic
    segment distances (great-circle, not planar Euclidean), durations, average and maximum speed,
    course changes, stop/slow periods, and the gap list.
+
+   *Implemented (Phase 4, `app/ais/trajectory.py`).* One `VesselTrajectory` per MMSI with `points[]`
+   (each carrying its 1-based `sourceLine`), `segments[]` (great-circle distance, elapsed time,
+   **implied speed**, initial bearing), `gaps[]`, `stopSlowPeriods[]`, `courseChanges[]`, `stats`,
+   GeoJSON `geometry` and **`geometryByLeg`** (split at every gap so a rendered track never implies
+   continuous observation). The straight line across a gap is reported as its own field and is
+   **never counted as observed travel**. Thresholds are configurable prototype values (gap ≥ 1800 s,
+   stop < 0.5 kn, slow < 3.0 kn, course change ≥ 30°). Gap records state facts plus a `note` that
+   relevance belongs to the gap-analysis phase, and a test asserts no gap field name mentions score,
+   relevance, suspicion or rank. The generator and the tests both verify the dataset's internal
+   consistency (reported SOG vs. distance actually covered; worst disagreement 0.83% at ≥ 5 kn), which
+   is what trajectory compatibility and gap feasibility will later rely on.
 4. **Filter candidates** in stages, each producing its own reasoning:
    * *spatial* — was the vessel inside, or within a configurable distance of, the origin uncertainty
      region?

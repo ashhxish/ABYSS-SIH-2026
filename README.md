@@ -175,9 +175,9 @@ python3 intelligence/data/demo/generate_case_001.py
 python3 -m unittest discover -s intelligence/tests -v
 ```
 
-Expected: the generator prints a per-vessel table and `40 self-checks passed`; the suite reports
-`Ran 35 tests ... OK`. The dataset itself is described in
-`intelligence/data/demo/case_001/README.md`.
+Expected: the generator prints a per-vessel table and `51 self-checks passed`; the suite reports
+`Ran 35 tests ... OK` (Phase 2 tests only — the full suite is larger). The dataset itself is described
+in `intelligence/data/demo/case_001/README.md`.
 
 ### Verify Phase 3 (AIS cleaning) — needs the project virtual environment
 
@@ -188,14 +188,32 @@ Expected: the generator prints a per-vessel table and `40 self-checks passed`; t
 # write the full audit trail (records + rejected rows + removed values) and the cleaned CSV
 .venv/bin/python intelligence/app/ais/cleaning.py --json /tmp/cleaning.json --out-cleaned /tmp/clean.csv
 
-# full test suite (Phase 2 + Phase 3 = 77 tests)
+# full test suite (Phase 2 + Phase 3 + Phase 4 = 99 tests)
 .venv/bin/python -m unittest discover -s intelligence/tests -v
 ```
 
-Expected: `3669 rows -> 3660 records, 9 rejected, 1 value(s) removed (12 vessels)`, with the 9
+Expected: `3675 rows -> 3666 records, 9 rejected, 1 value(s) removed (12 vessels)`, with the 9
 rejections split `duplicate_record 4 / malformed_timestamp 2 / invalid_coordinate 2 /
-impossible_speed 1`, and `Ran 77 tests ... OK`. The prediction comes from the Phase 2 defect
-inventory, so cleaning is checked against the dataset's declared intent rather than against itself.
+impossible_speed 1`. The prediction comes from the Phase 2 defect inventory, so cleaning is checked
+against the dataset's declared intent rather than against itself.
+
+### Verify Phase 4 (AIS trajectory construction) — needs the project virtual environment
+
+```bash
+# build per-vessel trajectories from the cleaned extract and print the report
+.venv/bin/python intelligence/app/ais/trajectory.py
+
+# write the full trajectory JSON (points, segments, gaps, stop/slow periods, course changes, geometry)
+.venv/bin/python intelligence/app/ais/trajectory.py --json /tmp/trajectories.json
+
+# full suite: Phase 2 (dataset) + Phase 3 (cleaning) + Phase 4 (trajectories) = 99 tests
+.venv/bin/python -m unittest discover -s intelligence/tests -v
+```
+
+Expected: `built 12 trajectories from 3666 records: 3652 segments, 2 gaps, 12 stop and 14 slow
+periods, 64 significant course changes`, and `Ran 99 tests ... OK`. The two gaps are
+`2026-03-13T11:55Z → 16:00Z` for both gap vessels, with implied speeds of **10.5 kn (V002, feasible)**
+and **35.1 kn (V003, not feasible)** — the pair that makes "a gap alone is never suspicion" testable.
 
 ## 6. Build status (phase plan from the specification)
 
@@ -204,7 +222,8 @@ inventory, so cleaning is checked against the dataset's declared intent rather t
 | 1 | Repository + project structure | ✅ complete |
 | 2 | Demo dataset (deterministic) | ✅ complete |
 | 3 | AIS cleaning | ✅ complete |
-| 4–10 | Trajectories → spatial/temporal/trajectory filtering → behaviour → gaps → scoring | ⏳ next |
+| 4 | Vessel trajectories | ✅ complete |
+| 5–10 | Spatial/temporal/trajectory filtering → behaviour → gaps → scoring | ⏳ next |
 | 11–12 | Hindcast engine, satellite / oil-spill module | ⏳ |
 | 13–14 | Spring Boot API, PostgreSQL/PostGIS schema | ⏳ |
 | 15–18 | React dashboard, forensic timeline, evidence graph, report generation | ⏳ |
