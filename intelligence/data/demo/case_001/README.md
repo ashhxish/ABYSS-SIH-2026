@@ -133,7 +133,7 @@ diff -r /tmp/case_001 intelligence/data/demo/case_001
 python3 -m unittest discover -s intelligence/tests -v
 ```
 
-The generator runs **40 design self-checks** and refuses to write output if the scenario does not have
+The generator runs **51 design self-checks** and refuses to write output if the scenario does not have
 the properties described above (for example, if the slick were not downstream of the release point,
 or if V003's gap were traversable).
 

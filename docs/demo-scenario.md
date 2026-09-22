@@ -91,7 +91,7 @@ suspicion*.
   regeneration, and `manifest.json` carries a SHA-256 for each file.
 * A fresh run reproduces the committed bytes exactly; `intelligence/tests/test_case_001_dataset.py`
   (35 tests) asserts this, alongside the scenario properties and every injected defect.
-* The generator itself runs 40 design self-checks and refuses to write output if the scenario loses one
+* The generator itself runs 51 design self-checks and refuses to write output if the scenario loses one
   of its documented properties.
 * No network access is required or attempted in demo mode.
 
