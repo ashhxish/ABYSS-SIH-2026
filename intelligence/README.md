@@ -8,29 +8,37 @@ intelligence/
 ├── requirements.txt                 (Phase 3: pandas, numpy — pinned to installed versions)
 ├── app/
 │   ├── __init__.py
-│   ├── config.py                    env-driven settings + startup validation   (Phase 3)
-│   ├── geo.py                       shared geodesy helpers                     (Phase 3)
-│   ├── main.py                      FastAPI app + routers             (Phases 11-13)
+│   ├── config.py                    env-driven settings + startup validation   (Phase 3 ✅)
+│   ├── geo.py                       shared geodesy helpers                     (Phase 3 ✅)
+│   ├── timeutils.py                 one UTC parser + ReleaseWindow             (Phases 5-11 ✅)
+│   ├── investigation.py             evidence pipeline orchestrator   (Phases 5-11 assembled ✅)
+│   ├── main.py                      FastAPI app + routers             (Phases 12-13)
 │   ├── detection/                   SAR slick detection + look-alikes  (Phase 12)
-│   ├── hindcast/                    backward particle drift model      (Phase 11)
+│   ├── hindcast/
+│   │   ├── environmental.py         gridded current/wind field + bilinear lookup (Phase 11 ✅)
+│   │   └── origin.py                backward particle drift -> origin REGION (Phase 11 ✅)
 │   ├── ais/
 │   │   ├── __init__.py
-│   │   └── cleaning.py              ingestion, validation, audit trail   (Phase 3 ✅)
-│   │                                (Phase 4 adds trajectory construction here)
-│   ├── behaviour/                   baseline comparison, anomalies     (Phase 8)
-│   ├── scoring/                     configurable weights, reasons, counterfactuals (Phase 10)
-│   ├── providers/                   Satellite/Environmental/AIS provider abstractions
-│   │                                + Demo* implementations            (Phase 2+)
-│   └── schemas/                     Pydantic models = the service contract
+│   │   ├── cleaning.py              ingestion, validation, audit trail   (Phase 3 ✅)
+│   │   ├── trajectory.py            ordered tracks, legs, gaps, events    (Phase 4 ✅)
+│   │   ├── filtering.py             spatial / temporal / trajectory compatibility (Phases 5-7 ✅)
+│   │   └── gap_analysis.py          gap feasibility x relevance            (Phase 9 ✅)
+│   ├── behaviour/                   own-baseline comparison, gated anomalies (Phase 8 ✅)
+│   ├── scoring/                     configurable weights, reasons, counterfactuals (Phase 10 ✅)
+│   ├── providers/                   provider abstractions + Demo* implementations (planned:
+│   │                                demo labelling currently lives in the Phase 3 loader)
+│   └── schemas/                     Pydantic models = the service contract (Phase 13)
 ├── data/
 │   ├── satellite/                   demo scene + README (raw downloads ignored)
-│   ├── environmental/               demo field + README
+│   ├── environmental/               README; the demo field ships inside the case bundle
 │   ├── ais/                         README: where AIS datasets live (demo extract is inside the
 │   │                                case bundle at data/demo/case_001/ais/)
 │   └── demo/
 │       ├── generate_case_001.py     deterministic dataset generator    (Phase 2 ✅)
 │       └── case_001/                the generated CASE-001 bundle      (Phase 2 ✅)
-└── tests/                           dataset tests (Phase 2) + cleaning tests (Phase 3)
+└── tests/                           253 tests: dataset (Phase 2), cleaning (3), trajectory (4),
+                                     compatibility (5-7), behaviour (8), gaps (9), scoring (10),
+                                     hindcast (11) and end-to-end pipeline
 ```
 
 ## Internal API (specification contract)
@@ -125,6 +133,39 @@ Results on the synthetic CASE-001 extract (after cleaning):
 The V002/V003 pair is the fixture that makes "a gap alone is never suspicion" testable: **identical
 gap timing, identical location at gap start, only physical feasibility differs.**
 
+## Evidence pipeline (Phases 5-11 — implemented)
+
+`app/investigation.py` assembles the whole chain and returns one explainable result:
+
+```
+cleaning (3) -> trajectories (4) -> origin hindcast (11)
+   -> compatibility (5-7) -> behaviour (8) -> gaps (9) -> scoring + ranking (10)
+```
+
+| Module | Question it answers | Reported as |
+|---|---|---|
+| `ais/filtering.py` | How close was it, and was it inside the region **while the window was open**? | distances in km, `insideRegionRelation`, in-region presence seconds, physical plausibility of in-window motion |
+| `behaviour/baseline.py` | Does its behaviour differ from **its own** track-wide baseline? | raw anomaly 0-1 from four named components, plus a gated `scoredAnomaly` |
+| `ais/gap_analysis.py` | Could it have crossed the region while silent, and does the gap matter? | per-gap feasibility, relevance 0-1, `bestEvidenceValue` |
+| `scoring/engine.py` + `ranking.py` | What evidence exists, and in what order? | per-factor points **and** a plain-language reason per factor, counterfactuals, tie groups |
+
+Measured on CASE-001 (default weights: spatial 35 · temporal 25 · trajectory 20 · behaviour 10 ·
+gap 10):
+
+| | |
+|---|---|
+| Origin region | 119.5 km² hull, spread 6.8 km, confidence 0.77; release window `2026-03-13T10:00Z → 18:00Z` |
+| Inside the region during the window | **3 vessels** — V001, V002, V003 (matches the generator's declared intent) |
+| Ranking | V001 **83.564** · V002 **83.200** · V003 **80.125** · nine vessels tied at **0.000** |
+| Gap factor | V002 **3.0/10** (the full 30 % cap, feasible at 10.5 kn) vs V003 **0/10** (35.1 kn required) |
+| Behaviour | 4 anomalies reported; only V001's is flagged **and** inside the region (raw 0.36 → **3.564/10**). V006's 0.35 stays context (outside, 0 points); V002/V003's sub-threshold anomalies contribute 0.20 and 0.13 |
+| Spatial falloff | 30 km: V005 is 108 km away during the window, so no "nearest vessel" credit |
+| Nearest vessel to the slick | V004 is **1.1 km** from the slick ring at its record nearest the observation time, yet ranks **4th with 0.000** — the rank-1 counterfactual says why |
+
+The nine equal scores are deliberate and surfaced as a `tieGroups` entry: they are vessels with no
+evidence of any kind, and the ordering inside that group is an identifier tie-break explicitly labelled
+"deterministic, not evidential". The test suite asserts that behaviour rather than hiding it.
+
 ## Commands
 
 ```bash
@@ -133,10 +174,14 @@ gap timing, identical location at gap start, only physical feasibility differs.*
 .venv/bin/python intelligence/app/ais/cleaning.py --json /tmp/cleaning.json --out-cleaned /tmp/clean.csv
 .venv/bin/python intelligence/app/ais/trajectory.py               # build trajectories + report
 .venv/bin/python intelligence/app/ais/trajectory.py --json /tmp/trajectories.json
-.venv/bin/python -m unittest discover -s intelligence/tests -v    # 99 tests (Phases 2-4)
+.venv/bin/python -m unittest discover -s intelligence/tests -v    # 253 tests (Phases 2-11)
 
 cd intelligence                                                    # `app` must be importable
 ../.venv/bin/python -m app.ais.cleaning
 ../.venv/bin/python -m app.ais.trajectory
+../.venv/bin/python -m app.investigation                           # full pipeline, printed ranking
+../.venv/bin/python -m app.investigation --json /tmp/investigation.json
+../.venv/bin/python -m app.investigation --weight-gap 100 --weight-spatial 0 \
+    --weight-trajectory 0 --weight-behaviour 0 --weight-temporal 0  # re-weighted run
 uvicorn app.main:app --reload --port 8000                          # once Phase 13 adds main.py
 ```
