@@ -10,3 +10,8 @@
 #   Phase 11+: shapely / fastapi / uvicorn are added by their own phases
 pandas==3.0.6
 numpy==2.5.3
+fastapi==0.115.6
+pydantic==2.10.4
+uvicorn==0.34.0
+httpx==0.28.1
+
