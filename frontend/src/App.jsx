@@ -12,10 +12,12 @@ import AisPanel from './components/AisPanel.jsx'
 import CandidateDetail from './components/CandidateDetail.jsx'
 import CandidateTable from './components/CandidateTable.jsx'
 import ConfidencePanel from './components/ConfidencePanel.jsx'
+import EvidenceChain from './components/EvidenceChain.jsx'
 import Header from './components/Header.jsx'
 import MapPanel from './components/MapPanel.jsx'
 import ObservationCard from './components/ObservationCard.jsx'
 import OriginCard from './components/OriginCard.jsx'
+import Timeline from './components/Timeline.jsx'
 import Workflow from './components/Workflow.jsx'
 import { Badge, Card, NoticeList, Spinner } from './components/ui.jsx'
 
@@ -224,6 +226,29 @@ export default function App() {
           <CandidateDetail entry={selectedEntry} trajectory={selectedTrack} />
         </div>
 
+        {/* Phase 16: the case chronology. Vessel rows in it re-select a candidate,
+            so the timeline, map, evidence panel and chain stay in step. */}
+        <div className="col col-full">
+          <Timeline
+            investigation={investigation.data}
+            detection={detection.data}
+            selected={selected}
+            onSelect={(mmsi) => setSelected(String(mmsi))}
+          />
+        </div>
+
+        {/* Phase 17: why the selected candidate holds its priority, as the
+            method's own cascade with per-node API provenance. */}
+        <div className="col col-full">
+          <EvidenceChain
+            investigation={investigation.data}
+            detection={detection.data}
+            selected={selected}
+            trajectory={selectedTrack}
+            onSelect={(mmsi) => setSelected(String(mmsi))}
+          />
+        </div>
+
         <div className="col col-full">
           <Card
             id="provenance"
@@ -252,7 +277,7 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <span>ABYSS Intelligence Console — Phase 15 investigation console for the Phase 13 API.</span>
+        <span>ABYSS Intelligence Console — forensic investigation console for the intelligence API.</span>
         <span>Analytical evidence for investigation support; not a legal determination.</span>
       </footer>
     </div>
