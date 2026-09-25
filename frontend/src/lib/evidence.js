@@ -467,6 +467,20 @@ export function buildEvidenceChain(investigation, detection, mmsi, trajectory = 
     .map((nodes, index) => ({ ...LAYER_ORDER[index], nodes }))
     .filter((layer) => layer.nodes.length > 0)
 
+  // Flattened views of the same data. The component renders straight from
+  // `layers`; these two derived arrays exist so other consumers (the Phase 18
+  // report) can read the chain without re-deriving its structure.
+  const nodes = layers.flatMap((layer) => (layer.nodes || []).map((node) => ({ ...node, layerId: layer.id })))
+  // One link per adjacent layer pair - the same relationship the component
+  // draws as an arrow between layer blocks.
+  const edges = layers.slice(0, -1).map((layer, index) => ({
+    id: `${layer.id}->${layers[index + 1].id}`,
+    fromLayer: layer.id,
+    toLayer: layers[index + 1].id,
+    fromNodeCount: (layer.nodes || []).length,
+    toNodeCount: (layers[index + 1].nodes || []).length,
+  }))
+
   return {
     available: true,
     mmsi: String(entry.mmsi),
@@ -475,6 +489,8 @@ export function buildEvidenceChain(investigation, detection, mmsi, trajectory = 
     rank: entry.rank ?? null,
     totalScore: num(entry.totalScore),
     layers,
+    nodes,
+    edges,
     factors: compatibilityNodes,
     counterfactual: {
       available: Boolean(counterfactual),

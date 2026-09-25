@@ -8,12 +8,15 @@ import {
   fetchTrajectories,
 } from './api.js'
 import { findCandidate, findTrajectory, rankingEntries } from './lib/format.js'
+import { buildTimeline } from './lib/timeline.js'
+import { buildEvidenceChain } from './lib/evidence.js'
 import AisPanel from './components/AisPanel.jsx'
 import CandidateDetail from './components/CandidateDetail.jsx'
 import CandidateTable from './components/CandidateTable.jsx'
 import ConfidencePanel from './components/ConfidencePanel.jsx'
 import EvidenceChain from './components/EvidenceChain.jsx'
 import Header from './components/Header.jsx'
+import InvestigationReport from './components/InvestigationReport.jsx'
 import MapPanel from './components/MapPanel.jsx'
 import ObservationCard from './components/ObservationCard.jsx'
 import OriginCard from './components/OriginCard.jsx'
@@ -114,6 +117,19 @@ export default function App() {
   const selectedTrack = useMemo(
     () => findTrajectory(ais.data, selected),
     [ais.data, selected],
+  )
+
+  /* Phase 18: the report reuses the Phase 16 / Phase 17 builders rather than
+     re-deriving anything. These are the same pure functions the Timeline and
+     EvidenceChain panels call, memoised here so the document is generated from
+     state already in memory - the report issues no request of its own. */
+  const timeline = useMemo(
+    () => buildTimeline(investigation.data, detection.data),
+    [investigation.data, detection.data],
+  )
+  const chain = useMemo(
+    () => buildEvidenceChain(investigation.data, detection.data, selected, selectedTrack),
+    [investigation.data, detection.data, selected, selectedTrack],
   )
 
   const onStepSelect = useCallback((stepId, targetId) => {
@@ -246,6 +262,19 @@ export default function App() {
             selected={selected}
             trajectory={selectedTrack}
             onSelect={(mmsi) => setSelected(String(mmsi))}
+          />
+        </div>
+
+        {/* Phase 18: the investigator-facing document, assembled from the payloads
+            already in memory. Regenerates whenever the selected candidate changes. */}
+        <div className="col col-full">
+          <InvestigationReport
+            investigation={investigation.data}
+            detection={detection.data}
+            cleaning={cleaning.data}
+            timeline={timeline}
+            chain={chain}
+            selected={selected}
           />
         </div>
 
