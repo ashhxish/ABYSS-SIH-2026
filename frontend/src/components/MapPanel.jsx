@@ -58,7 +58,7 @@ export default function MapPanel({ investigation, detection, trajectories, traje
   const driftStart = Array.isArray(backdrift) && backdrift.length ? backdrift[0] : null
   const driftStartXY = driftStart ? projector.project(driftStart[0], driftStart[1]) : null
   const originXY = originRegion?.geometry?.coordinates?.[0]?.[0]
-    ? projector.project(originRegion.geometry.coordinates[0][1], originRegion.geometry.coordinates[0][0])
+    ? projector.project(originRegion.geometry.coordinates[0][0][1], originRegion.geometry.coordinates[0][0][0])
     : null
   const slickXY = centroidXY || (slickPath ? null : null)
 
