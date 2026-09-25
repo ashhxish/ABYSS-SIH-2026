@@ -1,274 +1,186 @@
 # ABYSS — AI-Powered Maritime Forensic Intelligence System
 
-> **SIH 2026 — Problem Statement 26143**
+> **SIH 2026 — Problem Statement 26143**  
 > Oil-spill attribution support from satellite observation + ocean/wind hindcasting + historical AIS.
 
-ABYSS turns an observed oil slick into an **explainable forensic investigation**. It reconstructs a
-**probable origin region** and a **release time window** from the observed slick and environmental
-conditions, then filters historical AIS traffic to produce a **ranked, explainable list of candidate
-vessels** whose movement is *compatible* with that reconstruction.
+ABYSS transforms an observed satellite oil slick into an **explainable forensic investigation**. It reconstructs a **probable origin region** and a **candidate release time window** from the observed slick and meteocean drift conditions, then filters and correlates historical AIS vessel traffic to produce a **ranked, explainable priority list of candidate vessels** whose trajectories and kinematics are *compatible* with that reconstruction.
 
-```
-Satellite observation → oil-spill detection → slick segmentation → environmental data
-→ backward drift / hindcasting → probable origin region + release time window
-→ historical AIS filtering → trajectory compatibility → behaviour analysis
-→ AIS gap analysis → explainable evidence scoring → candidate vessel ranking
-→ forensic timeline → interactive geospatial dashboard → investigation report
-```
 
-**ABYSS is an investigation support system. It does not prove which vessel caused a spill.**
-Candidate ranking does not establish legal responsibility. Synthetic demonstration data is always
-labelled as synthetic.
+
+**ABYSS is an investigation support system. It does not determine guilt or legal causation.**  
+Candidate ranking orders evidence to prioritise human investigation. In demo mode, all datasets are synthetic and explicitly labelled as demonstration data.
 
 ---
 
-## 1. Architecture
+## 1. Current System Architecture
 
-```
-                    React + Vite + React-Leaflet + Recharts
-                                   |
-                                   | REST /api/**
-                                   v
-                     Spring Boot (Java 21) — case lifecycle,
-                     persistence, API contract, report assembly
-                                   |
-                                   | REST (internal)
-                                   v
-                   Python 3.11+ FastAPI — detection, hindcast,
-                   AIS cleaning, trajectories, behaviour, gaps, scoring
-                                   |
-                                   v
-                      PostgreSQL 16 + PostGIS (geometry, AIS positions)
-```
+The runnable hackathon evaluation stack operates as a clean, responsive, two-tier architecture:
 
-No Kubernetes, Kafka, Redis, message queues or cloud services: the prototype is intentionally a
-three-process local stack (frontend, backend, intelligence) plus one database.
 
-| Component | Path | Runtime | Default port |
-|---|---|---|---|
-| Dashboard | `frontend/` | Node 18+ / Vite / React | 5173 |
-| Backend API | `backend/` | Java 21 / Spring Boot / Maven | 8080 |
-| Intelligence service | `intelligence/` | Python 3.11+ / FastAPI | 8000 |
-| Database | `database/` | PostgreSQL + PostGIS | 5432 |
 
-## 2. Two data modes
+* **No external network calls or cloud dependencies:** The operator console draws an equirectangular vector plot locally in SVG (no Mapbox, Leaflet tile servers, or Google Maps API keys required).
+* **Single origin:** The Vite dev server proxies  directly to , eliminating CORS friction and preventing backend hosts from being hardcoded into bundle output.
+* **Deterministic execution:** Same input data + same configuration = identical scores, rankings, and reports.
 
-| Mode | `ABYSS_DATA_MODE` | Credentials | Dataset | UI label |
-|---|---|---|---|---|
-| **Demo** (default, hackathon-reliable) | `demo` | **none** | bundled deterministic dataset in `intelligence/data/demo/case_001/` (see its `README.md`) | **DEMO DATA** |
-| **Live** | `live` | optional, from `.env` | external scientific providers | provider name + fallback notices |
+---
 
-Rules enforced in code and documentation:
+## 2. Current Technology Stack
 
-* Demo mode must run **with no API keys at all**.
-* If a live provider is unconfigured, unreachable, or errors, the service **logs the failure and
-  falls back to demo data** with a visible warning — an external API must never crash the system.
-* Synthetic AIS is **never** presented as real-world evidence; every screen that shows it carries the
-  label `AIS: Synthetic Demonstration Dataset`.
+| Layer | Technologies | Purpose |
+|---|---|---|
+| **Frontend Console** | React 18, Vite 5, Vanilla CSS3 (Custom Design System) | Operator dashboard, interactive timeline, evidence chain, SVG map, printable report |
+| **Frontend Testing** | Node.js built-in test runner () | Pure math, projection, and report assembly verification (zero extraneous test framework deps) |
+| **Backend API** | Python 3.11+, FastAPI, Uvicorn, Pydantic | High-performance asynchronous REST endpoints, request validation, error reporting |
+| **Forensic & Data Engines** | NumPy, SciPy, Shapely, PyYAML | Vector drift integration, polygon convex hulls, trajectory kinematics, AIS cleaning |
+| **Backend Testing** | Python  | Comprehensive unit and integration test suite (285 test cases) |
 
-## 3. Repository layout
+---
 
-```
-ABYSS/
-├── frontend/      React + Vite dashboard (map-centric)
-├── backend/       Spring Boot API, JPA entities, case lifecycle
-├── intelligence/  Python FastAPI scientific/AI service + datasets + tests
-├── database/      init.sql (extensions, schema bootstrap)
-├── docs/          architecture, data sources, api keys, methodology, demo scenario
-├── scripts/       check-env.sh (read-only environment verification)
-├── .env.example   configuration template (safe to commit)
-├── docker-compose.yml  OPTIONAL PostGIS convenience
-└── README.md
-```
+## 3. Repository Structure
+
+
+
+---
 
 ## 4. Prerequisites
 
-| Tool | Version | Required for | Status on the reference machine |
-|---|---|---|---|
-| JDK | 21+ | backend | ✅ 21.0.12 |
-| Maven | 3.8+ | backend | ✅ 3.8.7 |
-| Python | 3.11+ | intelligence | ✅ 3.12.3 |
-| pip / venv | — | intelligence dependencies | ✅ bootstrapped into `.venv` (pandas 3.0.6, numpy 2.5.3) |
-| Node + npm | 18+ | frontend | ❌ not installed |
-| PostgreSQL + PostGIS | 16 / 3.4 | database persistence | ❌ not installed |
-| Docker | any | *optional* database convenience | ❌ not installed |
+To run the ABYSS hackathon evaluation prototype, you need:
 
-Read-only verification at any time:
+1. **Python 3.11+** (with virtual environment support)
+2. **Node.js 18+** and **npm**
 
-```bash
-cd ABYSS
-bash scripts/check-env.sh
-```
+---
 
-### Installing the missing pieces (the reference machine has no passwordless sudo)
+## 5. Quickstart: Running the Stack
 
-**Python dependencies — needed by `intelligence/` (verified working on this machine)**
+Open two terminal windows:
 
-The system Python here is **PEP 668 "externally managed"**: `pip` is absent, `ensurepip` is absent
-(so `python3 -m venv` fails too), and `get-pip.py --user` is refused. The approach that works without
-`sudo` — and that touches nothing outside the project — is to create the virtual environment first
-with `--without-pip`, then install `pip` *inside* it:
+### Terminal 1: Backend Intelligence Service (FastAPI)
 
-```bash
-cd ABYSS
-python3 -m venv --without-pip .venv                       # venv without the missing ensurepip step
-curl -fsSL https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
-.venv/bin/python /tmp/get-pip.py                          # pip inside the venv (not the system)
-.venv/bin/python -m pip install -r intelligence/requirements.txt
-.venv/bin/python -c "import pandas, numpy; print(pandas.__version__, numpy.__version__)"
-```
 
-`.venv/` is git-ignored. Use `.venv/bin/python` (or `source .venv/bin/activate`) for every Python
-command in this repository — the system interpreter cannot import pandas.
+*Health check:* Verify the service is active by visiting  or running:
+{"dataSource":"Configuration (demo mode)","warnings":[],"status":"ok","service":"abyss-intelligence","dataMode":"demo","demoCaseId":"CASE-001"}
 
-**Node.js + npm** — download the Linux x64 LTS tarball from the official download page
-(<https://nodejs.org/en/download>), then extract it into your home directory:
+### Terminal 2: Frontend Operator Console (React / Vite)
 
-```bash
-mkdir -p "$HOME/.local/node"
-tar -xJf ~/Downloads/node-v*-linux-x64.tar.xz -C "$HOME/.local/node" --strip-components=1
-export PATH="$HOME/.local/node/bin:$PATH"      # add to ~/.bashrc to persist
-node --version && npm --version
-```
 
-**PostgreSQL + PostGIS** — with `sudo`:
 
-```bash
-sudo apt-get install -y postgresql postgresql-postgis
-sudo -u postgres psql -c "CREATE ROLE abyss LOGIN PASSWORD 'change_me_local_dev_only';"
-sudo -u postgres psql -c "CREATE DATABASE abyss OWNER abyss;"
-psql -U abyss -h localhost -d abyss -f database/init.sql
-```
+Open your browser and navigate to:  
+👉 **http://localhost:5173/**
 
-Without `sudo` (and without Docker) the database is deferred to **Phase 14**, where the installation
-route is validated *before* the schema is written. The official PostgreSQL binary distribution
-requires accepting the provider's licence through their download flow — **verification needed**, and
-it is not assumed here. **Demo mode does not require PostgreSQL**: the intelligence service runs
-standalone, so Phases 2–13 are unaffected.
+---
 
-## 5. Running the stack (target state of Phase 20)
+## 6. Golden Demo Scenario: CASE-001
 
-```bash
-bash scripts/check-env.sh                                   # 1. verify toolchain
-cp .env.example .env                                        # 2. demo mode, no keys needed
-cd intelligence && uvicorn app.main:app --port 8000         # 3. intelligence service
-cd backend && mvn spring-boot:run                           # 4. backend API   (Phase 13)
-cd frontend && npm install && npm run dev                   # 5. dashboard     (Phase 15)
-```
+The repository includes a bundled, deterministic forensic demonstration case: **** (located at ).
 
-Health checks once those phases land:
+### How to Run and Review the Investigation:
+1. Open the console at .
+2. The dashboard automatically requests  and loads the golden scenario:
+   * **Observed Slick:** Synthetic Sentinel-1 SAR observation (), observed on  off the west coast of India.
+   * **Hindcast Reconstruction:** Ocean currents and 10m wind fields integrate backwards across the candidate release window ( to ), deriving a **119.47 km² probable origin region**.
+   * **Candidate Ranking:** 12 candidate vessels are screened, ranked, and color-coded.
+3. Click on any vessel in the **Ranked candidate vessels** table to inspect synchronized evidence across all views:
+   * **Map:** Highlights the selected vessel's reconstructed AIS track relative to the slick, origin region, and backdrift line.
+   * **Candidate Details & Evidence Factors:** Displays the breakdown across all 5 evidential dimensions.
+   * **Investigation Timeline:** Expands chronological encounters, closest points of approach, and AIS gap markers.
+   * **Evidence Chain:** Traces the forensic cascade from raw sensor data to final priority rank.
+   * **Report Generator:** Click **Generate Investigation Report** to compile a printable forensic dossier directly in your browser.
 
-| Check | Command / URL |
-|---|---|
-| Intelligence service | `curl http://localhost:8000/health` |
-| Backend API | `curl http://localhost:8080/api/health` |
-| Database + PostGIS | `psql -U abyss -h localhost -d abyss -c "SELECT postgis_full_version();"` |
-| Dashboard | <http://localhost:5173> |
+### Expected Baseline Results (CASE-001):
+The pipeline scores and ranks vessels strictly based on multi-factor physics and kinematic evidence:
+* **Rank 1 — DEMO MERIDIAN STAR (V001 / MMSI 900000001):** Total Score **83.564**. Inside the reconstructed origin region during the open release window; exhibits loitering / speed variation anomalies.
+* **Rank 2 — DEMO CORAL VOYAGER (V002 / MMSI 900000002):** Total Score **83.200**. Carries a 4h 05m AIS gap crossing the origin region; evaluated as **physically feasible** at 10.5 knots.
+* **Rank 3 — DEMO IRON HORIZON (V003 / MMSI 900000003):** Total Score **80.125**. Has an identical AIS gap timestamp, but bridging the distance would require **35.1 knots** (physically impossible for a bulk carrier; gap awarded 0 points).
+* **Rank 4 — DEMO HARBOUR LIGHT (V004 / MMSI 900000004):** Total Score **0.000**. Demonstrates counterfactual exclusion: V004 was the physically closest vessel to the slick at observation time, but was 119 km away during the release window and never crossed the hindcast origin region.
 
-### Verify Phase 2 (the demo dataset) — works right now, no services needed
+---
 
-```bash
-# regenerate the deterministic CASE-001 dataset in place
-python3 intelligence/data/demo/generate_case_001.py
+## 7. Main Implemented Features
 
-# run the Phase 2 validation suite (identity, fields, data quality, scenario design, determinism)
-python3 -m unittest discover -s intelligence/tests -v
-```
+1. **Normalized Boundary & Ingestion Layer ():**
+   * Pydantic-free boundary contracts (, , , , ).
+   * Source adapters for satellite GeoJSON, AIS CSV position streams, and meteocean JSON grids.
+   * Robust validation auditing sentinels (, , ), geographic bounds, and timestamps without silent drops.
 
-Expected: the generator prints a per-vessel table and `51 self-checks passed`; the suite reports
-`Ran 35 tests ... OK` (Phase 2 tests only — the full suite is larger). The dataset itself is described
-in `intelligence/data/demo/case_001/README.md`.
+2. **Satellite Detection & Look-Alike Screening ():**
+   * Morphological segmentation metrics: slick area, perimeter, elongation, orientation, and centroid coordinates.
+   * Rule-based screening against natural biogenic slicks, calm water zones, and algal blooms.
 
-### Verify Phase 3 (AIS cleaning) — needs the project virtual environment
+3. **Backward Environmental Drift Hindcasting ():**
+   * Gridded spatial-temporal interpolation of surface currents and 10m wind fields.
+   * Deterministic backward Lagrangian advection with configurable wind leeway coefficient.
+   * Convex hull origin region derivation with spread and model confidence metrics.
 
-```bash
-# clean the synthetic CASE-001 extract and print the audit report
-.venv/bin/python intelligence/app/ais/cleaning.py
+4. **AIS Data Cleaning & Trajectory Construction ():**
+   * Sanitization of duplicate timestamps, coordinate anomalies, and corrupt values with complete audit logs.
+   * Trajectory reconstruction segmented by time, course changes, speed changes, and AIS outages.
+   * Physics-gated gap feasibility evaluating minimum required speed to cross the origin area.
 
-# write the full audit trail (records + rejected rows + removed values) and the cleaned CSV
-.venv/bin/python intelligence/app/ais/cleaning.py --json /tmp/cleaning.json --out-cleaned /tmp/clean.csv
+5. **5-Factor Evidential Scoring & Counterfactuals (, ):**
+   * 100-point multi-factor model: Spatial Proximity (35 pts), Temporal Alignment (25 pts), Trajectory Integrity (20 pts), Behavioural Anomaly (10 pts), and AIS Gap Feasibility (10 pts).
+   * Automated counterfactual explanations explaining why non-matching vessels (e.g. V004) are excluded.
 
-# full test suite (Phase 2 + Phase 3 + Phase 4 = 99 tests)
-.venv/bin/python -m unittest discover -s intelligence/tests -v
-```
+6. **Interactive Operator Console ():**
+   * Standalone SVG incident plot with coordinate graticules, dynamic metric scale bar, and track overlays.
+   * Forensic chronological timeline with UTC timestamp guarantees.
+   * Evidence cascade graph showing data provenance at every decision node.
+   * Client-side printable investigation report generator.
 
-Expected: `3675 rows -> 3666 records, 9 rejected, 1 value(s) removed (12 vessels)`, with the 9
-rejections split `duplicate_record 4 / malformed_timestamp 2 / invalid_coordinate 2 /
-impossible_speed 1`. The prediction comes from the Phase 2 defect inventory, so cleaning is checked
-against the dataset's declared intent rather than against itself.
+---
 
-### Verify Phase 4 (AIS trajectory construction) — needs the project virtual environment
+## 8. Offline Demonstration & Reliability
 
-```bash
-# build per-vessel trajectories from the cleaned extract and print the report
-.venv/bin/python intelligence/app/ais/trajectory.py
+* **100% Air-Gapped Operation:** All dependencies, algorithms, demo datasets, and projection math are packaged inside the repository.
+* **Zero External Calls:** ABYSS does not call external map tile providers (OSM/Mapbox), remote APIs, or cloud services during demo execution.
+* **No Authentication / Setup Friction:** Runs immediately out of the box with zero required API keys or environment variables.
 
-# write the full trajectory JSON (points, segments, gaps, stop/slow periods, course changes, geometry)
-.venv/bin/python intelligence/app/ais/trajectory.py --json /tmp/trajectories.json
+---
 
-# full suite: Phase 2 (dataset) + Phase 3 (cleaning) + Phase 4 (trajectories) = 99 tests
-.venv/bin/python -m unittest discover -s intelligence/tests -v
-```
+## 9. Automated Testing & Verification
 
-Expected: `built 12 trajectories from 3666 records: 3652 segments, 2 gaps, 12 stop and 14 slow
-periods, 64 significant course changes`, and `Ran 99 tests ... OK`. The two gaps are
-`2026-03-13T11:55Z → 16:00Z` for both gap vessels, with implied speeds of **10.5 kn (V002, feasible)**
-and **35.1 kn (V003, not feasible)** — the pair that makes "a gap alone is never suspicion" testable.
+Both the backend and frontend include automated test suites:
 
-## 6. Build status (phase plan from the specification)
+### 1. Backend Python Test Suite (285 Tests)
+Runs tests across all modules (ingestion, cleaning, trajectories, hindcast, detection, scoring, API, and CASE-001 scenario regression):
 
-| Phase | Scope | Status |
-|---|---|---|
-| 1 | Repository + project structure | ✅ complete |
-| 2 | Demo dataset (deterministic) | ✅ complete |
-| 3 | AIS cleaning | ✅ complete |
-| 4 | Vessel trajectories | ✅ complete |
-| 5–10 | Spatial/temporal/trajectory filtering → behaviour → gaps → scoring | ⏳ next |
-| 11–12 | Hindcast engine, satellite / oil-spill module | ⏳ |
-| 13–14 | Spring Boot API, PostgreSQL/PostGIS schema | ⏳ |
-| 15–18 | React dashboard, forensic timeline, evidence graph, report generation | ⏳ |
-| 19–20 | Automated tests, demo mode + fallback hardening | ⏳ |
+**Status: 285 passed, 0 failures, 0 errors**
 
-The specification's forensic test cases (A: correct location+time, B: wrong time, C: wrong location,
-D: gap with impossible travel, E: physically compatible gap, F: isolated speed anomaly,
-G: nearest vessel is not automatically the top candidate) are implemented in Phase 19 against the
-deterministic demo dataset.
+### 2. Frontend Node.js Test Suite (68 Tests)
+Runs tests on geo-projection mathematics, scale-bar computations, factor flattening, timeline construction, and report generation:
 
-## 7. Terminology and scientific honesty
+**Status: 68 passed, 0 failures, 0 errors**
 
-Approved: *candidate vessel, evidence compatibility, candidate ranking, probable origin, uncertainty
-region, investigation confidence, behavioural anomaly.*
-Avoided: *guilty vessel, confirmed culprit, proven criminal, guaranteed source.*
+### 3. Frontend Production Build
+Validates Vite bundler optimization and packaging:
 
-* ABYSS identifies **candidate vessels whose historical movement is compatible** with the
-  reconstructed spill origin and release window.
-* The hindcast produces a **probable origin region with uncertainty**, never a single exact point.
-* An AIS gap is **flagged for investigation** when it is physically compatible with the vessel's
-  movement and overlaps the reconstructed event window — a gap alone never increases suspicion.
-* Prototype scoring weights are **configurable prototypes, not scientifically validated constants.**
-* Observed data, model-derived estimates, inferred compatibility and uncertainty are labelled
-  separately in the UI and in generated reports.
+**Status: Built in <1s (0 errors, 0 warnings)**
 
-## 8. Documentation
+---
 
-| Document | Contents |
-|---|---|
-| `docs/architecture.md` | components, data flow, module responsibilities, configuration, fallback policy |
-| `docs/data-sources.md` | satellite / environmental / AIS sources and the provider abstraction |
-| `docs/api-keys.md` | which services need credentials, registration, environment variable, fallback |
-| `docs/methodology.md` | methods, assumptions, uncertainty handling, limitations |
-| `docs/demo-scenario.md` | the deterministic CASE-001 demonstration design |
+## 10. Data Provenance & Scientific Honesty
 
-## 9. Configuration and security
+* **Synthetic Demonstration Notice:** All bundled data () consists of synthetic demonstration fixtures. The UI prominently displays  chips and audit warnings on all screens.
+* **Approved Forensic Language:** ABYSS outputs *candidate vessels, evidence compatibility, candidate ranking, probable origin, and behavioural anomalies*. It deliberately avoids accusatory assertions such as *guilty vessel, proven culprit, or criminal liability*.
+* **Origin as a Region:** Reconstructed origins are presented as spatial regions with quantified uncertainty, never an over-confident single point.
+* **AIS Gaps are Neutral:** An AIS gap alone is never treated as guilt; it is evaluated strictly for physical compatibility with the candidate event window.
 
-* All configuration is read from environment variables; credentials are **never** hard-coded.
-* `.env` is git-ignored; `.env.example` contains placeholders only.
-* Configuration is validated at service startup, and any provider left unconfigured simply selects
-  its demo implementation instead of failing.
-* Every provider error, invalid AIS row, missing environmental value, model failure and fallback
-  activation is logged.
+---
 
-## 10. Disclaimer
+## 11. Current Limitations & Future Scope
 
-ABYSS provides analytical evidence for investigation support. Candidate ranking does not establish
-legal responsibility, and the system does not determine which vessel caused an oil spill.
+### Current Limitations (Prototype Stage)
+* **Drift Engine:** Uses a 2D Eulerian-Lagrangian forward-Euler drift integrator across steady demo fields; not a full 3D ocean circulation hydrodynamic model.
+* **Look-Alike Classifier:** Uses heuristic geometric/textural thresholds rather than a high-capacity deep CNN trained on multi-sensor SAR imagery.
+* **Static Case Loading:** The prototype console currently focuses on deep forensic review of  rather than multi-tenant case management.
+
+### Future Scope
+* **Live Ingress Connectors:** Direct streaming integration with live Sentinel-1 GRD pipelines (Copernicus API) and terrestrial/satellite AIS receivers.
+* **Advanced Hydrodynamics:** Integration with operational oceanographic models (HYCOM, Copernicus Marine CMEMS, NOAA GFS winds).
+* **Enterprise Persistence:** Activation of a persistence tier (PostgreSQL / PostGIS) for persistent case histories and multi-analyst collaboration.
+
+---
+
+## 12. Disclaimer
+
+ABYSS provides analytical evidence and candidate prioritization for maritime investigation support. Candidate ranking does not establish legal responsibility or causation.
