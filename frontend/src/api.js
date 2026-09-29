@@ -10,6 +10,20 @@ const BASE = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '')
 
 const DEFAULT_TIMEOUT_MS = 30000
 
+/**
+ * Sentinel-1 scene analysed in "real data" mode.
+ *
+ * The path is read by the *service* (`scenePath`, a required field on
+ * `/sentinel1/detect`), never fetched by the browser, so it is configurable at
+ * build time rather than hardcoded in a component. It is empty when
+ * `VITE_SENTINEL1_SCENE_PATH` is not configured; callers must check
+ * `isSentinel1Configured()` first rather than sending a blank path.
+ */
+export const SENTINEL1_SCENE_PATH = import.meta.env.VITE_SENTINEL1_SCENE_PATH || ''
+
+/** True when a scene path was configured, i.e. real-data mode can be entered. */
+export const isSentinel1Configured = () => SENTINEL1_SCENE_PATH.length > 0
+
 export class ApiError extends Error {
   constructor(message, { status = 0, path = '', cause } = {}) {
     super(message)
@@ -122,3 +136,22 @@ export const fetchTrajectories = (opts) => post('/ais/trajectory', opts)
 
 /** Free-text description of the mounted data sources. */
 export const fetchDataSources = (opts) => get('/data-sources', opts)
+
+/** Real Sentinel-1 U-Net detection and preview layers (Phase 1). */
+export const fetchSentinel1Detect = (body, opts) => post('/sentinel1/detect', body, opts)
+
+/**
+ * REAL NOAA/OAR/PMEL AIS extract selected against the Sentinel-1 scene footprint
+ * (Phase 21). Omit `bbox` to use the service's default, which is the real scene
+ * extent. The service never returns synthetic AIS here and always reports
+ * `temporalMatchAvailable: false` - there is no acquisition timestamp to
+ * correlate against.
+ */
+export const fetchRealAisAnalyze = (body, opts) => post('/ais/real/analyze', body, opts)
+
+/**
+ * Phase 22: Real metocean & bidirectional drift simulation.
+ * Direction: 'backward' (hindcast probable origin) or 'forward' (forecast footprint).
+ * reference_time_iso is REQUIRED by ABYSS backend integrity rules.
+ */
+export const fetchRealDriftSimulate = (body, opts) => post('/drift/real/simulate', body, opts)

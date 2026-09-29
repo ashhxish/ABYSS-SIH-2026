@@ -75,6 +75,23 @@ class TestApiService(unittest.TestCase):
         self.assertGreater(char["perimeterKm"], 20.0)
         self.assertIn("boundingBox", char)
 
+    def test_04b_sentinel1_missing_model_is_honest_500(self) -> None:
+        # No checkpoint configured here: the endpoint must fail loudly and
+        # NEVER silently fall back to the synthetic CASE-001 scene.
+        import os
+
+        old = os.environ.pop("ABYSS_SENTINEL1_MODEL_PATH", None)
+        try:
+            response = self.client.post(
+                "/sentinel1/detect",
+                json={"scenePath": "/nonexistent/scene.tif"},
+            )
+        finally:
+            if old is not None:
+                os.environ["ABYSS_SENTINEL1_MODEL_PATH"] = old
+        self.assertEqual(response.status_code, 500)
+        self.assertIn("Sentinel-1", response.json()["detail"])
+
     def test_05_hindcast(self) -> None:
         response = self.client.post("/hindcast")
         self.assertEqual(response.status_code, 200)

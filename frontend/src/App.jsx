@@ -1,114 +1,200 @@
-
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
-  fetchAisCleaning,
-  fetchDetection,
-  fetchHealth,
   fetchInvestigation,
+  fetchAisCleaning,
   fetchTrajectories,
+  fetchDetection,
+  fetchRealAisAnalyze,
+  fetchSentinel1Detect,
+  fetchRealDriftSimulate,
+  SENTINEL1_SCENE_PATH,
+  isSentinel1Configured,
 } from './api.js'
-import { findCandidate, findTrajectory, rankingEntries } from './lib/format.js'
-import { buildTimeline } from './lib/timeline.js'
-import { buildEvidenceChain } from './lib/evidence.js'
-import AisPanel from './components/AisPanel.jsx'
-import CandidateDetail from './components/CandidateDetail.jsx'
-import CandidateTable from './components/CandidateTable.jsx'
-import ConfidencePanel from './components/ConfidencePanel.jsx'
-import EvidenceChain from './components/EvidenceChain.jsx'
 import Header from './components/Header.jsx'
-import InvestigationReport from './components/InvestigationReport.jsx'
-import MapPanel from './components/MapPanel.jsx'
-import ObservationCard from './components/ObservationCard.jsx'
-import OriginCard from './components/OriginCard.jsx'
+import InvestigationHome from './components/InvestigationHome.jsx'
+import InvestigationPipelineNav from './components/InvestigationPipelineNav.jsx'
+import UnifiedMapPanel from './components/UnifiedMapPanel.jsx'
+import DetectionStagePanel from './components/DetectionStagePanel.jsx'
+import OriginReconstructionPanel from './components/OriginReconstructionPanel.jsx'
+import HindcastStagePanel from './components/HindcastStagePanel.jsx'
+import ForecastStagePanel from './components/ForecastStagePanel.jsx'
+import RealAisPanel from './components/RealAisPanel.jsx'
+import BehaviourStagePanel from './components/BehaviourStagePanel.jsx'
+import EvidenceFusionPanel from './components/EvidenceFusionPanel.jsx'
+import InvestigatorReviewPanel from './components/InvestigatorReviewPanel.jsx'
 import Timeline from './components/Timeline.jsx'
-import Workflow from './components/Workflow.jsx'
-import { Badge, Card, NoticeList, Spinner } from './components/ui.jsx'
-
-const IDLE = { status: 'idle', data: null, error: null }
+import EvidenceChain from './components/EvidenceChain.jsx'
+import CandidateTable from './components/CandidateTable.jsx'
+import CandidateDetail from './components/CandidateDetail.jsx'
+import { Card, Spinner } from './components/ui.jsx'
+import { sceneBoundsOf } from './lib/realais.js'
+import {
+  findCandidate,
+  findTrajectory,
+  rankingEntries,
+} from './lib/format.js'
 
 /**
- * Application shell.
- *
- * One core request (POST /investigate) drives the whole console; /detect adds
- * the satellite view and the AIS bundles load afterwards so the first paint is
- * fast. Each request owns its own status/error, so one failing panel never
- * blanks the rest of the dashboard.
+ * Local App.jsx helpers delegate to the tested lib builders so the workspace
+ * reads the same CASE-001 shapes (`ranking.entries`, `origin.*`,
+ * `detection.*`) that the canonical panels use.
  */
-export default function App() {
-  const [health, setHealth] = useState(IDLE)
-  // The shared IDLE constant has status 'idle', but the core case is requested
-  // immediately, so it starts in 'loading' and renders the boot screen from frame one.
-  const [investigation, setInvestigation] = useState({ ...IDLE, status: 'loading' })
-  const [detection, setDetection] = useState(IDLE)
-  const [cleaning, setCleaning] = useState(IDLE)
-  const [ais, setAis] = useState(IDLE)
-  const [selected, setSelected] = useState(null)
-  const [activeStep, setActiveStep] = useState('step-1')
-  const [reloadToken, setReloadToken] = useState(0)
 
-  const reload = useCallback(() => {
-    setReloadToken((n) => n + 1)
-    setSelected(null)
+export default function App() {
+  const [viewState, setViewState] = useState('home') // 'home' | 'workspace'
+  const [stage, setStage] = useState('detect') // 'detect' | 'origin' | 'hindcast' | 'forecast' | 'ais' | 'behaviour' | 'evidence' | 'review'
+  const [completedStages, setCompletedStages] = useState([])
+  const [selected, setSelected] = useState(null)
+  const [viewMode, setViewMode] = useState('synthetic') // 'synthetic' | 'sentinel1'
+  const [showEvidenceChainModal, setShowEvidenceChainModal] = useState(false)
+
+  // Asynchronous dataset states
+  const [investigation, setInvestigation] = useState({ status: 'loading', data: null, error: null })
+  const [detection, setDetection] = useState({ status: 'idle', data: null, error: null })
+  const [cleaning, setCleaning] = useState({ status: 'idle', data: null, error: null })
+  const [ais, setAis] = useState({ status: 'idle', data: null, error: null })
+
+  // Real Sentinel-1 & AIS states
+  const [s1Data, setS1Data] = useState({ status: 'idle', data: null, error: null })
+  const [realAis, setRealAis] = useState({ status: 'idle', data: null, error: null })
+
+  // Phase 22 Drift simulation states
+  const [driftHindcast, setDriftHindcast] = useState(null)
+  const [driftForecast, setDriftForecast] = useState(null)
+  const [driftLoading, setDriftLoading] = useState(false)
+  const [forecastLoading, setForecastLoading] = useState(false)
+
+  /* --- Initial Load: CASE-001 Synthetic Baseline ----------------------- */
+  const loadBaseline = useCallback(async () => {
+    setInvestigation((prev) => ({ ...prev, status: 'loading', error: null }))
+    try {
+      const invResponse = await fetchInvestigation()
+      const invData = invResponse?.investigation ?? invResponse
+      setInvestigation({ status: 'ready', data: invData, error: null })
+
+      const [detResponse, cleanData, trajResponse] = await Promise.all([
+        fetchDetection(),
+        fetchAisCleaning(),
+        fetchTrajectories(),
+      ])
+      const detData = detResponse?.detection ?? detResponse
+      setDetection({ status: 'ready', data: detData, error: null })
+      setCleaning({ status: 'ready', data: cleanData?.cleaning ?? cleanData, error: null })
+      setAis({ status: 'ready', data: trajResponse?.trajectories ?? trajResponse, error: null })
+
+      const candidates = rankingEntries(invData) || []
+      if (candidates.length > 0 && !selected) {
+        setSelected(candidates[0].mmsi)
+      }
+    } catch (err) {
+      setInvestigation({ status: 'error', data: null, error: String(err.message || err) })
+    }
+  }, [selected])
+
+  useEffect(() => {
+    loadBaseline()
+  }, [loadBaseline])
+
+  /* --- Real AIS Loader ------------------------------------------------- */
+  // Declared before loadSentinel1, which chains into it once a scene's
+  // bounds are known, so the dependency order matches the call order.
+  const loadRealAis = useCallback(async (bbox) => {
+    setRealAis({ status: 'loading', data: null, error: null })
+    try {
+      const res = await fetchRealAisAnalyze(bbox ? { bbox } : {})
+      setRealAis({ status: 'ready', data: res, error: null })
+    } catch (err) {
+      setRealAis({ status: 'error', data: null, error: String(err.message || err) })
+    }
   }, [])
 
-  /* --- core case load --------------------------------------------------- */
-  useEffect(() => {
-    const controller = new AbortController()
-
-    setInvestigation(IDLE)
-    setDetection(IDLE)
-    setHealth(IDLE)
-
-    fetchHealth({ signal: controller.signal })
-      .then((body) => setHealth({ status: 'ready', data: body, error: null }))
-      .catch((err) => {
-        if (!controller.signal.aborted) setHealth({ status: 'error', data: null, error: err.message })
+  /* --- Real Sentinel-1 Loader ------------------------------------------ */
+  const loadSentinel1 = useCallback(async () => {
+    // `scenePath` is a required field on the service, so an unconfigured build
+    // reports why real-data mode is unavailable rather than posting a blank
+    // path and surfacing a 422.
+    if (!isSentinel1Configured()) {
+      setS1Data({
+        status: 'error',
+        data: null,
+        error:
+          'No Sentinel-1 scene is configured. Set VITE_SENTINEL1_SCENE_PATH to a local VV+VH GeoTIFF to enable real-data mode.',
       })
-
-    fetchInvestigation({}, { signal: controller.signal })
-      .then((body) => {
-        setInvestigation({ status: 'ready', data: body.investigation, error: null })
-        setSelected(body.investigation?.statistics?.topCandidateMmsi || null)
+      return
+    }
+    setS1Data({ status: 'loading', data: null, error: null })
+    try {
+      const res = await fetchSentinel1Detect({
+        scenePath: SENTINEL1_SCENE_PATH,
+        includePreviews: true,
       })
-      .catch((err) => {
-        if (!controller.signal.aborted) {
-          setInvestigation({ status: 'error', data: null, error: err.message })
-        }
+      setS1Data({ status: 'ready', data: res, error: null })
+
+      // Auto-trigger Real AIS matching against scene bounds
+      const bounds = sceneBoundsOf(res)
+      if (bounds) {
+        loadRealAis(bounds)
+      }
+    } catch (err) {
+      setS1Data({ status: 'error', data: null, error: String(err.message || err) })
+    }
+  }, [loadRealAis])
+
+  /* --- Real Drift Simulators ------------------------------------------- */
+  const handleRunHindcast = useCallback(async () => {
+    setDriftLoading(true)
+    try {
+      const lat = s1Data.data?.result?.centroid?.lat || 22.46282
+      const lon = s1Data.data?.result?.centroid?.lon || -93.44692
+      const res = await fetchRealDriftSimulate({
+        origin_lat: lat,
+        origin_lon: lon,
+        reference_time_iso: '2024-05-29T00:00:00Z',
+        direction: 'backward',
+        duration_hours: 6.0,
+        step_seconds: 900.0,
       })
+      setDriftHindcast(res)
+    } catch (err) {
+      console.warn('Real drift hindcast failed:', err)
+    } finally {
+      setDriftLoading(false)
+    }
+  }, [s1Data.data])
 
-    fetchDetection({ signal: controller.signal })
-      .then((body) => setDetection({ status: 'ready', data: body.detection, error: null }))
-      .catch((err) => {
-        if (!controller.signal.aborted) setDetection({ status: 'error', data: null, error: err.message })
+  const handleRunForecast = useCallback(async () => {
+    setForecastLoading(true)
+    try {
+      const lat = s1Data.data?.result?.centroid?.lat || 22.46282
+      const lon = s1Data.data?.result?.centroid?.lon || -93.44692
+      const res = await fetchRealDriftSimulate({
+        origin_lat: lat,
+        origin_lon: lon,
+        reference_time_iso: '2024-05-29T00:00:00Z',
+        direction: 'forward',
+        duration_hours: 6.0,
+        step_seconds: 900.0,
       })
+      setDriftForecast(res)
+    } catch (err) {
+      console.warn('Real drift forecast failed:', err)
+    } finally {
+      setForecastLoading(false)
+    }
+  }, [s1Data.data])
 
-    return () => controller.abort()
-  }, [reloadToken])
-
-  /* --- AIS bundles load after the core case ----------------------------- */
-  useEffect(() => {
-    if (investigation.status !== 'ready') return undefined
-    const controller = new AbortController()
-
-    setAis((prev) => ({ ...prev, status: 'loading', error: null }))
-    setCleaning((prev) => ({ ...prev, status: 'loading', error: null }))
-
-    fetchAisCleaning({ signal: controller.signal })
-      .then((body) => setCleaning({ status: 'ready', data: body.cleaning, error: null }))
-      .catch((err) => {
-        if (!controller.signal.aborted) {
-          setCleaning({ status: 'error', data: null, error: err.message })
-        }
-      })
-
-    fetchTrajectories({ signal: controller.signal, timeoutMs: 60000 })
-      .then((body) => setAis({ status: 'ready', data: body.trajectories, error: null }))
-      .catch((err) => {
-        if (!controller.signal.aborted) setAis({ status: 'error', data: null, error: err.message })
-      })
-
-    return () => controller.abort()
-  }, [investigation.status, reloadToken])
+  /* --- Mode switching -------------------------------------------------- */
+  const handleSelectDataSource = useCallback(
+    (mode) => {
+      setViewMode(mode)
+      if (mode === 'sentinel1' && s1Data.status === 'idle') {
+        loadSentinel1()
+      } else if (mode === 'sentinel1' && s1Data.status === 'ready' && realAis.status === 'idle') {
+        loadRealAis(sceneBoundsOf(s1Data.data))
+      }
+    },
+    [loadRealAis, loadSentinel1, realAis.status, s1Data.data, s1Data.status],
+  )
 
   const selectedEntry = useMemo(
     () => findCandidate(investigation.data, selected),
@@ -118,198 +204,268 @@ export default function App() {
     () => findTrajectory(ais.data, selected),
     [ais.data, selected],
   )
-
-  /* Phase 18: the report reuses the Phase 16 / Phase 17 builders rather than
-     re-deriving anything. These are the same pure functions the Timeline and
-     EvidenceChain panels call, memoised here so the document is generated from
-     state already in memory - the report issues no request of its own. */
-  const timeline = useMemo(
-    () => buildTimeline(investigation.data, detection.data),
-    [investigation.data, detection.data],
-  )
-  const chain = useMemo(
-    () => buildEvidenceChain(investigation.data, detection.data, selected, selectedTrack),
-    [investigation.data, detection.data, selected, selectedTrack],
+  const candidatesList = useMemo(
+    () => rankingEntries(investigation.data),
+    [investigation.data],
   )
 
-  const onStepSelect = useCallback((stepId, targetId) => {
-    setActiveStep(stepId)
-    const el = document.getElementById(targetId)
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }, [])
+  // `timeline`/`chain` are built inside the Timeline/EvidenceChain panels from
+  // the same lib builders, so App keeps no divergent local copy.
 
-  /* --- states ----------------------------------------------------------- */
-  // The core investigation is the console's backbone: until it has data we show
-  // a full-screen state, never a half-built dashboard full of empty panels.
-  if (!investigation.data) {
+  // Stage Navigation controls
+  const markStageCompleted = (stageId) => {
+    setCompletedStages((prev) => (prev.includes(stageId) ? prev : [...prev, stageId]))
+  }
+
+  const navigateToStage = (nextStage) => {
+    markStageCompleted(stage)
+    setStage(nextStage)
+  }
+
+  const handleStartInvestigation = () => {
+    setViewState('workspace')
+    setStage('detect')
+    if (viewMode === 'sentinel1' && s1Data.status !== 'ready') {
+      loadSentinel1()
+    }
+  }
+
+  const handleWhyThisCandidate = (mmsi) => {
+    setSelected(mmsi)
+    setShowEvidenceChainModal(true)
+  }
+
+  /* --- boot screen while the core case is loading ----------------------- */
+  if (investigation.status === 'loading' || investigation.status === 'error') {
     if (investigation.status === 'error') {
       return (
         <div className="boot">
-          <Card title="Cannot load the investigation" icon="⚠️">
+          <Card
+            title="Could not connect to the ABYSS intelligence service"
+            subtitle="The frontend needs the Python service running to compute or fetch CASE-001."
+            icon="⚠️"
+          >
             <p className="error-text">{investigation.error}</p>
-            <ol className="howto">
-              <li>
-                Start the service:{' '}
-                <code>cd intelligence &amp;&amp; ../.venv/bin/python -m uvicorn app.main:app --port 8000</code>
-              </li>
-              <li>
-                Confirm it answers: <code>curl http://localhost:8000/health</code>
-              </li>
-              <li>
-                Then reload this page — the dev server proxies <code>/api</code> to port 8000.
-              </li>
-            </ol>
-            <button className="btn" onClick={reload}>Try again</button>
+            <button className="btn" onClick={loadBaseline}>Try again</button>
           </Card>
         </div>
       )
     }
     return (
       <div className="boot">
-        <Spinner label="Loading CASE-001 from the ABYSS intelligence service…" />
-        {health.error ? <p className="error-text">{health.error}</p> : null}
+        <Spinner label="Booting ABYSS Maritime Forensic Intelligence Engine..." />
       </div>
     )
   }
 
   return (
-    <div className="app">
+    <div className="app-shell">
       <Header
-        investigation={investigation.data}
-        detection={detection.data}
-        health={health.data}
-        loading={investigation.status === 'loading'}
-        onReload={reload}
+        activeTab={viewState === 'home' ? 'investigation' : 'workspace'}
+        onSelectTab={(tab) => {
+          if (tab === 'home') setViewState('home')
+          else setViewState('workspace')
+        }}
+        viewMode={viewMode}
+        onSelectViewMode={handleSelectDataSource}
+        s1Loading={s1Data.status === 'loading'}
+        s1Data={s1Data.data}
       />
 
-      <Workflow
-        investigation={investigation.data}
-        detection={detection.data}
-        ais={ais.data}
-        aisStatus={ais.status}
-        status={investigation.status}
-        active={activeStep}
-        onSelect={onStepSelect}
-      />
-
-      <main className="layout">
-        {/* Top row: the three "what happened" panels side by side, so a tall
-            panel never leaves a tall empty gap in its neighbour. */}
-        <div className="col col-full top-grid">
-          <ObservationCard
-            detection={detection.data}
-            loading={detection.status === 'loading'}
-            error={detection.error}
-            onRetry={reload}
+      {viewState === 'home' ? (
+        <main className="layout" style={{ marginTop: '20px' }}>
+          <InvestigationHome
+            onStartInvestigation={handleStartInvestigation}
+            dataSource={viewMode}
+            onSelectDataSource={handleSelectDataSource}
+            investigationStatus={investigation.status}
           />
-          <OriginCard investigation={investigation.data} />
-          <ConfidencePanel investigation={investigation.data} />
-        </div>
-
-        <div className="col col-full">
-          <MapPanel
-            trajectories={ais.data}
-            investigation={investigation.data}
-            detection={detection.data}
-            trajectory={selectedTrack}
-            selected={selected}
-            onClearSelection={() => setSelected(null)}
+        </main>
+      ) : (
+        <div className="investigation-workspace">
+          {/* Top Persistent Pipeline Navigation */}
+          <InvestigationPipelineNav
+            currentStage={stage}
+            completedStages={completedStages}
+            onSelectStage={(s) => setStage(s)}
+            onExitToHome={() => setViewState('home')}
           />
-        </div>
 
-        <div className="col col-full">
-          <AisPanel
-            cleaning={cleaning.data}
-            trajectories={ais.data}
-            loading={ais.status === 'loading'}
-            error={ais.error}
-            onRetry={reload}
-          />
-        </div>
-
-        <div className="col col-table">
-          <CandidateTable
-            investigation={investigation.data}
-            selected={selected}
-            onSelect={(mmsi) => {
-              setSelected(String(selected) === String(mmsi) ? null : mmsi)
-              setActiveStep('step-7')
-            }}
-          />
-        </div>
-
-        <div className="col col-detail">
-          <CandidateDetail entry={selectedEntry} trajectory={selectedTrack} />
-        </div>
-
-        {/* Phase 16: the case chronology. Vessel rows in it re-select a candidate,
-            so the timeline, map, evidence panel and chain stay in step. */}
-        <div className="col col-full">
-          <Timeline
-            investigation={investigation.data}
-            detection={detection.data}
-            selected={selected}
-            onSelect={(mmsi) => setSelected(String(mmsi))}
-          />
-        </div>
-
-        {/* Phase 17: why the selected candidate holds its priority, as the
-            method's own cascade with per-node API provenance. */}
-        <div className="col col-full">
-          <EvidenceChain
-            investigation={investigation.data}
-            detection={detection.data}
-            selected={selected}
-            trajectory={selectedTrack}
-            onSelect={(mmsi) => setSelected(String(mmsi))}
-          />
-        </div>
-
-        {/* Phase 18: the investigator-facing document, assembled from the payloads
-            already in memory. Regenerates whenever the selected candidate changes. */}
-        <div className="col col-full">
-          <InvestigationReport
-            investigation={investigation.data}
-            detection={detection.data}
-            cleaning={cleaning.data}
-            timeline={timeline}
-            chain={chain}
-            selected={selected}
-          />
-        </div>
-
-        <div className="col col-full">
-          <Card
-            id="provenance"
-            title="Provenance, warnings & limitations"
-            subtitle="Exactly what the service said about this case"
-            icon="📋"
-            actions={<Badge tone="demo">synthetic demo data</Badge>}
-          >
-            <div className="detail-columns">
-              <div>
-                <NoticeList tone="warn" title="Service warnings" items={investigation.data?.warnings} />
-                <NoticeList tone="warn" title="Investigation notes" items={investigation.data?.notes} />
-              </div>
-              <div>
-                <NoticeList title="Known limitations" items={investigation.data?.limitations} />
-                <NoticeList tone="info" title="Region notes" items={investigation.data?.origin?.notes} />
-              </div>
+          {/* Central Forensic Workspace Grid */}
+          <main className="workspace-grid">
+            {/* Left / Center: Persistent Geospatial Map */}
+            <div className="workspace-map-col">
+              <UnifiedMapPanel
+                investigation={investigation.data}
+                detection={detection.data}
+                trajectories={ais.data}
+                trajectory={selectedTrack}
+                selected={selected}
+                onClearSelection={() => setSelected(null)}
+                stage={stage}
+                driftHindcast={driftHindcast}
+                driftForecast={driftForecast}
+                s1Data={viewMode === 'sentinel1' ? s1Data.data : null}
+                realAis={viewMode === 'sentinel1' ? realAis.data : null}
+              />
             </div>
-            <p className="fine-print">
-              {rankingEntries(investigation.data).length} vessels ranked · case{' '}
-              <span className="mono">{investigation.data?.caseId}</span> · dataset{' '}
-              {investigation.data?.datasetLabel}
-            </p>
-          </Card>
-        </div>
-      </main>
 
-      <footer className="app-footer">
-        <span>ABYSS Intelligence Console — forensic investigation console for the intelligence API.</span>
-        <span>Analytical evidence for investigation support; not a legal determination.</span>
-      </footer>
+            {/* Right: Stage Detail & Actions */}
+            <div className="workspace-stage-col">
+              {stage === 'detect' && (
+                <DetectionStagePanel
+                  isRealMode={viewMode === 'sentinel1'}
+                  detection={detection.data}
+                  s1Data={s1Data.data}
+                  loading={s1Data.status === 'loading'}
+                  error={s1Data.error}
+                  onRetry={loadSentinel1}
+                  realAis={realAis.data}
+                  onContinue={() => navigateToStage('origin')}
+                />
+              )}
+
+              {stage === 'origin' && (
+                <OriginReconstructionPanel
+                  investigation={investigation.data}
+                  onRunHindcast={handleRunHindcast}
+                  hindcastLoading={driftLoading}
+                  driftHindcast={driftHindcast}
+                  onContinue={() => navigateToStage('hindcast')}
+                  onPrevious={() => setStage('detect')}
+                  isRealMode={viewMode === 'sentinel1'}
+                />
+              )}
+
+              {stage === 'hindcast' && (
+                <HindcastStagePanel
+                  investigation={investigation.data}
+                  driftHindcast={driftHindcast}
+                  onRunHindcast={handleRunHindcast}
+                  hindcastLoading={driftLoading}
+                  onContinue={() => navigateToStage('forecast')}
+                  onPrevious={() => setStage('origin')}
+                  isRealMode={viewMode === 'sentinel1'}
+                />
+              )}
+
+              {stage === 'forecast' && (
+                <ForecastStagePanel
+                  investigation={investigation.data}
+                  driftForecast={driftForecast}
+                  onRunForecast={handleRunForecast}
+                  forecastLoading={forecastLoading}
+                  onContinue={() => navigateToStage('ais')}
+                  onPrevious={() => setStage('hindcast')}
+                  isRealMode={viewMode === 'sentinel1'}
+                />
+              )}
+
+              {stage === 'ais' && (
+                <div className="stage-panel-ais" style={{ display: 'grid', gap: '20px' }}>
+                  {viewMode === 'sentinel1' ? (
+                    <RealAisPanel
+                      data={realAis.data}
+                      loading={realAis.status === 'loading'}
+                      error={realAis.error}
+                      onRetry={() => loadRealAis(sceneBoundsOf(s1Data.data))}
+                      s1Data={s1Data.data}
+                    />
+                  ) : (
+                    <>
+                      <CandidateTable
+                        investigation={investigation.data}
+                        selected={selected}
+                        onSelect={(mmsi) => setSelected(String(selected) === String(mmsi) ? null : mmsi)}
+                      />
+                      {selectedEntry && (
+                        <CandidateDetail
+                          candidate={selectedEntry}
+                          trajectory={selectedTrack}
+                          weights={investigation.data?.weights}
+                        />
+                      )}
+                    </>
+                  )}
+                  <div className="stage-actions" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <button type="button" className="btn btn-ghost" onClick={() => setStage('forecast')}>
+                      ← PREVIOUS
+                    </button>
+                    <button type="button" className="btn btn-primary" onClick={() => navigateToStage('behaviour')}>
+                      CONTINUE TO BEHAVIOUR →
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {stage === 'behaviour' && (
+                <BehaviourStagePanel
+                  investigation={investigation.data}
+                  selected={selected}
+                  trajectory={selectedTrack}
+                  candidate={selectedEntry}
+                  onContinue={() => navigateToStage('evidence')}
+                  onPrevious={() => setStage('ais')}
+                  isRealMode={viewMode === 'sentinel1'}
+                  realAis={realAis.data}
+                />
+              )}
+
+              {stage === 'evidence' && (
+                <EvidenceFusionPanel
+                  investigation={investigation.data}
+                  detection={detection.data}
+                  s1Data={viewMode === 'sentinel1' ? s1Data.data : null}
+                  candidates={candidatesList}
+                  selected={selected}
+                  onSelectCandidate={(mmsi) => setSelected(mmsi)}
+                  onWhyThisCandidate={handleWhyThisCandidate}
+                  onContinue={() => navigateToStage('review')}
+                  onPrevious={() => setStage('behaviour')}
+                  isRealMode={viewMode === 'sentinel1'}
+                  realAis={realAis.data}
+                />
+              )}
+
+              {stage === 'review' && (
+                <InvestigatorReviewPanel
+                  investigation={investigation.data}
+                  detection={detection.data}
+                  s1Data={viewMode === 'sentinel1' ? s1Data.data : null}
+                  selected={selected}
+                  candidate={selectedEntry}
+                  onViewEvidenceChain={() => setShowEvidenceChainModal(true)}
+                  onPrevious={() => setStage('evidence')}
+                  isRealMode={viewMode === 'sentinel1'}
+                  realAis={realAis.data}
+                />
+              )}
+            </div>
+
+            {/* Bottom: Event Timeline & Persistent Evidence Chain Anchor */}
+            <div className="workspace-bottom-col">
+              <Timeline
+                investigation={investigation.data}
+                detection={detection.data}
+                selected={selected}
+                onSelect={(mmsi) => setSelected(String(mmsi))}
+              />
+
+              {(showEvidenceChainModal || stage === 'evidence' || stage === 'review') && (
+                <div id="evidence-chain-anchor" style={{ marginTop: '20px' }}>
+                  <EvidenceChain
+                    investigation={investigation.data}
+                    detection={detection.data}
+                    selected={selected}
+                    trajectory={selectedTrack}
+                    onSelect={(mmsi) => setSelected(String(mmsi))}
+                  />
+                </div>
+              )}
+            </div>
+          </main>
+        </div>
+      )}
     </div>
   )
 }
-

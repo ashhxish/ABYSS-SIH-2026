@@ -8,7 +8,7 @@ import {
   ringToLatLon,
   ringToPath,
 } from '../lib/geo.js'
-import { fmtNumber } from '../lib/format.js'
+import { fmtLatitude, fmtLongitude, fmtNumber } from '../lib/format.js'
 import { Card, Empty, NoticeList } from './ui.jsx'
 
 const W = 860
@@ -85,11 +85,11 @@ export default function MapPanel({ investigation, detection, trajectories, traje
           <rect x="0" y="0" width={W} height={H} fill="url(#sea)" />
           {ticks.lats.map((lat) => {
             const [, y] = projector.project(lat, bounds.minLon)
-            return <g key={`lat-${lat}`}><line x1="0" y1={y} x2={W} y2={y} stroke="var(--map-grid)" strokeWidth="0.7" /><text x="8" y={y - 4} className="map-tick">{lat.toFixed(2)}°N</text></g>
+            return <g key={`lat-${lat}`}><line x1="0" y1={y} x2={W} y2={y} stroke="var(--map-grid)" strokeWidth="0.7" /><text x="8" y={y - 4} className="map-tick">{fmtLatitude(lat, 2)}</text></g>
           })}
           {ticks.lons.map((lon) => {
             const [x] = projector.project(bounds.minLat, lon)
-            return <g key={`lon-${lon}`}><line x1={x} y1="0" x2={x} y2={H} stroke="var(--map-grid)" strokeWidth="0.7" /><text x={x + 4} y={H - 8} className="map-tick">{lon.toFixed(2)}°E</text></g>
+            return <g key={`lon-${lon}`}><line x1={x} y1="0" x2={x} y2={H} stroke="var(--map-grid)" strokeWidth="0.7" /><text x={x + 4} y={H - 8} className="map-tick">{fmtLongitude(lon, 2)}</text></g>
           })}
 
           {candidatePaths.map((candidate) => (

@@ -15,9 +15,15 @@ from app.schemas.models import (
     HindcastResponse,
     InvestigateRequest,
     InvestigateResponse,
+    RealAisAnalyzeRequest,
+    RealAisAnalyzeResponse,
     ScoreResponse,
+    Sentinel1Response,
     TrajectoryResponse,
     WeightsRequest,
+    DriftSimulationRequest,
+    DriftSimulationResponse,
+
 )
 
 __all__ = [
@@ -35,7 +41,13 @@ __all__ = [
     "HindcastResponse",
     "InvestigateRequest",
     "InvestigateResponse",
+    "RealAisAnalyzeRequest",
+    "RealAisAnalyzeResponse",
     "ScoreResponse",
+    "Sentinel1Response",
     "TrajectoryResponse",
     "WeightsRequest",
+    "DriftSimulationRequest",
+    "DriftSimulationResponse",
+
 ]

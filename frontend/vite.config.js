@@ -9,6 +9,12 @@ const API_TARGET = process.env.VITE_API_PROXY_TARGET || 'http://127.0.0.1:8000'
 
 export default defineConfig({
   plugins: [react()],
+  // The repo keeps a single .env at the project root (see ../.env.example), but
+  // Vite only reads VITE_* vars from the directory it is run in. Pointing
+  // envDir at the root makes that documented file actually take effect;
+  // without it every VITE_ var is silently ignored and the app quietly falls
+  // back to its defaults.
+  envDir: '..',
   server: {
     port: 5173,
     host: true,

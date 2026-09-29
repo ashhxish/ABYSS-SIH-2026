@@ -6,7 +6,22 @@ transponder gap analysis, multi-factor scoring, and end-to-end investigation.
 """
 from __future__ import annotations
 
+from pathlib import Path
 import logging
+from typing import Any, Dict, List, Optional
+from fastapi import FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+
+from app.schemas import (
+    DriftSimulationRequest,
+    DriftSimulationResponse,
+)
+from app.hindcast.metocean import (
+    load_noaa_currents_netcdf,
+    load_ndbc_table,
+    find_nearest_wind,
+)
+from app.hindcast.drift import run_drift_simulation
 from typing import Any, Dict, List, Optional
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -35,11 +50,15 @@ from app.schemas import (
     HindcastResponse,
     InvestigateRequest,
     InvestigateResponse,
+    RealAisAnalyzeRequest,
+    RealAisAnalyzeResponse,
     ScoreResponse,
+    Sentinel1Response,
     TrajectoryResponse,
     WeightsRequest,
 )
 from app.scoring.engine import FACTOR_KEYS, EvidenceWeights
+from pydantic import BaseModel, ConfigDict, Field
 
 logger = logging.getLogger("abyss.intelligence")
 
@@ -401,6 +420,137 @@ def post_score(request: Optional[InvestigateRequest] = None) -> ScoreResponse:
         ) from exc
 
 
+
+class Sentinel1IngestRequest(BaseModel):
+    """Request body for real Sentinel-1 ingestion (Phase 1, no downloading)."""
+
+    model_config = ConfigDict(extra="allow")
+
+    scenePath: str = Field(
+        ...,
+        description="Local Sentinel-1 GeoTIFF path (VV+VH). No downloading is performed.",
+    )
+    modelPath: Optional[str] = Field(
+        None,
+        description="Optional explicit checkpoint path; defaults to ABYSS_SENTINEL1_MODEL_PATH.",
+    )
+    caseId: str = Field(
+        "CASE-REAL-001",
+        description="Case identifier attached to the real SatelliteObservation.",
+    )
+    includePreviews: bool = Field(
+        True,
+        description="Whether to generate browser-safe raster previews (VV, VH, composite, mask overlay).",
+    )
+
+
+@app.post("/sentinel1/detect", response_model=Sentinel1Response)
+def post_sentinel1_detect(request: Sentinel1IngestRequest) -> Sentinel1Response:
+    """Run REAL Sentinel-1 U-Net inference and return the observation.
+
+    The checkpoint resolves through ``ABYSS_SENTINEL1_MODEL_PATH`` (or the
+    explicit ``modelPath``). A missing checkpoint is an honest 500 - a real
+    inference NEVER silently falls back to the synthetic CASE-001 scene.
+    """
+    from app.detection.sentinel1 import (
+        Sentinel1Error,
+        detect_scene,
+        generate_preview_layers,
+        result_warnings,
+        to_satellite_observation,
+    )
+
+    try:
+        result = detect_scene(request.scenePath, request.modelPath)
+        observation = to_satellite_observation(result, case_id=request.caseId)
+        warnings = result_warnings(result)
+        previews = None
+        if request.includePreviews:
+            previews = generate_preview_layers(request.scenePath, result.mask)
+        return Sentinel1Response(
+            dataSource="Sentinel1UNetAdapter",
+            warnings=warnings,
+            observation=observation.to_dict(),
+            geometry=observation.geometry,
+            result=result.to_dict(),
+            previews=previews,
+        )
+    except Sentinel1Error as exc:
+        logger.exception("Real Sentinel-1 inference failed: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Real Sentinel-1 inference failed: {exc}",
+        ) from exc
+    except Exception as exc:
+        logger.exception("Real Sentinel-1 inference failed: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Real Sentinel-1 inference failed: {exc}",
+        ) from exc
+
+
+@app.post("/ais/real/analyze", response_model=RealAisAnalyzeResponse)
+def post_ais_real_analyze(
+    request: Optional[RealAisAnalyzeRequest] = None,
+) -> RealAisAnalyzeResponse:
+    """Analyse a REAL historical AIS extract with the EXISTING ABYSS AIS engine.
+
+    SPATIAL + DATA-QUALITY ANALYSIS ONLY.  The real Sentinel-1 scene has no
+    trustworthy acquisition timestamp, so this endpoint always reports
+    ``temporalMatchAvailable = false`` and never attributes slick
+    responsibility to a vessel.
+    """
+    from app.ais.real_ais import RealAisError, analyse_real_ais
+
+    req = request or RealAisAnalyzeRequest()
+    try:
+        result = analyse_real_ais(
+            source_path=req.sourcePath,
+            bbox=req.bbox,
+            start_time=req.startTime,
+            end_time=req.endTime,
+            max_records=req.maxRecords,
+            spatial_filter=req.spatialFilter,
+            include_vessels=req.includeVessels,
+        )
+    except RealAisError as exc:
+        logger.exception("Real AIS analysis failed: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Real AIS analysis failed: {exc}",
+        ) from exc
+    except Exception as exc:
+        logger.exception("Real AIS analysis failed: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Real AIS analysis failed: {exc}",
+        ) from exc
+
+    return RealAisAnalyzeResponse(
+        dataSource=result["source"]["provider"],
+        warnings=list(result.get("warnings", [])),
+        label=result["label"],
+        realAis=result["realAis"],
+        source=result["source"],
+        temporalMatchAvailable=result["temporalMatchAvailable"],
+        temporalMatchReason=result["temporalMatchReason"],
+        rawRecordCount=result["rawRecordCount"],
+        acceptedRecordCount=result["acceptedRecordCount"],
+        rejectedRecordCount=result["rejectedRecordCount"],
+        warningCount=result["warningCount"],
+        uniqueMmsiCount=result["uniqueMmsiCount"],
+        filteredRecordCount=result["filteredRecordCount"],
+        vesselCount=result["vesselCount"],
+        trajectoryCount=result["trajectoryCount"],
+        gapCount=result["gapCount"],
+        spatialFilterApplied=result["spatialFilterApplied"],
+        spatialBBox=result["spatialBBox"],
+        spatialMatchCount=result["spatialMatchCount"],
+        vessels=result["vessels"],
+        analysis=result["analysis"],
+    )
+
+
 @app.post("/investigate", response_model=InvestigateResponse)
 def post_investigate(request: Optional[InvestigateRequest] = None) -> InvestigateResponse:
     settings = app_config.get_settings()
@@ -420,4 +570,74 @@ def post_investigate(request: Optional[InvestigateRequest] = None) -> Investigat
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Investigation failed: {exc}",
+        ) from exc
+
+
+@app.post("/drift/real/simulate", response_model=DriftSimulationResponse)
+def post_real_drift_simulate(request: DriftSimulationRequest) -> DriftSimulationResponse:
+    """Run real metocean drift simulation (backward or forward).
+
+    Observation/release time is strictly REQUIRED. ABYSS forbids simulating
+    drift without an explicit timestamp; processed_at or current time will
+    never be substituted.
+    """
+    if not request.reference_time_iso or not request.reference_time_iso.strip():
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=(
+                "reference_time_iso is REQUIRED for real drift simulation. "
+                "ABYSS refuses to simulate drift without an explicit observation timestamp."
+            ),
+        )
+
+    # Resolve currents NetCDF path
+    currents_path = (
+        Path(request.currents_path)
+        if request.currents_path
+        else Path("/home/ashish/SIH/real_metocean/noaa_currents/currents_20240529.nc")
+    )
+    if not currents_path.is_file():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Ocean currents NetCDF not found: {currents_path}",
+        )
+
+    # Optional wind table
+    wind_record = None
+    if request.wind_table_path:
+        wpath = Path(request.wind_table_path)
+        if wpath.is_file():
+            try:
+                from datetime import datetime, timezone
+                target_dt = datetime.fromisoformat(request.reference_time_iso.replace("Z", "+00:00"))
+                records = load_ndbc_table(wpath)
+                wind_record = find_nearest_wind(records, target_dt.timestamp())
+            except Exception as e:
+                logger.warning("Could not match wind observation: %s", e)
+
+    try:
+        field, prov = load_noaa_currents_netcdf(currents_path, wind_record=wind_record)
+        res = run_drift_simulation(
+            field=field,
+            origin_lat=request.origin_lat,
+            origin_lon=request.origin_lon,
+            reference_time_iso=request.reference_time_iso,
+            direction=request.direction,
+            duration_hours=request.duration_hours,
+            step_seconds=request.step_seconds,
+            windage_ensemble=request.windage_ensemble,
+            provenance_meta=prov.to_dict(),
+        )
+        data = res.to_dict()
+        return DriftSimulationResponse(**data)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(exc),
+        ) from exc
+    except Exception as exc:
+        logger.exception("Real drift simulation failed: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Drift simulation failed: {exc}",
         ) from exc

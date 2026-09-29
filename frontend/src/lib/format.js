@@ -121,3 +121,69 @@ export function summariseList(items, empty = 'None reported.') {
   return `${list.slice(0, -1).join('; ')}; and ${list[list.length - 1]}`
 }
 
+/**
+ * ISO-8601 UTC -> "2024-05-29 01:15:52 UTC" (second precision).
+ *
+ * The raw AIS report time is reproduced verbatim from the string the API
+ * returned: no timezone shifting, no rounding to the minute. A timestamp is
+ * forensic evidence here, so it is never re-derived through a local timezone.
+ */
+export function fmtUtcSeconds(iso) {
+  if (iso === null || iso === undefined || iso === '') return '—'
+  const match = String(iso).match(/^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2}:\d{2})/)
+  if (match) return `${match[1]} ${match[2]} UTC`
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return String(iso)
+  const shifted = date.toISOString()
+  return `${shifted.slice(0, 10)} ${shifted.slice(11, 19)} UTC`
+}
+
+/**
+ * ISO-8601 timestamp -> "2024-05-29 00:00:00 UTC".
+ *
+ * Unlike `fmtDateTime` (which renders a short analyst label), `fmtIso` keeps
+ * the full second-precision timestamp so a value can be quoted back verbatim.
+ * `null`/`undefined`/empty/invalid inputs render as an em dash - a missing
+ * timestamp is never invented.
+ */
+export function fmtIso(iso) {
+  if (iso === null || iso === undefined || iso === '') return '—'
+  const match = String(iso).match(/^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2}:\d{2})/)
+  if (match) return `${match[1]} ${match[2]} UTC`
+  const date = new Date(iso)
+  if (Number.isNaN(date.getTime())) return String(iso)
+  const shifted = date.toISOString()
+  return `${shifted.slice(0, 10)} ${shifted.slice(11, 19)} UTC`
+}
+
+/**
+ * 0-100 evidence score -> "83.6". `null`/non-numeric renders as an em dash so
+ * an unscored candidate is never shown with a fabricated zero.
+ */
+export function fmtScore(score, digits = 1) {
+  return fmtNumber(score, digits)
+}
+
+/**
+ * Speed in knots -> "12.4 kn". `null`/non-numeric renders as an em dash.
+ */
+export function fmtSpeed(knots, digits = 1) {
+  if (knots === null || knots === undefined || Number.isNaN(Number(knots))) return '—'
+  return `${fmtNumber(knots, digits)} kn`
+}
+
+/** Absolute value with a hemisphere letter: `22.51457°N`, `93.50463°W`. */
+export function fmtHemisphere(value, positive, negative, digits = 5) {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) return '—'
+  const v = Number(value)
+  return `${fmtNumber(Math.abs(v), digits)}°${v >= 0 ? positive : negative}`
+}
+
+export const fmtLatitude = (value, digits = 5) => fmtHemisphere(value, 'N', 'S', digits)
+export const fmtLongitude = (value, digits = 5) => fmtHemisphere(value, 'E', 'W', digits)
+
+/** `22.51457°N, 93.50463°W` for a lat/lon pair. */
+export function fmtLatLon(lat, lon, digits = 5) {
+  return `${fmtLatitude(lat, digits)}, ${fmtLongitude(lon, digits)}`
+}
+

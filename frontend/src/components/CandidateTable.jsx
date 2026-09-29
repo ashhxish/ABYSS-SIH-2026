@@ -118,7 +118,8 @@ export default function CandidateTable({ investigation, selected, onSelect }) {
       )}
 
       <p className="fine-print">
-        Score is an evidence aggregation, <strong>not a probability of guilt</strong>.{' '}
+        Score is an evidence compatibility aggregation used to order investigation,{' '}
+        <strong>not a probability of responsibility</strong>.{' '}
         {investigation?.ranking?.orderingRule}
       </p>
     </Card>

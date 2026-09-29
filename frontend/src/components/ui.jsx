@@ -125,3 +125,29 @@ export function Spinner({ label = 'Loading' }) {
 export function Empty({ children }) {
   return <p className="empty">{children}</p>
 }
+
+/**
+ * Clean table for key-value pairs in forensic stages.
+ *
+ * Accepts rows either as `[label, value]` pairs (the historical shape) or as
+ * `{ key, value }` objects (used by the stage panels). A row with no usable
+ * label renders an em dash rather than crashing on a shape mismatch.
+ */
+export function KeyValueTable({ rows = [] }) {
+  if (!rows || rows.length === 0) return null
+  const normalised = rows.map((row) => {
+    if (Array.isArray(row)) return { label: row[0], value: row[1] }
+    if (row && typeof row === 'object') return { label: row.key ?? row.label, value: row.value ?? row.val }
+    return { label: null, value: null }
+  })
+  return (
+    <div className="kv-table">
+      {normalised.map(({ label, value }, idx) => (
+        <div key={idx} className="row">
+          <span className="row-label">{label ?? '—'}</span>
+          <span className="row-value">{value ?? '—'}</span>
+        </div>
+      ))}
+    </div>
+  )
+}

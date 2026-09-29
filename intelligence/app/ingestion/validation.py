@@ -219,6 +219,32 @@ def _mmsi(value: Any, *, record_index: Optional[int],
     return text
 
 
+def _vessel_type(value: Any) -> Optional[str]:
+    """Normalise an AIS ship-type code to its canonical integer text form.
+
+    AIS ship-and-cargo-type is a whole-number code (0-99). Some real-world
+    extractors - NOAA PMEL ERDDAP among them - serialise it as a float, so the
+    same tanker arrives as ``70`` from one source and ``"70.0"`` from another.
+    ``app.ais.trajectory`` casts this field with ``int()``, so a float-formatted
+    code would abort trajectory reconstruction on an otherwise valid record.
+
+    The value is therefore coerced to the nearest whole code when it is
+    numerically integral, and passed through untouched when it is not numeric
+    at all (so genuinely unrecognised codes still reach the existing
+    ``unknown_vessel_type`` warning path rather than being silently dropped).
+    """
+    text = _opt_text(value)
+    if text is None:
+        return None
+    try:
+        number = float(text)
+    except (TypeError, ValueError):
+        return text
+    if number.is_integer():
+        return str(int(number))
+    return text
+
+
 # ---------------------------------------------------------------------------
 # Record Validators
 # ---------------------------------------------------------------------------
@@ -322,14 +348,14 @@ def validate_ais_report(
     raw_mmsi = raw.get("mmsi", raw.get("MMSI"))
     mmsi = _mmsi(raw_mmsi, record_index=record_index, record_id=str(raw_mmsi) if raw_mmsi else None, issues=issues)
 
-    ts_val = raw.get("timestamp", raw.get("TIMESTAMP", raw.get("time")))
+    ts_val = raw.get("timestamp", raw.get("TIMESTAMP", raw.get("time", raw.get("BaseDateTime", raw.get("BASEDATETIME")))))
     ts = _timestamp(ts_val, field_name="timestamp", record_index=record_index, record_id=mmsi, issues=issues)
 
-    lat_val = raw.get("latitude", raw.get("LATITUDE", raw.get("lat")))
+    lat_val = raw.get("latitude", raw.get("LATITUDE", raw.get("lat", raw.get("Lat", raw.get("LAT")))))
     lat = _numeric("latitude", lat_val, field_name="latitude", record_index=record_index,
                    record_id=mmsi, required=True, rng=LAT_RANGE, issues=issues)
 
-    lon_val = raw.get("longitude", raw.get("LONGITUDE", raw.get("lon")))
+    lon_val = raw.get("longitude", raw.get("LONGITUDE", raw.get("lon", raw.get("Lon", raw.get("LON")))))
     lon = _numeric("longitude", lon_val, field_name="longitude", record_index=record_index,
                    record_id=mmsi, required=True, rng=LON_RANGE, issues=issues)
 
@@ -348,16 +374,17 @@ def validate_ais_report(
     cog = _sentinel("cogDeg", cog, _COG_SENTINEL, field_name="cogDeg",
                     record_index=record_index, record_id=mmsi, issues=issues)
 
-    hdg_val = raw.get("headingDeg", raw.get("heading", raw.get("HEADING")))
+    hdg_val = raw.get("headingDeg", raw.get("heading", raw.get("HEADING", raw.get("Heading"))))
     hdg = _numeric("headingDeg", hdg_val, field_name="headingDeg", record_index=record_index,
                    record_id=mmsi, rng=HEADING_RANGE, issues=issues)
     hdg = _sentinel("headingDeg", hdg, _HEADING_SENTINEL, field_name="headingDeg",
                     record_index=record_index, record_id=mmsi, issues=issues)
 
-    nav_status = _opt_text(raw.get("navigationStatus", raw.get("NAV_STATUS")))
+    nav_status = _opt_text(raw.get("navigationStatus", raw.get("NAV_STATUS", raw.get("Status", raw.get("status")))))
     imo = _opt_text(raw.get("imo", raw.get("IMO")))
-    vessel_name = _opt_text(raw.get("vesselName", raw.get("vessel_name", raw.get("VESSEL_NAME"))))
-    vessel_type = _opt_text(raw.get("vesselType", raw.get("vessel_type", raw.get("VESSEL_TYPE"))))
+    vessel_name = _opt_text(raw.get("vesselName", raw.get("vessel_name", raw.get("VESSEL_NAME", raw.get("VesselName")))))
+    vessel_type = _vessel_type(raw.get("vesselType", raw.get("vessel_type",
+                                 raw.get("VESSEL_TYPE", raw.get("VesselType")))))
 
     warnings = [i.message for i in issues if i.severity == WARNING]
 

@@ -1,4 +1,14 @@
-import { fmtConfidence, fmtDateTime, fmtInt, fmtKm, fmtNumber, fmtPercent } from '../lib/format.js'
+import {
+  fmtConfidence,
+  fmtDateTime,
+  fmtInt,
+  fmtKm,
+  fmtLatLon,
+  fmtLatitude,
+  fmtLongitude,
+  fmtNumber,
+  fmtPercent,
+} from '../lib/format.js'
 import { Badge, Card, Gauge, NoticeList, Row, Spinner, Stat } from './ui.jsx'
 
 /**
@@ -53,12 +63,12 @@ export default function ObservationCard({ detection, loading, error, onRetry }) 
             <Stat label="Vertices" value={fmtInt(char.vertexCount)} sub="polygon points" />
           </div>
           <Row label="Acquisition" value={fmtDateTime(detection.acquisitionTime)} />
-          <Row label="Centroid" mono value={char.centroid ? `${fmtNumber(char.centroid.lat, 4)}°N, ${fmtNumber(char.centroid.lon, 4)}°E` : null} />
+          <Row label="Centroid" mono value={char.centroid ? fmtLatLon(char.centroid.lat, char.centroid.lon, 4) : null} />
           <Row
             label="Bounding box"
             mono
             value={char.boundingBox
-              ? `lat ${fmtNumber(char.boundingBox.minLat, 3)}–${fmtNumber(char.boundingBox.maxLat, 3)} · lon ${fmtNumber(char.boundingBox.minLon, 3)}–${fmtNumber(char.boundingBox.maxLon, 3)}`
+              ? `lat ${fmtLatitude(char.boundingBox.minLat, 3)}–${fmtLatitude(char.boundingBox.maxLat, 3)} · lon ${fmtLongitude(char.boundingBox.minLon, 3)}–${fmtLongitude(char.boundingBox.maxLon, 3)}`
               : null}
           />
           <Row label="Length × width" value={`${fmtNumber(char.approximateLengthKm, 1)} × ${fmtNumber(char.approximateWidthKm, 1)} km`} />

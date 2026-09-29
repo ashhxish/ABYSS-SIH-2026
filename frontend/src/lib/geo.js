@@ -187,6 +187,33 @@ export function graticule(bounds, maxTicks = 4) {
   }
 }
 
+/**
+ * Map a geographic position onto its fractional position inside a
+ * `[west, south, east, north]` box: `x` and `y` are 0..1 with y growing
+ * downward (screen order), plus an `inside` flag.
+ *
+ * Used to place the real AIS matched position on top of the real Sentinel-1
+ * raster preview. The supplied scene (00999.tif) is an EPSG:4326 raster on an
+ * axis-aligned grid, so its geographic `bounds` are exactly its extent and this
+ * linear mapping reproduces the raster's own affine transform (verified against
+ * rasterio: both give x=0.167443, y=0.105809 for the LILLESAND position).
+ *
+ * Returns `null` for a missing/degenerate box or an unusable position, so the
+ * caller skips the marker rather than drawing it at a guessed location.
+ */
+export function geoToFraction(lat, lon, bounds) {
+  if (!Array.isArray(bounds) || bounds.length !== 4) return null
+  const [west, south, east, north] = bounds.map(Number)
+  if (![west, south, east, north].every(Number.isFinite)) return null
+  const spanLon = east - west
+  const spanLat = north - south
+  if (!(spanLon > 0) || !(spanLat > 0)) return null
+  if (!isFiniteNumber(lat) || !isFiniteNumber(lon)) return null
+  const x = (Number(lon) - west) / spanLon
+  const y = (north - Number(lat)) / spanLat
+  return { x, y, inside: x >= 0 && x <= 1 && y >= 0 && y <= 1 }
+}
+
 export { toDeg, toRad }
 
 
