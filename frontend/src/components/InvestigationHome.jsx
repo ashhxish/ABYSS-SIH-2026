@@ -1,12 +1,24 @@
 import React from 'react'
 import { Badge } from './ui.jsx'
+import { isSentinel1Configured } from '../api.js'
 
+/**
+ * Entry screen for the investigation console.
+ *
+ * The primary action is the self-contained CASE-001 synthetic demonstration,
+ * which runs entirely on bundled offline data and needs no external scene file.
+ * Real Sentinel-1 work is an explicit, clearly-labelled secondary path that is
+ * only shown as configured when a scene is actually available.
+ */
 export default function InvestigationHome({
   onStartInvestigation,
   dataSource,
   onSelectDataSource,
   investigationStatus,
 }) {
+  const isDemo = dataSource !== 'sentinel1'
+  const realConfigured = isSentinel1Configured()
+
   const pipelineSteps = [
     { num: '01', id: 'detect', label: 'DETECT', desc: 'Sentinel-1 SAR / U-Net slick segmentation' },
     { num: '02', id: 'origin', label: 'ORIGIN', desc: 'Reverse transport & probable origin reconstruction' },
@@ -18,51 +30,64 @@ export default function InvestigationHome({
     { num: '08', id: 'review', label: 'INVESTIGATOR REVIEW', desc: 'Evidence chain, counterfactuals & final dossier' },
   ]
 
+  // The demo path always resolves to CASE-001 first, so returning to this
+  // screen can never leave the console pointed at a scene-less real-data mode.
+  const startDemo = () => {
+    onSelectDataSource('case-001')
+    onStartInvestigation()
+  }
+
+  const startReal = () => {
+    onSelectDataSource('sentinel1')
+    onStartInvestigation()
+  }
+
   return (
     <div className="investigation-home">
       <div className="home-hero">
         <div className="home-badge-row">
           <Badge tone="accent">MARITIME FORENSIC INTELLIGENCE</Badge>
-          <Badge tone={dataSource === 'case-001' ? 'demo' : 'ok'}>
-            {dataSource === 'case-001' ? 'CASE-001 (SYNTHETIC VERIFIED)' : 'REAL SATELLITE & AIS WORKSPACE'}
+          <Badge tone={isDemo ? 'demo' : 'ok'}>
+            {isDemo ? 'CASE-001 (SYNTHETIC VERIFIED)' : 'REAL SATELLITE & AIS WORKSPACE'}
           </Badge>
         </div>
         <h1 className="home-title">ABYSS</h1>
+        <p className="home-subtitle">AI-Powered Maritime Oil Spill Forensics</p>
         <p className="home-tagline">Detect → Reconstruct → Correlate → Explain</p>
         <p className="home-description">
-          Automated satellite radar oil slick detection, hydrodynamic drift hindcast/forecast,
-          and forensic AIS candidate correlation with strict non-fabrication guarantees.
+          Reconstruct the probable spill origin, correlate vessel movements, and build an
+          explainable evidence chain. Automated SAR slick detection, hydrodynamic
+          hindcast/forecast, and forensic AIS candidate correlation with strict
+          non-fabrication guarantees.
         </p>
 
         <div className="home-cta-box">
-          <div className="data-mode-select">
-            <span className="mode-label">DATASET SOURCE:</span>
-            <div className="mode-buttons">
-              <button
-                type="button"
-                className={`btn ${dataSource === 'case-001' ? 'btn-primary' : 'btn-ghost'}`}
-                onClick={() => onSelectDataSource('case-001')}
-              >
-                CASE-001 Golden Demo
-              </button>
-              <button
-                type="button"
-                className={`btn ${dataSource === 'sentinel1' ? 'btn-primary' : 'btn-ghost'}`}
-                onClick={() => onSelectDataSource('sentinel1')}
-              >
-                🛰️ Real Sentinel-1 &amp; NOAA AIS
-              </button>
-            </div>
-          </div>
+          <div className="demo-case-label">CASE-001 · Synthetic Demonstration</div>
 
           <button
             type="button"
             className="btn btn-primary btn-large btn-start-investigation"
-            onClick={onStartInvestigation}
+            onClick={startDemo}
             disabled={investigationStatus === 'loading'}
           >
-            {investigationStatus === 'loading' ? 'INITIALIZING WORKSPACE…' : '▶ START INVESTIGATION'}
+            {investigationStatus === 'loading' ? 'INITIALIZING WORKSPACE…' : '▶ START DEMO INVESTIGATION'}
           </button>
+
+          <p className="cta-note">
+            Runs offline on bundled demonstration data. No satellite scene file or API key required.
+          </p>
+
+          <div className="home-secondary">
+            <span className="mode-label">ADVANCED REAL-DATA PATH</span>
+            <button type="button" className="btn btn-ghost" onClick={startReal}>
+              🛰️ Real Sentinel-1 Investigation
+            </button>
+            <span className="mode-note">
+              {realConfigured
+                ? 'A Sentinel-1 VV+VH scene is configured for this build.'
+                : 'Optional. Requires a Sentinel-1 VV+VH scene to be configured for the service (VITE_SENTINEL1_SCENE_PATH). Not needed for the demonstration.'}
+            </span>
+          </div>
         </div>
       </div>
 

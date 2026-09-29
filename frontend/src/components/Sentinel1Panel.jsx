@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Card, Row, Stat, Badge, Spinner } from './ui.jsx'
+import { isSentinel1Configured } from '../api.js'
 import { fmtNumber, fmtLatLon } from '../lib/format.js'
 import { geoToFraction } from '../lib/geo.js'
 import { matchedPositions, sceneBoundsOf } from '../lib/realais.js'
@@ -56,12 +57,23 @@ export default function Sentinel1Panel({ data, loading, error, onRetry, realAis 
   }
 
   if (error) {
+    // An unconfigured build is a missing-setup notice, not a failed inference:
+    // no scene was supplied, so no U-Net run was attempted. Real-data mode
+    // never substitutes synthetic detection data.
+    const unconfigured = !isSentinel1Configured()
     return (
       <Card id="sentinel1-investigation" title="REAL SENTINEL-1 INVESTIGATION" icon="🛰️">
-        <div className="callout callout-danger" style={{ padding: '16px' }}>
-          <h4>Inference Error</h4>
-          <p className="error-text">{error}</p>
-          <button className="btn" onClick={onRetry} style={{ marginTop: '12px' }}>Retry Inference</button>
+        <div className="callout callout-info" style={{ padding: '16px' }}>
+          <h4>{unconfigured ? 'Real-data mode is not configured' : 'Inference Error'}</h4>
+          <p>{error}</p>
+          <p className="callout-note">
+            {unconfigured
+              ? 'This is a setup requirement for the optional real-data path only. No SAR scene was read and no inference was run. The bundled offline demonstration case remains fully available and needs no scene file.'
+              : 'The real-data service did not return a usable result. No synthetic detection data is substituted for it.'}
+          </p>
+          <button className="btn" onClick={onRetry} style={{ marginTop: '12px' }}>
+            {unconfigured ? 'Re-check configuration' : 'Retry Inference'}
+          </button>
         </div>
       </Card>
     )

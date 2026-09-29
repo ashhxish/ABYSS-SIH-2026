@@ -34,6 +34,10 @@ export default function DetectionStagePanel({
           const areaKm2 = s1Res.area_km2 ?? s1Char.areaKm2 ?? null
           const oilFrac = s1Res.oil_fraction ?? null
           const centroid = s1Res.centroid || s1Char.centroid || null
+          // Nothing is interpreted unless the service actually measured
+          // something: an unmeasured scene must not be described as a
+          // detection, and no value is invented to fill the gap.
+          if (areaKm2 == null && oilFrac == null && !centroid) return null
           return (
           <div
             className="investigator-interpretation-card"

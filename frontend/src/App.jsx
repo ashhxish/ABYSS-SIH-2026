@@ -46,7 +46,10 @@ export default function App() {
   const [stage, setStage] = useState('detect') // 'detect' | 'origin' | 'hindcast' | 'forecast' | 'ais' | 'behaviour' | 'evidence' | 'review'
   const [completedStages, setCompletedStages] = useState([])
   const [selected, setSelected] = useState(null)
-  const [viewMode, setViewMode] = useState('synthetic') // 'synthetic' | 'sentinel1'
+  // Stage data source. 'case-001' is the offline synthetic demonstration (the
+  // default, and the only mode that needs no external scene file); 'sentinel1'
+  // is the optional real-data path, entered only by explicit user choice.
+  const [viewMode, setViewMode] = useState('case-001') // 'case-001' | 'sentinel1'
   const [showEvidenceChainModal, setShowEvidenceChainModal] = useState(false)
 
   // Asynchronous dataset states
@@ -318,9 +321,12 @@ export default function App() {
                   isRealMode={viewMode === 'sentinel1'}
                   detection={detection.data}
                   s1Data={s1Data.data}
-                  loading={s1Data.status === 'loading'}
-                  error={s1Data.error}
-                  onRetry={loadSentinel1}
+                  // Each mode reports its own request state: the CASE-001 stage
+                  // never surfaces real-scene load/inference errors, and the
+                  // real-data stage never surfaces the synthetic detector's.
+                  loading={viewMode === 'sentinel1' ? s1Data.status === 'loading' : detection.status === 'loading'}
+                  error={viewMode === 'sentinel1' ? s1Data.error : detection.error}
+                  onRetry={viewMode === 'sentinel1' ? loadSentinel1 : loadBaseline}
                   realAis={realAis.data}
                   onContinue={() => navigateToStage('origin')}
                 />
