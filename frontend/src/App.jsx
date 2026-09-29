@@ -22,6 +22,7 @@ import RealAisPanel from './components/RealAisPanel.jsx'
 import BehaviourStagePanel from './components/BehaviourStagePanel.jsx'
 import EvidenceFusionPanel from './components/EvidenceFusionPanel.jsx'
 import InvestigatorReviewPanel from './components/InvestigatorReviewPanel.jsx'
+import ForensicConsole from './components/ForensicConsole.jsx'
 import Timeline from './components/Timeline.jsx'
 import EvidenceChain from './components/EvidenceChain.jsx'
 import CandidateTable from './components/CandidateTable.jsx'
@@ -380,9 +381,8 @@ export default function App() {
                       />
                       {selectedEntry && (
                         <CandidateDetail
-                          candidate={selectedEntry}
+                          entry={selectedEntry}
                           trajectory={selectedTrack}
-                          weights={investigation.data?.weights}
                         />
                       )}
                     </>
@@ -428,17 +428,32 @@ export default function App() {
               )}
 
               {stage === 'review' && (
-                <InvestigatorReviewPanel
-                  investigation={investigation.data}
-                  detection={detection.data}
-                  s1Data={viewMode === 'sentinel1' ? s1Data.data : null}
-                  selected={selected}
-                  candidate={selectedEntry}
-                  onViewEvidenceChain={() => setShowEvidenceChainModal(true)}
-                  onPrevious={() => setStage('evidence')}
-                  isRealMode={viewMode === 'sentinel1'}
-                  realAis={realAis.data}
-                />
+                <>
+                  <InvestigatorReviewPanel
+                    investigation={investigation.data}
+                    detection={detection.data}
+                    s1Data={viewMode === 'sentinel1' ? s1Data.data : null}
+                    selected={selected}
+                    candidate={selectedEntry}
+                    onViewEvidenceChain={() => setShowEvidenceChainModal(true)}
+                    onPrevious={() => setStage('evidence')}
+                    isRealMode={viewMode === 'sentinel1'}
+                    realAis={realAis.data}
+                  />
+                  {/* Uncertainty-aware forensic console for the selected
+                      candidate vessel: sufficiency, comparison, uncertainty,
+                      hypotheses, replay and next evidence. Synthetic-mode
+                      CASE-001 data feeds the existing payloads; real mode
+                      reuses the same panels with whatever the live
+                      responses carry. */}
+                  <ForensicConsole
+                    investigation={investigation.data}
+                    detection={detection.data}
+                    selected={selected}
+                    trajectory={selectedTrack}
+                    forecast={driftForecast}
+                  />
+                </>
               )}
             </div>
 
